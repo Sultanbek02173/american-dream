@@ -1,0 +1,19 @@
+@use '../../app/styles/constatnts.scss' as *;
+
+.sideBar{
+    background-color: $black;
+    height: 100vh;
+    width: 134px;
+
+    .logo{
+        text-align: end;
+        padding: 50px 22px 219px 0;
+    }
+
+    .accaunts{
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateY(-50%);
+    }
+}

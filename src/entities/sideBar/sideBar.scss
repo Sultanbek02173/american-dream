@@ -1,6 +1,7 @@
 @use '../../app/styles/constatnts.scss' as *;
 
 .sideBar {
+  position: fixed;
   background-color: $black;
   width: 134px;
   min-height: 100vh;
@@ -58,71 +59,5 @@
     z-index: 1;
   }
 
-  .accaunts_cont {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-
-    .accaunts {
-      padding: 3px;
-      flex-shrink: 0;
-      border-radius: 100px;
-      color: white;
-      background-color: $dark;
-
-      &_main {
-        display: flex;
-        gap: 8px;
-
-        &_img {
-          width: 54px;
-          height: 54px;
-          border-radius: 50%;
-          border: 1px solid $green;
-
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-          }
-        }
-
-        &_name {
-          width: 280px;
-        }
-
-        &_more {
-          border: 1px solid $white;
-          display: flex;
-          align-items: center;
-          padding: 10px 16px;
-          border-radius: 50%;
-        }
-      }
-
-      &_logout {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 12px;
-
-        button {
-          background: none;
-          border: none;
-          color: white;
-          cursor: pointer;
-        }
-      }
-    }
-
-    .accaunts_logout{
-      background-color: $dark;
-      padding: 17px;
-      display: flex;
-      justify-content: center;
-      border-radius: 100px;
-    }
-  }
+ 
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { getRole } from '../../shared';
 import { useEffect, useState } from 'react';
 import {
@@ -22,7 +22,7 @@ import {
   TeacherTable,
 } from '../../pages';
 import '../styles/app.scss';
-import { SideBar } from '../../entities';
+import { Accaunts, Breadcrumbs, SideBar } from '../../entities';
 
 import main from '../../shared/imgs/sidebar/mainScreen.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
@@ -42,34 +42,34 @@ const App = () => {
 
   const admin = [
     { id: 1, img: main, link: '/' },
-    { id: 2, img: student, link: '/admin/students-table' },
-    { id: 3, img: payment, link: '/admin/payments' },
-    { id: 4, img: reportAnalytics, link: '/admin/report-analytics' },
-    { id: 5, img: teacher, link: '/admin/teacher-table' },
-    { id: 6, img: accounting, link: '/admin/accounting' },
-    { id: 7, img: reportCard, link: '/admin/repord-table' },
+    { id: 2, img: student, link: '/students-table' },
+    { id: 3, img: payment, link: '/payments' },
+    { id: 4, img: reportAnalytics, link: '/report-analytics' },
+    { id: 5, img: teacher, link: '/teacher-table' },
+    { id: 6, img: accounting, link: '/accounting' },
+    { id: 7, img: reportCard, link: '/repord-table' },
   ];
 
   const menegment = [
     { id: 1, img: main, link: '/' },
-    { id: 2, img: message, link: '/manager/applications' },
-    { id: 3, img: curces, link: '/admin/schedule' },
-    { id: 4, img: student, link: '/manager/students-table' },
-    { id: 5, img: payment, link: '/manager/payments-table' },
+    { id: 2, img: message, link: '/applications' },
+    { id: 3, img: curces, link: '/schedule' },
+    { id: 4, img: student, link: '/students-table' },
+    { id: 5, img: payment, link: '/payments-table' },
   ];
 
   const teacherSideBar = [
-    { id: 1, img: main, link: '/' },
-    { id: 2, img: accounting, link: '/teacher/applications' },
-    { id: 3, img: student, link: '/teacher/students' },
+    { id: 1, img: main, link: '/', name: 'Главный экран' },
+    { id: 2, img: accounting, link: '/applications' },
+    { id: 3, img: student, link: '/students' },
   ];
 
   const studentSideBar = [
     { id: 1, img: main, link: '/' },
-    { id: 2, img: message, link: '/student/report-card' },
-    { id: 3, img: accounting, link: '/student/students-table' },
-    { id: 4, img: lessons, link: '/student/home-work' },
-  ];
+    { id: 2, img: message, link: '/report-card' },
+    { id: 3, img: accounting, link: '/students-table' },
+    { id: 4, img: lessons, link: '/home-work' },
+  ]; 
 
   useEffect(() => {
     const storeRole = getRole();
@@ -103,6 +103,8 @@ const App = () => {
       {isLoggedIn && (
         <>
           <SideBar routes={sidebar} />
+          <Accaunts />
+          <Breadcrumbs />
         </>
       )}
 

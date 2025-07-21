@@ -1,3 +1,34 @@
 $white: #FFFFFF;
 $green: #2DE920;
 $black: #121212;
+$dark: #000000;
+
+@mixin lg {
+    @media screen and (max-width: 1400px) {
+        @content;
+    }
+}
+
+@mixin xl2 {
+    @media screen and (max-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media screen and (max-width: 992px) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media screen and (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media screen and (max-width: 576px) {
+        @content;
+    }
+}

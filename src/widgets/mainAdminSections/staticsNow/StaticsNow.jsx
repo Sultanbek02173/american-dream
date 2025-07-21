@@ -3,6 +3,7 @@ import shedule from '../../../shared/imgs/sidebar/curces.svg';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect } from 'react';
+import './staticsNow.scss';
 
 export const StaticsNow = () => {
   const percentage = 75;
@@ -18,7 +19,7 @@ export const StaticsNow = () => {
     controls.start({ strokeDashoffset: offset });
   }, [percentage, circumference, controls]);
   return (
-    <section>
+    <section className='static_section'>
       <p>Hi, Админ!</p>
       <div>
         <h2>Ключевые показатели за сегодня</h2>

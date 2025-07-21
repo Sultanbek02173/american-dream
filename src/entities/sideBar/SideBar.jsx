@@ -1,21 +1,21 @@
-import { useNavigate } from 'react-router-dom';
-import './sideBar.scss';
+import { useNavigate } from "react-router-dom";
+import "./sideBar.scss";
 import { IoIosArrowBack } from "react-icons/io";
-import { removeRole } from '../../shared/hooks/auth';
+import { removeRole } from "../../shared/hooks/auth";
 
 export const SideBar = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handlerLogaut = () => {
-        removeRole();
-        navigate('/login');
-        window.location.reload();
-    }
-    return (
-        <aside className="sideBar">
-            <h2 className='logo'>AD</h2>
+  const handlerLogaut = () => {
+    removeRole();
+    navigate("/login");
+    window.location.reload();
+  };
+  return (
+    <aside className="sideBar">
+      <h2 className="logo">AD</h2>
 
-            <div className='accaunts'>
+      {/* <div className='accaunts'>
                 <div className='accaunts_main'>
                     <div>
                         <img src="" alt="" />
@@ -32,8 +32,7 @@ export const SideBar = () => {
                     <IoIosArrowBack color='#fff' />
                     <button onClick={handlerLogaut}>Выйти с аккаунта</button>
                 </div>
-            </div>
-        </aside>
-    );
-}
-
+            </div> */}
+    </aside>
+  );
+};

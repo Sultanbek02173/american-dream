@@ -33,12 +33,12 @@ export const Breadcrumbs = () => {
 
   return (
     <>
-      {location !== '/' && (
+      {location.pathname !== '/' ? (
         <nav className='breadcrumbs'>
           <Link to='/'>Главная</Link>
           {breadcrumbs}
         </nav>
-      )}
+      ) : ''}
     </>
   );
 };

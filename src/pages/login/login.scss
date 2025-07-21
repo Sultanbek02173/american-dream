@@ -1,75 +1,74 @@
 @use '../../app/styles/constatnts.scss' as *;
 
-.login{
-    max-width: 1220px;
-    width: 90%;
-    margin: 50px auto;
-    color: $white;
+.login {
+  max-width: 1220px;
+  width: 90%;
+  margin: 50px auto;
+  color: $white;
 
+  &_logo {
+    font-size: 44px;
+    margin-bottom: 51px;
+    font-weight: 400;
+  }
 
-    &_logo{
-        font-size: 44px;
-        margin-bottom: 131px;
+  &_cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &_description {
+      text-align: center;
+
+      h1 {
+        font-size: 52px;
         font-weight: 400;
+      }
+      p {
+        color: #ffffff5c;
+        font-size: 32px;
+      }
     }
 
-    &_cont{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    &_form {
+      text-align: center;
+      padding: 50px 37px;
+      background-color: $black;
+      border-radius: 20px;
+      width: 480px;
 
-        &_description{
-            text-align: center;
+      h2 {
+        font-weight: 400;
+        font-size: 34px;
+        margin-bottom: 12px;
+      }
 
-            h1{
-                font-size: 72px;
-                font-weight: 400;
-            }
-            p{
-                color: #ffffff5c;
-                font-size: 32px;
-            }
-        }
+      p {
+        font-size: 18px;
+        font-weight: 300;
+        margin-bottom: 46px;
+        padding: 0 25px;
+      }
 
-        &_form{
-            text-align: center;
-            padding: 50px 37px;
-            background-color: $black;
-            border-radius: 20px;
-            width: 480px;
+      input {
+        width: 100%;
+        border-radius: 20px;
+        padding: 17px 18px;
+        margin-bottom: 28px;
+        font-size: 18px;
+      }
 
-            h2{
-                font-weight: 400;
-                font-size: 44px;
-                margin-bottom: 12px;
-            }
-
-            p{
-                font-size: 22px;
-                font-weight: 300;
-                margin-bottom: 46px;
-                padding: 0 25px;
-            }
-
-            input{
-                width: 100%;
-                border-radius: 20px;
-                padding: 21px 24px;
-                margin-bottom: 32px;
-                font-size: 24px;
-            }
-
-            button{
-                background-color: $green;
-                width: 100%;
-                margin-top: 10px;
-                color: $white;
-                padding: 20px;
-                border: none;
-                border-radius: 20px;
-                font-size: 26px;
-                font-weight: 500;
-            }
-        }
+      button {
+        background-color: $green;
+        width: 100%;
+        margin-top: 10px;
+        color: $white;
+        padding: 18px;
+        border: none;
+        border-radius: 20px;
+        font-size: 18px;
+        font-weight: 500;
+      }
     }
+  }
 }

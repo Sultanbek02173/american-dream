@@ -32,9 +32,13 @@ export const Breadcrumbs = () => {
   });
 
   return (
-    <nav className='breadcrumbs'>
-      <Link to='/'>Главная</Link>
-      {breadcrumbs}
-    </nav>
+    <>
+      {location !== '/' && (
+        <nav className='breadcrumbs'>
+          <Link to='/'>Главная</Link>
+          {breadcrumbs}
+        </nav>
+      )}
+    </>
   );
 };

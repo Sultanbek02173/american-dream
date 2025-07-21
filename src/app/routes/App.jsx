@@ -118,24 +118,24 @@ const App = () => {
           <>
             {role === 'admin' && (
               <>
-                <Route path='/admin/accounting' element={<Accounting />} />
+                <Route path='/accounting' element={<Accounting />} />
                 <Route
-                  path='/admin/applications'
+                  path='/applications'
                   element={<ApplicationsAdmin />}
                 />
                 <Route path='/' element={<MainAdmin />} />
-                <Route path='/admin/payments' element={<PaymentsTable />} />
-                <Route path='/admin/repord-table' element={<RepordTable />} />
+                <Route path='/payments' element={<PaymentsTable />} />
+                <Route path='/repord-table' element={<RepordTable />} />
                 <Route
-                  path='/admin/report-analytics'
+                  path='/report-analytics'
                   element={<ReportAnalytics />}
                 />
-                <Route path='/admin/schedule' element={<ScheduleAdmin />} />
+                <Route path='/schedule' element={<ScheduleAdmin />} />
                 <Route
-                  path='/admin/students-table'
+                  path='/students-table'
                   element={<StudentsTable />}
                 />
-                <Route path='/admin/teacher-table' element={<TeacherTable />} />
+                <Route path='/teacher-table' element={<TeacherTable />} />
               </>
             )}
 
@@ -143,16 +143,16 @@ const App = () => {
               <>
                 <Route path='/' element={<MainManagerPage />} />
                 <Route
-                  path='/manager/applications'
+                  path='/applications'
                   element={<ApplicationsManager />}
                 />
-                <Route path='/manager/schedule' element={<ScheduleAdmin />} />
+                <Route path='/schedule' element={<ScheduleAdmin />} />
                 <Route
-                  path='/manager/students-table'
+                  path='/students-table'
                   element={<StudentsTable />}
                 />
                 <Route
-                  path='/manager/payments-table'
+                  path='/payments-table'
                   element={<PaymentsTable />}
                 />
               </>
@@ -160,14 +160,14 @@ const App = () => {
 
             {role === 'student' && (
               <>
-                <Route path='/student/home-work' element={<HomeWork />} />
+                <Route path='/home-work' element={<HomeWork />} />
                 <Route path='/' element={<MainStudent />} />
                 <Route
-                  path='/student/report-card'
+                  path='/report-card'
                   element={<ReportCardStudent />}
                 />
                 <Route
-                  path='/student/students-table'
+                  path='/students-table'
                   element={<StudentsTable />}
                 />
               </>
@@ -177,10 +177,10 @@ const App = () => {
               <>
                 <Route path='/' element={<MainTeacher />} />
                 <Route
-                  path='/teacher/applications'
+                  path='/applications'
                   element={<ScheduleTeacher />}
                 />
-                <Route path='/teacher/students' element={<Students />} />
+                <Route path='/students' element={<Students />} />
               </>
             )}
           </>

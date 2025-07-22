@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 * {
   margin: 0;
@@ -8,7 +8,7 @@
 
 body {
   background-color: #313131;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
 }
 
@@ -24,7 +24,40 @@ body {
   color: #ffffff;
 }
 
+// .app {
+//   display: flex;
+//   column-gap: 29px;
+// }
+
 .app {
+  height: 100vh;
+  width: 100%;
+}
+
+.layout {
   display: flex;
-  column-gap: 29px;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  overflow-y: auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.page-content {
+  flex: 1;
+  padding-top: 16px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

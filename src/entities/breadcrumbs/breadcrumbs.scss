@@ -1,14 +1,40 @@
 .breadcrumbs {
-  position: fixed;
-  top: 50px;
-  left: 260px;
-  padding: 10px 20px;
+  // position: fixed;
+  // top: 50px;
+  // left: 260px;
+  padding: 10px 0;
   font-size: 22px;
   color: #ffffff;
-  a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // margin-left: 40px;
+  &__second {
+    display: flex;
+    column-gap: 15px;
+    &-tab {
+      border: none;
+      background: transparent;
+      font-family: Inter;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #fff;
+      cursor: pointer;
+      padding-bottom: 5px;
+      &.active {
+        border-bottom: 2px solid #2de920;
+      }
+    }
+  }
+  &__link {
     text-decoration: none;
     color: #ffffff;
     font-weight: 300;
+    transition: all 0.3s;
     &:hover {
       text-decoration: underline;
     }

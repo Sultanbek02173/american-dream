@@ -1,7 +1,7 @@
 @use '../../app/styles/constatnts.scss' as *;
 
 .sideBar {
-  position: fixed;
+  // position: sticky;
   top: 0;
   background-color: $black;
   width: 134px;

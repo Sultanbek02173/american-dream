@@ -1,0 +1,35 @@
+@use '../../../app/styles/constatnts.scss' as *;
+.noLessons {
+  background-color: $dark;
+  border-radius: 24px;
+  padding: 51px;
+  color: $white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  img {
+    width: 60%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  h2,
+  p {
+    max-width: 370px;
+    width: 80%;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 18px;
+    font-weight: 300;
+  }
+}

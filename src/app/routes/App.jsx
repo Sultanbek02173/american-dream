@@ -45,11 +45,11 @@ const App = () => {
   const admin = [
     { id: 1, img: main, link: '/' },
     { id: 2, img: student, link: '/students-table' },
-    { id: 3, img: payment, link: '/payments' },
-    { id: 4, img: reportAnalytics, link: '/report-analytics' },
-    { id: 5, img: teacher, link: '/teacher-table' },
-    { id: 6, img: accounting, link: '/accounting' },
-    { id: 7, img: reportCard, link: '/report-table' },
+    { id: 3, img: teacher, link: '/teacher-table' },
+    { id: 4, img: reportCard, link: '/report-table' },
+    { id: 5, img: payment, link: '/payments' },
+    { id: 6, img: reportAnalytics, link: '/report-analytics' },
+    { id: 7, img: accounting, link: '/accounting' },
   ];
 
   const menegment = [

@@ -26,7 +26,12 @@ export const VisitedStatisc = () => {
             <h3>59</h3>
           </div>
           <div className='lessons_right_progress'>
-            <CircleProgress percentage={82} radius={90} stroke={30} />
+            <CircleProgress
+              percentage={82}
+              radius={90}
+              stroke={30}
+              color={'#2DE920'}
+            />
           </div>
         </div>
       </div>
@@ -37,7 +42,12 @@ export const VisitedStatisc = () => {
             <h3>5</h3>
           </div>
           <div className='check_students_right_progress'>
-            <CircleProgress percentage={82} radius={90} stroke={30} />
+            <CircleProgress
+              percentage={82}
+              radius={90}
+              stroke={30}
+              color={'#2DE920'}
+            />
           </div>
         </div>
         <div className='row check_students_left'>
@@ -46,7 +56,12 @@ export const VisitedStatisc = () => {
             <h3>8</h3>
           </div>
           <div className='check_students_left_progress'>
-            <CircleProgress percentage={82} radius={90} stroke={30} />
+            <CircleProgress
+              percentage={82}
+              radius={90}
+              stroke={30}
+              color={'#2DE920'}
+            />
           </div>
         </div>
       </div>

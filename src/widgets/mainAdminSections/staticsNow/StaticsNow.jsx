@@ -100,6 +100,7 @@ export const StaticsNow = () => {
                 percentage={percentage}
                 radius={radius}
                 stroke={stroke}
+                color={'#2DE920'}
               />
             </div>
             <div className='flex_item count_students_indicators'>

@@ -1,0 +1,47 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.income {
+  margin-top: 150px;
+  color: $white;
+  &_title {
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 35px;
+  }
+
+  &_text {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  &_analiz {
+    background-color: $dark;
+    padding: 32px;
+    border-radius: 24px;
+
+    &_header {
+      margin-bottom: 100px;
+      font-size: 22px;
+
+      .main_text {
+        font-weight: 300;
+      }
+      p {
+        gap: 16px;
+        font-weight: 400;
+      }
+    }
+
+    &_table {
+      text-align: center;
+
+      .line {
+        height: 220px;
+        border-left: 1px solid $green;
+        width: 1px;
+        margin: 16px auto;
+      }
+    }
+  }
+}

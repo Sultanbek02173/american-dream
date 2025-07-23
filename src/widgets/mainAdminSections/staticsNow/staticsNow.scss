@@ -1,3 +1,200 @@
+<<<<<<< HEAD
 .static_section{
     margin-top: 168px;
 }
+=======
+@use '../../../app/styles/constatnts.scss' as *;
+
+.static_section {
+  margin-top: 58px;
+  color: $white;
+
+  .flex_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &_hi {
+    color: #ffffff63;
+    margin-bottom: 12px;
+  }
+
+  &_header {
+    margin-bottom: 35px;
+
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+    }
+
+    &_btn {
+      display: flex;
+      gap: 24px;
+
+      button {
+        background-color: transparent;
+        color: $white;
+        border: 1px solid $white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 20px;
+        border-radius: 100px;
+      }
+    }
+  }
+
+  &_statistics {
+    margin-bottom: 36px;
+
+    &_period {
+      gap: 40px;
+
+      &_date {
+        gap: 24px;
+
+        p {
+          color: #ffffff60;
+          font-weight: 300;
+          font-size: 18px;
+          transition: 0.3s all;
+          cursor: pointer;
+        }
+
+        p:hover {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  &_cards {
+    display: flex;
+    gap: 20px;
+
+    .right_card {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .statist_students {
+        display: flex;
+        h3 {
+          font-size: 22px;
+          margin-bottom: 12px;
+          font-weight: 400;
+        }
+
+        h2 {
+          font-size: 50px;
+          margin-bottom: 15px;
+        }
+
+        &_year {
+          padding-right: 20px;
+          margin-right: 20px;
+          border-right: 1px solid $white;
+          width: 70%;
+        }
+
+        &_month {
+          width: 30%;
+        }
+      }
+    }
+
+    .user_card {
+      background-color: $dark;
+      padding: 32px;
+      border-radius: 24px;
+
+      &_note {
+        margin-bottom: 53px;
+        font-size: 18px;
+        width: 80%;
+        span {
+          color: #ffffff99;
+        }
+      }
+
+      &_served {
+        font-size: 18px;
+        span {
+          color: #ffffff99;
+        }
+      }
+
+      &_description {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 36px;
+
+        .date {
+          font-size: 16px;
+          font-weight: 300;
+          color: #ffffff69;
+        }
+
+        h2 {
+          font-size: 22px;
+          font-weight: 400;
+        }
+
+        h3 {
+          color: #ffffff99;
+          font-size: 18px;
+          font-weight: 400;
+        }
+      }
+    }
+    .left_card {
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .count_students {
+        h2 {
+          font-size: 22px;
+          font-weight: 400;
+          margin-bottom: 24px;
+        }
+
+        &_circle {
+          display: flex;
+          align-items: end;
+          gap: 40px;
+
+          h2 {
+            font-size: 68px;
+          }
+        }
+
+        &_indicators{
+          margin-top: 28px;
+          color: #FFFFFF99;
+          font-size: 18px;
+        }
+      }
+
+      .last_info{
+
+        &_description{
+          margin-bottom: 20px;
+        }
+        .user_card_note{
+          margin-top: 26px;
+          width: 90%;
+          font-size: 16px;
+          font-weight: 300;
+          margin-bottom: 36px;
+        }
+      }
+    }
+  }
+}
+>>>>>>> cc85a42bc4246373781bcb954150a9111d7aa4b2

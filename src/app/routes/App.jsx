@@ -155,6 +155,7 @@ const App = () => {
                         path='/create-new-group'
                         element={<CreateNewGroupTabs />}
                       />
+                      <Route path='/add-teacher' element={<AddTeacherTabs />} />
                     </>
                   )}
                   {role === 'manager' && (

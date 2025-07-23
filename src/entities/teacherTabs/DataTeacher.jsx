@@ -15,8 +15,8 @@ import {
   menuItemStyle,
 } from '../../shared/utils/MuiStyles';
 
+
 export const DataTeacher = () => {
-  const navigate = useNavigate();
   const [state, setState] = useState({
     id: 1,
     image: bilol,
@@ -29,6 +29,7 @@ export const DataTeacher = () => {
     group: 'eng-01',
     direction: 'mentalArithmetic',
   });
+  const navigate = useNavigate();
 
   const onChange = eventHandler(setState);
 

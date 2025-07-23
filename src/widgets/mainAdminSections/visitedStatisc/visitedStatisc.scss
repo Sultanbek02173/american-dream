@@ -1,0 +1,128 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.visitedStatisc {
+  margin: 150px 0;
+  color: $white;
+  align-items: stretch;
+  &_header {
+    margin-bottom: 36px;
+    font-size: 18px;
+    font-weight: 300;
+    .day {
+      color: #ffffff99;
+    }
+  }
+
+  .lessons {
+    align-items: stretch;
+    gap: 20px;
+
+    &_left,
+    &_right {
+      padding: 32px;
+      background-color: $dark;
+      border-radius: 24px;
+    }
+
+    &_left {
+      width: 45%;
+
+      &_top {
+        align-items: start;
+
+        p {
+          color: $green;
+          font-size: 24px;
+          font-weight: 300;
+        }
+
+        h3 {
+          font-size: 76px;
+          font-weight: 400;
+        }
+      }
+
+      &_bottom {
+        align-items: end;
+
+        p {
+          font-size: 24px;
+          font-weight: 300;
+        }
+        h3 {
+          font-size: 76px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    &_right {
+      width: 55%;
+
+      &_text {
+        height: 100%;
+        width: 50%;
+
+        p {
+          color: $green;
+          font-size: 24px;
+          font-weight: 300;
+          margin-bottom: 56px;
+        }
+
+        h3 {
+          font-size: 96px;
+          font-weight: 400;
+        }
+      }
+
+      &_progress {
+        width: 50%;
+        padding-left: 50px;
+      }
+    }
+    .line {
+      margin: 51px 32px;
+      height: 1px;
+      border-bottom: 1px solid $white;
+    }
+  }
+
+  .check_students {
+    margin-top: 20px;
+    gap: 20px;
+
+    &_right,
+    &_left {
+      background-color: $dark;
+      padding: 32px;
+      border-radius: 24px;
+      align-items: start;
+
+      &_text {
+        height: 100%;
+        width: 50%;
+
+        p {
+          color: $green;
+          font-size: 24px;
+          font-weight: 300;
+          margin-bottom: 56px;
+        }
+
+        h3 {
+          font-size: 96px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    &_right {
+      width: 55%;
+    }
+
+    &_left {
+      width: 45%;
+    }
+  }
+}

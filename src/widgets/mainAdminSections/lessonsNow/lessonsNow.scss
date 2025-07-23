@@ -1,0 +1,94 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.lessonsNow {
+  margin-top: 150px;
+  color: $white;
+
+  &_header {
+    margin-bottom: 36px;
+
+    .link {
+      gap: 16px;
+    }
+
+    p {
+      font-weight: 300;
+    }
+
+    span {
+      color: #ffffff99;
+    }
+  }
+
+  .shedule {
+    gap: 20px;
+    align-items: stretch;
+
+    &_left,
+    &_right {
+      background-color: $dark;
+      width: 50%;
+      padding: 32px;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &_top {
+        margin-bottom: 160px;
+        .lesson {
+          color: $green;
+          max-width: 100px;
+        }
+        p {
+          color: #ffffff99;
+          font-size: 20px;
+          font-weight: 300;
+        }
+      }
+
+      &_bottom {
+        align-items: end;
+
+        h2 {
+          font-size: 68px;
+          font-weight: 400;
+        }
+        p {
+          span {
+            color: #ffffff99;
+          }
+        }
+      }
+    }
+  }
+
+  .last_shedule {
+    margin-top: 20px;
+    background-color: $dark;
+    padding: 32px;
+    border-radius: 24px;
+
+    &_top {
+      margin-bottom: 165px;
+      font-size: 20px;
+      font-weight: 300;
+      color: #ffffff99;
+      .lesson {
+        color: $green;
+      }
+    }
+
+    &_bottom {
+      align-items: end;
+      h2 {
+        font-size: 76px;
+        font-weight: 400;
+      }
+
+      p span {
+        color: #ffffff99;
+      }
+    }
+  }
+}

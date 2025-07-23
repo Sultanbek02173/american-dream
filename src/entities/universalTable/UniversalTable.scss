@@ -1,0 +1,56 @@
+.universalTable {
+  margin-top: 36px;
+  width: 100%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+
+  &__head {
+    tr {
+      background-color: #121212;
+      border: none;
+      border-radius: 6px 6px 0px 0px;
+      th {
+        padding: 16px 13px;
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 20px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        text-align: start;
+        color: #fff;
+      }
+    }
+  }
+  &__body {
+    tr {
+      border: 1px solid #fff;
+      transition: all 0.3s;
+      cursor: pointer;
+      td {
+        padding: 16px 15px;
+        text-align: start;
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 16px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #fff;
+      }
+
+      &:nth-child(odd) {
+        background: #12121240;
+      }
+      &:nth-child(even) {
+        background: #12121280;
+      }
+      &:hover {
+        background: #2de92040;
+      }
+    }
+  }
+}

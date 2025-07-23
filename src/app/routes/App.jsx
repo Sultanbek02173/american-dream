@@ -1,8 +1,9 @@
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { getRole } from '../../shared';
 import { useEffect, useState } from 'react';
 import {
   Accounting,
+  AddTeacherTabs,
   ApplicationsAdmin,
   ApplicationsManager,
   HomeWork,
@@ -18,6 +19,7 @@ import {
   ScheduleAdmin,
   ScheduleTeacher,
   Students,
+  StudentsDetail,
   StudentsTable,
   TeacherTable,
 } from '../../pages';
@@ -47,7 +49,7 @@ const App = () => {
     { id: 4, img: reportAnalytics, link: '/report-analytics' },
     { id: 5, img: teacher, link: '/teacher-table' },
     { id: 6, img: accounting, link: '/accounting' },
-    { id: 7, img: reportCard, link: '/repord-table' },
+    { id: 7, img: reportCard, link: '/report-table' },
   ];
 
   const menegment = [
@@ -69,7 +71,7 @@ const App = () => {
     { id: 2, img: message, link: '/report-card' },
     { id: 3, img: accounting, link: '/students-table' },
     { id: 4, img: lessons, link: '/home-work' },
-  ]; 
+  ];
 
   useEffect(() => {
     const storeRole = getRole();
@@ -82,11 +84,9 @@ const App = () => {
       case 'manager':
         setSidebar(menegment);
         break;
-
       case 'student':
         setSidebar(studentSideBar);
         break;
-
       case 'teacher':
         setSidebar(teacherSideBar);
         break;
@@ -98,95 +98,103 @@ const App = () => {
   if (role === null) {
     return <div>Загрузка...</div>;
   }
-  return (
-    <BrowserRouter>
-      {isLoggedIn && (
-        <>
-          <SideBar routes={sidebar} />
-          <Accaunts />
-          <Breadcrumbs />
-        </>
-      )}
 
-      <Routes>
+  return (
+    <div className='app'>
+      <BrowserRouter>
         {!isLoggedIn ? (
-          <>
+          <Routes>
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<Navigate to='/login' />} />
-          </>
+          </Routes>
         ) : (
-          <>
-            {role === 'admin' && (
-              <>
-                <Route path='/accounting' element={<Accounting />} />
-                <Route
-                  path='/applications'
-                  element={<ApplicationsAdmin />}
-                />
-                <Route path='/' element={<MainAdmin />} />
-                <Route path='/payments' element={<PaymentsTable />} />
-                <Route path='/repord-table' element={<RepordTable />} />
-                <Route
-                  path='/report-analytics'
-                  element={<ReportAnalytics />}
-                />
-                <Route path='/schedule' element={<ScheduleAdmin />} />
-                <Route
-                  path='/students-table'
-                  element={<StudentsTable />}
-                />
-                <Route path='/teacher-table' element={<TeacherTable />} />
-              </>
-            )}
-
-            {role === 'manager' && (
-              <>
-                <Route path='/' element={<MainManagerPage />} />
-                <Route
-                  path='/applications'
-                  element={<ApplicationsManager />}
-                />
-                <Route path='/schedule' element={<ScheduleAdmin />} />
-                <Route
-                  path='/students-table'
-                  element={<StudentsTable />}
-                />
-                <Route
-                  path='/payments-table'
-                  element={<PaymentsTable />}
-                />
-              </>
-            )}
-
-            {role === 'student' && (
-              <>
-                <Route path='/home-work' element={<HomeWork />} />
-                <Route path='/' element={<MainStudent />} />
-                <Route
-                  path='/report-card'
-                  element={<ReportCardStudent />}
-                />
-                <Route
-                  path='/students-table'
-                  element={<StudentsTable />}
-                />
-              </>
-            )}
-
-            {role === 'teacher' && (
-              <>
-                <Route path='/' element={<MainTeacher />} />
-                <Route
-                  path='/applications'
-                  element={<ScheduleTeacher />}
-                />
-                <Route path='/students' element={<Students />} />
-              </>
-            )}
-          </>
+          <div className='layout'>
+            <div className='sidebar'>
+              <SideBar routes={sidebar} />
+            </div>
+            <div className='main'>
+              <div className='container'>
+                <Accaunts />
+                <Breadcrumbs />
+              </div>
+              <div className='page-content'>
+                <Routes>
+                  {role === 'admin' && (
+                    <>
+                      <Route path='/accounting' element={<Accounting />} />
+                      <Route
+                        path='/applications'
+                        element={<ApplicationsAdmin />}
+                      />
+                      <Route path='/' element={<MainAdmin />} />
+                      <Route path='/payments' element={<PaymentsTable />} />
+                      <Route path='/report-table' element={<RepordTable />} />
+                      <Route
+                        path='/report-analytics'
+                        element={<ReportAnalytics />}
+                      />
+                      <Route path='/schedule' element={<ScheduleAdmin />} />
+                      <Route
+                        path='/students-table'
+                        element={<StudentsTable />}
+                      />
+                      <Route
+                        path='/students-table/:id'
+                        element={<StudentsDetail />}
+                      />
+                      <Route path='/teacher-table' element={<TeacherTable />} />
+                      <Route path='/add-teacher' element={<AddTeacherTabs />} />
+                    </>
+                  )}
+                  {role === 'manager' && (
+                    <>
+                      <Route path='/' element={<MainManagerPage />} />
+                      <Route
+                        path='/applications'
+                        element={<ApplicationsManager />}
+                      />
+                      <Route path='/schedule' element={<ScheduleAdmin />} />
+                      <Route
+                        path='/students-table'
+                        element={<StudentsTable />}
+                      />
+                      <Route
+                        path='/payments-table'
+                        element={<PaymentsTable />}
+                      />
+                    </>
+                  )}
+                  {role === 'student' && (
+                    <>
+                      <Route path='/' element={<MainStudent />} />
+                      <Route path='/home-work' element={<HomeWork />} />
+                      <Route
+                        path='/report-card'
+                        element={<ReportCardStudent />}
+                      />
+                      <Route
+                        path='/students-table'
+                        element={<StudentsTable />}
+                      />
+                    </>
+                  )}
+                  {role === 'teacher' && (
+                    <>
+                      <Route path='/' element={<MainTeacher />} />
+                      <Route
+                        path='/applications'
+                        element={<ScheduleTeacher />}
+                      />
+                      <Route path='/students' element={<Students />} />
+                    </>
+                  )}
+                </Routes>
+              </div>
+            </div>
+          </div>
         )}
-      </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </div>
   );
 };
 

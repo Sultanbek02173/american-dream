@@ -1,3 +1,11 @@
 export { SideBar } from './sideBar/SideBar';
 export { Accaunts } from './accaunts/Accaunts';
 export { Breadcrumbs } from './breadcrumbs/Breadcrumbs';
+export { StudentProfile } from './studentsTab/StudentProfile';
+export { StudentSessionHistory } from './studentsTab/StudentSessionHistory';
+export { StudentPaymentHistory } from './studentsTab/StudentPaymentHistory';
+export { UniversalTable } from './universalTable/UniversalTable';
+export { DataTeacher } from './teacherTabs/DataTeacher';
+export { TeacherPaymentType } from './teacherTabs/TeacherPaymentType';
+export { FixedRate } from './teacherTabs/TeacherPaymentTabs/FixedRate';
+export { HourlyRate } from './teacherTabs/TeacherPaymentTabs/HourlyRate';

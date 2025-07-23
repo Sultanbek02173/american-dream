@@ -6,6 +6,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import bilol from '../../pages/admin/studentsDetail/image.jpg';
 import { eventHandler } from '../../shared/utils/eventHandlers';
 import {
@@ -13,9 +14,9 @@ import {
   inputStyle,
   menuItemStyle,
 } from '../../shared/utils/MuiStyles';
-import { useNavigate } from 'react-router-dom';
 
 export const DataTeacher = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     id: 1,
     image: bilol,
@@ -28,7 +29,6 @@ export const DataTeacher = () => {
     group: 'eng-01',
     direction: 'mentalArithmetic',
   });
-  const navigate = useNavigate();
 
   const onChange = eventHandler(setState);
 

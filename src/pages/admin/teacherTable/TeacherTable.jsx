@@ -90,7 +90,7 @@ export const TeacherTable = () => {
         <UniversalTable
           columns={columns}
           data={data}
-          onRowClick={item => navigate(`/teacher/${item.id}`)}
+          onRowClick={item => navigate(`/teacher-table/${item.id}`)}
         />
       </div>
     </section>

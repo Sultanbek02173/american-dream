@@ -61,3 +61,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-4 {
+  width: 33.3%;
+  padding: 0 15px;
+}

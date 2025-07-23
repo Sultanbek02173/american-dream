@@ -6,6 +6,7 @@ import {
   AddTeacherTabs,
   ApplicationsAdmin,
   ApplicationsManager,
+  CreateNewGroupTabs,
   HomeWork,
   Login,
   MainAdmin,
@@ -21,6 +22,7 @@ import {
   Students,
   StudentsDetail,
   StudentsTable,
+  TeacherDetail,
   TeacherTable,
 } from '../../pages';
 import '../styles/app.scss';
@@ -143,7 +145,16 @@ const App = () => {
                         element={<StudentsDetail />}
                       />
                       <Route path='/teacher-table' element={<TeacherTable />} />
+                      <Route
+                        path='/teacher-table/:id'
+                        element={<TeacherDetail />}
+                      />
+
                       <Route path='/add-teacher' element={<AddTeacherTabs />} />
+                      <Route
+                        path='/create-new-group'
+                        element={<CreateNewGroupTabs />}
+                      />
                     </>
                   )}
                   {role === 'manager' && (

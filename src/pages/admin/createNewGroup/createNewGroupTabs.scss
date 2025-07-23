@@ -1,0 +1,131 @@
+.createNewGroup {
+  .addTeacher__tabs-button {
+    width: 25%;
+    margin-bottom: 56px;
+    &:nth-child(-n + 3) {
+      border-right: 2px solid #fff;
+    }
+    &:nth-child(4) {
+      border-radius: 0px 6px 6px 0;
+    }
+  }
+}
+.createGroupSchedule {
+  &__title {
+    margin: 56px 0 76px;
+    font-family: Inter;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 32px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+    text-align: center;
+  }
+}
+.createGroupStudents {
+  position: relative;
+  .studentsTable__head-search {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  &__add {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 16px;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    opacity: 60%;
+    cursor: pointer;
+    p {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 24px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #fff;
+    }
+  }
+  &__check {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    max-height: 260px;
+    // height: 260px;
+    overflow-y: scroll;
+    background: #121212;
+    border-radius: 0 0 10px 10px;
+    padding: 36px 50px;
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #121212;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
+  &__selected {
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    padding: 50px;
+    padding-right: 0;
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-date {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 19px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #fff;
+      opacity: 80%;
+    }
+  }
+}
+.createGroupCompletion {
+  .createGroupSchedule__title {
+    margin-top: 0px;
+  }
+  .paymentType__tabs-item p {
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 24px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+  }
+  .row {
+    row-gap: 70px;
+  }
+  .dataTeacher__row {
+    margin-top: 120px;
+  }
+}

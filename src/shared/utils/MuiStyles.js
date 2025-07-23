@@ -1,27 +1,31 @@
 export const inputStyle = {
-  opacity: '60%',
   color: '#fff',
   '& .MuiOutlinedInput-root': {
+    // opacity: '60%',
     '& input': {
       opacity: '100%',
       color: '#fff',
     },
     '&.Mui-focused fieldset': {
-      // opacity: "60%",
+      opacity: '60%',
       borderColor: '#fff',
     },
     '&:hover fieldset': {
       borderColor: '#fff',
+      opacity: '60%',
     },
     '& fieldset': {
       borderColor: '#fff',
+      opacity: '60%',
     },
   },
   '& .MuiInputLabel-root': {
     color: '#fff',
+    opacity: '60%',
   },
   '& .Mui-focused .MuiInputLabel-root': {
     color: '#fff',
+    opacity: '60%',
   },
 };
 

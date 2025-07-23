@@ -5,7 +5,7 @@ export const CreateNewGroupCompletion = () => {
   return (
     <form className='createGroupCompletion'>
       <h2 className='createGroupSchedule__title'>Последний шаг</h2>
-      <div className='row'>
+      <div className='row1'>
         <div className='col-4'>
           <div className='paymentType__tabs-item'>
             <Checkbox

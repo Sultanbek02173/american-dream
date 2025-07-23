@@ -1,0 +1,96 @@
+.reportTableDetail {
+  .addTeacher__tabs-button {
+    width: 16.6%;
+    margin-bottom: 50px;
+    &:nth-child(6) {
+      border-radius: 0 6px 6px 0;
+    }
+    &:nth-child(-n + 5) {
+      border-right: 2px solid #fff;
+    }
+  }
+}
+.reportTableStudents {
+  &__comment {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+  }
+}
+.reportTablePlan {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  &__item {
+    padding: 19px 26px;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    &-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      h3 {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 20px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #fff;
+      }
+      p {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 18px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #ffffff;
+      }
+    }
+    &-description {
+      margin-top: 30px;
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 18px;
+      leading-trim: NONE;
+      // line-height: 34px;
+      letter-spacing: 0%;
+      color: #fff;
+      opacity: 60%;
+      margin-bottom: 24px;
+    }
+    .row1 {
+      row-gap: 20px;
+    }
+    &-task {
+      display: flex;
+      align-items: center;
+      column-gap: 7px;
+      span {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 19px;
+        leading-trim: NONE;
+        line-height: 34px;
+        letter-spacing: 0%;
+        color: #fff;
+        opacity: 60%;
+      }
+      p {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 18px;
+        leading-trim: NONE;
+        line-height: 34px;
+        letter-spacing: 0%;
+        color: #fff;
+      }
+    }
+  }
+}

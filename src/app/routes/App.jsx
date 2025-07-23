@@ -17,6 +17,7 @@ import {
   RepordTable,
   ReportAnalytics,
   ReportCardStudent,
+  ReportTableTabs,
   ScheduleAdmin,
   ScheduleTeacher,
   Students,
@@ -131,6 +132,10 @@ const App = () => {
                       <Route path='/' element={<MainAdmin />} />
                       <Route path='/payments' element={<PaymentsTable />} />
                       <Route path='/report-table' element={<RepordTable />} />
+                      <Route
+                        path='/report-table/:id'
+                        element={<ReportTableTabs />}
+                      />
                       <Route
                         path='/report-analytics'
                         element={<ReportAnalytics />}

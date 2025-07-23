@@ -14,6 +14,7 @@ export { StudentsDetail } from './admin/studentsDetail/StudentsDetail';
 export { AddTeacherTabs } from './admin/addTeacherTabs/AddTeacherTabs';
 export { CreateNewGroupTabs } from './admin/createNewGroup/CreateNewGroupTabs';
 export { TeacherDetail } from './admin/teacherDetail/TeacherDetail';
+export { ReportTableTabs } from './admin/reportTableDetail/ReportTableTabs';
 
 export { Login } from './login/Login';
 

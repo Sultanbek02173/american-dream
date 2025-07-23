@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-.static_section{
-    margin-top: 168px;
-}
-=======
 @use '../../../app/styles/constatnts.scss' as *;
 
 .static_section {
@@ -174,19 +169,18 @@
           }
         }
 
-        &_indicators{
+        &_indicators {
           margin-top: 28px;
-          color: #FFFFFF99;
+          color: #ffffff99;
           font-size: 18px;
         }
       }
 
-      .last_info{
-
-        &_description{
+      .last_info {
+        &_description {
           margin-bottom: 20px;
         }
-        .user_card_note{
+        .user_card_note {
           margin-top: 26px;
           width: 90%;
           font-size: 16px;
@@ -197,4 +191,3 @@
     }
   }
 }
->>>>>>> cc85a42bc4246373781bcb954150a9111d7aa4b2

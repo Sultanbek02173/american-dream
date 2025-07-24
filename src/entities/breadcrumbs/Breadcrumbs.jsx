@@ -12,7 +12,7 @@ const routeNameMap = {
   'report-table': 'Табель',
   'students-table': 'Ученики',
   'teacher-table': 'Преподаватели',
-  accounting: 'Табель',
+  accounting: ' Бухгалтерия',
   applications: 'Заявки',
   payments: 'Платежи',
   'payments-table': 'Платежи',
@@ -30,6 +30,7 @@ export const Breadcrumbs = () => {
   const location = useLocation();
 
   const pathnames = location.pathname.split('/').filter(Boolean);
+
   const breadcrumbs = pathnames
     .map((segment, index) => {
       if (!isNaN(Number(segment))) return null;
@@ -55,7 +56,9 @@ export const Breadcrumbs = () => {
 
   return (
     <>
-      {location.pathname !== '/' && (
+      {location.pathname === '/' || location.pathname === '/applications' ? (
+        ''
+      ) : (
         <nav className='breadcrumbs'>
           <div className='breadcrumbs__first'>
             <Link className='breadcrumbs__link' to='/'>

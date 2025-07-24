@@ -4,6 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './staticsNow.scss';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { CircleProgress, ProgressBar } from '../../../featurs';
+import { NavLink } from 'react-router-dom';
 
 export const StaticsNow = () => {
   const percentage = 75;
@@ -16,9 +17,11 @@ export const StaticsNow = () => {
       <div className='static_section_header flex_item'>
         <h2>Ключевые показатели за сегодня</h2>
         <div className='static_section_header_btn'>
-          <button>
-            <img src={message} alt='' /> Заявки
-          </button>
+          <NavLink to={'/applications'}>
+            <button>
+              <img src={message} alt='' /> Заявки
+            </button>
+          </NavLink>
           <button>
             <img src={shedule} alt='' />
             Расписание
@@ -126,10 +129,12 @@ export const StaticsNow = () => {
               </p>
             </div>
             <p className='user_card_note'>
-              <span>Примечание:</span> Ученик записан после бесплатного пробного урока,
-              ожидается подтверждение родителя.
+              <span>Примечание:</span> Ученик записан после бесплатного пробного
+              урока, ожидается подтверждение родителя.
             </p>
-            <p className='user_card_served'><span>Обслуживал(а):</span> Бексултан.Г</p>
+            <p className='user_card_served'>
+              <span>Обслуживал(а):</span> Бексултан.Г
+            </p>
           </div>
         </div>
       </div>

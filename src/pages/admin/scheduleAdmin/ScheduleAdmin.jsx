@@ -1,9 +1,10 @@
+import { Shedule } from '../../../widgets';
+import './scheduleAdmin.scss';
 
 export const ScheduleAdmin = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-}
-
+  return (
+    <div>
+      <Shedule />
+    </div>
+  );
+};

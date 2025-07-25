@@ -8,3 +8,5 @@ export { ActiveStudents } from './reportAnalyticsSections/activeStudents/ActiveS
 export { Income } from './reportAnalyticsSections/income/Income';
 export { LoadTechers } from './reportAnalyticsSections/loadTechers/LoadTechers';
 export { PopularityCourses } from './reportAnalyticsSections/popularityCourses/PopularityCourses';
+
+export { Shedule } from './scheduleAdminSection/Shedule';

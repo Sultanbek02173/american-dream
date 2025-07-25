@@ -3,7 +3,6 @@ import {
   Route,
   Routes,
   Navigate,
-  useLocation,
 } from 'react-router-dom';
 import { getRole } from '../../shared';
 import { useEffect, useState } from 'react';

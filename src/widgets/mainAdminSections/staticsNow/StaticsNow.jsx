@@ -22,10 +22,12 @@ export const StaticsNow = () => {
               <img src={message} alt='' /> Заявки
             </button>
           </NavLink>
-          <button>
-            <img src={shedule} alt='' />
-            Расписание
-          </button>
+          <NavLink to={'/schedule'}>
+            <button>
+              <img src={shedule} alt='' />
+              Расписание
+            </button>
+          </NavLink>
         </div>
       </div>
 

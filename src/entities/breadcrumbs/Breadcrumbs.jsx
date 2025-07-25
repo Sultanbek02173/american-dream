@@ -56,7 +56,9 @@ export const Breadcrumbs = () => {
 
   return (
     <>
-      {location.pathname === '/' || location.pathname === '/applications' ? (
+      {location.pathname === '/' ||
+      location.pathname === '/applications' ||
+      location.pathname === '/schedule' ? (
         ''
       ) : (
         <nav className='breadcrumbs'>

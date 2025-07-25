@@ -1,4 +1,4 @@
-import { LessonsNow, Payment, StaticsNow, VisitedStatisc } from '../../../widgets';
+import { LessonsNow, NoLessons, Payment, StaticsNow, VisitedStatisc } from '../../../widgets';
 import './mainAdmin.scss';
 
 export const MainAdmin = () => {
@@ -8,6 +8,7 @@ export const MainAdmin = () => {
             <Payment />
             <LessonsNow />
             <VisitedStatisc />
+            {/* <NoLessons /> */}
         </div>
     );
 }

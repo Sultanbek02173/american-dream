@@ -1,0 +1,90 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.applicationsAdmin_cont {
+  max-width: 1340px;
+  width: 90%;
+  margin: 50px auto;
+  color: $white;
+
+  &_header {
+    margin-bottom: 55px;
+    p {
+      gap: 26px;
+      font-size: 24px;
+      font-weight: 300;
+      cursor: pointer;
+    }
+
+    .date {
+      font-size: 26px;
+      font-weight: 400;
+    }
+  }
+
+  &_btns_fiter {
+    margin-bottom: 56px;
+
+    button {
+      width: 25%;
+      padding: 15px;
+      color: $white;
+      background-color: #42424280;
+      border: none;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .filter_btn:nth-child(2) {
+      border-left: 1px solid $white;
+    }
+    .filter_btn:nth-child(3) {
+      border-left: 1px solid $white;
+      border-right: 1px solid $white;
+    }
+
+    .active {
+      background-color: $green;
+    }
+  }
+
+  &_cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 36px;
+    column-gap: 20px;
+
+    .card {
+      position: relative;
+      background-color: $white;
+      color: $dark;
+      padding: 24px;
+      border-radius: 8px;
+      cursor: pointer;
+
+      &_user {
+        width: 80%;
+        h3 {
+          font-size: 18px;
+          font-weight: 500;
+          margin-bottom: 12px;
+        }
+        &_phone {
+          margin-bottom: 55px;
+        }
+      }
+
+      &_btn {
+        position: absolute;
+        top: 45%;
+        right: -35px;
+        transform: rotate(-90deg);
+        gap: 6px;
+        transition: all 0.3s;
+      }
+
+      &:hover .card_btn {
+        color: $green;
+      }
+    }
+  }
+}

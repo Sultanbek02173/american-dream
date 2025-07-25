@@ -1,0 +1,75 @@
+@use '../../app/styles/constatnts.scss' as *;
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #00000074;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &_container {
+    position: relative;
+    background-color: $white;
+    padding: 32px;
+    color: $dark;
+    font-size: 16px;
+    border-radius: 8px;
+    gap: 30px;
+    align-items: stretch !important;
+
+    &_user {
+      h3 {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 72px;
+      }
+
+      p {
+        margin-bottom: 12px;
+        font-size: 16px;
+        font-weight: 400;
+      }
+      p:last-child {
+        margin-bottom: 0;
+        margin-top: 150px;
+      }
+    }
+
+    &_message{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      p{
+        max-width: 270px;
+      }
+
+      p:last-child{
+        margin: 0;
+      }
+
+      input{
+        background-color: transparent;
+        outline: none;
+        border: 1px solid $dark;
+        border-radius: 4px;
+        padding: 10px 16px;
+      }
+    }
+
+    &_close{
+      gap: 6px;
+      font-size: 14px;
+      transform: rotate(-90deg) translateY(15%);
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover{
+        color: $green;
+      }
+    }
+  }
+}

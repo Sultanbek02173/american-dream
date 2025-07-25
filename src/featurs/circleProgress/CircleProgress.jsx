@@ -1,7 +1,7 @@
 import { useAnimation, motion, useInView } from 'framer-motion';
 import React, { useEffect, useRef } from 'react';
 
-export const CircleProgress = ({ percentage, radius, stroke }) => {
+export const CircleProgress = ({ percentage, radius, stroke, color }) => {
   const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '100px' });
@@ -34,7 +34,7 @@ export const CircleProgress = ({ percentage, radius, stroke }) => {
           r={normalizedRadius}
           cx={radius}
           cy={radius}
-          stroke='lime'
+          stroke={color}
           strokeWidth={stroke}
           fill='transparent'
           strokeDasharray={circumference}

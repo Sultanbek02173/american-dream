@@ -1,0 +1,47 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.popularityCourses {
+  margin-top: 150px;
+  color: $white;
+  margin-bottom: 150px;
+  &_title {
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  &_reload{
+    margin: 100px auto 0 auto;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 36px;
+    p{
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    &_btns{
+        margin-top: 36px;
+        gap: 27px;
+
+        button{
+            width: 50%;
+            background-color: transparent;
+            border: 1px solid $green;
+            border-radius: 10px;
+            padding: 18px;
+            color: $white;
+            font-size: 24px;
+            font-weight: 300;
+            transition: all .3s;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background-color: $green;
+        }
+    }
+  }
+
+}

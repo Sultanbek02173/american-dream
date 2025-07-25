@@ -4,6 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import './staticsNow.scss';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { CircleProgress, ProgressBar } from '../../../featurs';
+import { NavLink } from 'react-router-dom';
 
 export const StaticsNow = () => {
   const percentage = 75;
@@ -16,9 +17,11 @@ export const StaticsNow = () => {
       <div className='static_section_header flex_item'>
         <h2>Ключевые показатели за сегодня</h2>
         <div className='static_section_header_btn'>
-          <button>
-            <img src={message} alt='' /> Заявки
-          </button>
+          <NavLink to={'/applications'}>
+            <button>
+              <img src={message} alt='' /> Заявки
+            </button>
+          </NavLink>
           <button>
             <img src={shedule} alt='' />
             Расписание
@@ -100,6 +103,7 @@ export const StaticsNow = () => {
                 percentage={percentage}
                 radius={radius}
                 stroke={stroke}
+                color={'#2DE920'}
               />
             </div>
             <div className='flex_item count_students_indicators'>

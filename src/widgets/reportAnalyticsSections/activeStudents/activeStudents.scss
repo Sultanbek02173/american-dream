@@ -1,0 +1,86 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.activeStudents {
+  margin-top: 56px;
+  color: $white;
+  &_title {
+    font-size: 36px;
+    font-weight: 500;
+    margin-bottom: 35px;
+  }
+
+  &_text {
+    font-size: 20px;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  &_statistics {
+    background-color: $green;
+    border-radius: 24px;
+
+
+    &_header {
+      background-color: $dark;
+      border-radius: 24px;
+      padding: 32px;
+      overflow: hidden;
+      gap: 68px;
+
+      .count_student{
+        font-size: 100px;
+        font-weight: 400;
+      }
+
+      .main_stistic{
+        gap: 68px;
+        align-items: end;
+      }
+
+      &_text{
+        width: 40%;
+      }
+
+      &_progress{
+        position: relative;
+        width: 60%;
+        padding-right: 250px;
+        transform: translateY(90px);
+        gap: 32px;
+
+        .first_text, .second_text, .third_text{
+            position: absolute;
+            transform: rotate(-90deg);
+            z-index: 2;
+            top: 200px;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .first_text{
+            left: -30px;
+        }
+
+        .second_text{
+            left: 125px;
+        }
+        .third_text{
+            right: 220px;
+        }
+      }
+    }
+
+    &_lessons{
+        padding: 64px 32px;
+
+        .item{
+            gap: 24px;
+
+            p{
+                font-size: 22px;
+                font-weight: 500;
+            }
+        }
+    }
+  }
+}

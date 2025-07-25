@@ -125,10 +125,12 @@ export const StaticsNow = () => {
               </p>
             </div>
             <p className='user_card_note'>
-              <span>Примечание:</span> Ученик записан после бесплатного пробного урока,
-              ожидается подтверждение родителя.
+              <span>Примечание:</span> Ученик записан после бесплатного пробного
+              урока, ожидается подтверждение родителя.
             </p>
-            <p className='user_card_served'><span>Обслуживал(а):</span> Бексултан.Г</p>
+            <p className='user_card_served'>
+              <span>Обслуживал(а):</span> Бексултан.Г
+            </p>
           </div>
         </div>
       </div>

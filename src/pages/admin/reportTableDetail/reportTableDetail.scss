@@ -94,3 +94,88 @@
     }
   }
 }
+.reportTableInTable {
+  &__first {
+    overflow-x: auto;
+    width: 100%;
+    .universalTable {
+      width: 100%;
+      table-layout: fixed;
+      &__body {
+        &-visiting {
+          p {
+            padding: 5px 47px;
+            background-color: #444444;
+            color: #fff;
+            border: 0.5px solid #ffffff;
+            border-radius: 4px;
+          }
+        }
+        &-student {
+          // width: 200px;
+          word-wrap: normal;
+          position: sticky;
+          left: -1px;
+          width: 100%;
+          background-color: #313131;
+        }
+        &-head {
+          background: #121212;
+        }
+        tr {
+          background: #313131;
+          pointer-events: none;
+        }
+      }
+    }
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #313131;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
+  &__second {
+    overflow-x: auto;
+    .universalTable {
+      table-layout: fixed;
+      width: 100%;
+    }
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #313131;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
+}

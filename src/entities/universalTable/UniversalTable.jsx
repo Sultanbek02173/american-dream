@@ -1,5 +1,5 @@
 import React from 'react';
-import './UniversalTable.scss'; // если есть стили
+import './UniversalTable.scss';
 
 export const UniversalTable = ({ columns, data, onRowClick }) => {
   return (
@@ -14,9 +14,17 @@ export const UniversalTable = ({ columns, data, onRowClick }) => {
       <tbody className='universalTable__body'>
         {data?.map((item, rowIndex) => (
           <tr key={item.id || rowIndex} onClick={() => onRowClick?.(item)}>
-            {columns?.map(col => (
-              <td key={col.key}>{item[col.dataIndex]}</td>
-            ))}
+            {columns?.map(col => {
+              const cellClass =
+                typeof col.className === 'function'
+                  ? col.className(item)
+                  : col.className || '';
+              return (
+                <td key={col.key} className={cellClass}>
+                  {item[col.dataIndex]}
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>

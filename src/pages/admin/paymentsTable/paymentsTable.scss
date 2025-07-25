@@ -1,0 +1,8 @@
+.payments {
+  .addTeacher__tabs-button {
+    width: 25%;
+    &:nth-child(-n + 3) {
+      border-right: 1px solid #fff;
+    }
+  }
+}

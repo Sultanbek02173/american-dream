@@ -4,5 +4,161 @@
     &:nth-child(-n + 3) {
       border-right: 1px solid #fff;
     }
+    &:nth-child(4) {
+      border-radius: 0 6px 6px 0;
+    }
+  }
+}
+.paymentsInvoicing {
+  margin-top: 50px;
+}
+
+.paymentsHistory {
+  .universalTable {
+    tr {
+      pointer-events: none;
+    }
+  }
+}
+
+.paymentsReminder {
+  margin-top: 50px;
+  &__message {
+    width: 900px;
+    margin: 0 auto;
+    padding: 52px 42px;
+    border: 2px solid #2de920;
+    border-radius: 56px;
+
+    position: relative;
+    &-avatar {
+      position: absolute;
+      right: 0;
+      top: 0;
+      transform: translate(25%, -25%);
+      width: 76px;
+      height: 76px;
+    }
+    &-alert {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+    }
+    &-appeal {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 20px;
+      leading-trim: NONE;
+      // line-height: 36px;
+      letter-spacing: 0%;
+      color: #fff;
+      max-width: 100%;
+      margin-bottom: 40px;
+    }
+    &-date {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 18px;
+      color: #fff;
+      leading-trim: NONE;
+      line-height: 36px;
+      letter-spacing: 0%;
+      text-align: right;
+    }
+    &-amount {
+      span {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 24px;
+        leading-trim: NONE;
+        line-height: 36px;
+        letter-spacing: 0%;
+        color: #ffffff99;
+        // background: #FFFFFF99;
+      }
+      font-family: Inter;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 24px;
+      leading-trim: NONE;
+      line-height: 36px;
+      letter-spacing: 0%;
+      color: #fff;
+      margin-bottom: 70px;
+    }
+    &-cash {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 30px;
+      letter-spacing: 0%;
+      color: #fff;
+      max-width: 40%;
+    }
+    &-respect {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      font-family: Inter;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 30px;
+      letter-spacing: 0%;
+      text-align: right;
+      color: #fff;
+      span {
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 20px;
+        leading-trim: NONE;
+        line-height: 30px;
+        letter-spacing: 0%;
+        text-align: right;
+        color: #ffffff99;
+      }
+    }
+  }
+  &__term {
+    margin-top: 70px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    p {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 26px;
+      leading-trim: NONE;
+      line-height: 36px;
+      letter-spacing: 0%;
+      color: #fff;
+      max-width: 33%;
+    }
+    &-button {
+      background-color: transparent;
+      border: 1px solid #2de920;
+      border-radius: 8px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+      font-family: Inter;
+      font-weight: 500;
+      font-style: Medium;
+      font-size: 20px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #fff;
+      cursor: pointer;
+    }
   }
 }

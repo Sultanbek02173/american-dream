@@ -1,5 +1,5 @@
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { GoPlus } from "react-icons/go";
+import { GoPlus } from 'react-icons/go';
 import './shedule.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -7,7 +7,7 @@ import { SheduleModal } from '../../entities';
 
 export const Shedule = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const rooms = [
     'Каб. 1',
@@ -89,9 +89,15 @@ export const Shedule = () => {
                 const isMain = lesson?.part === 0;
                 return (
                   <div
-                    onClick={!lesson && roomIndex !== 6 ? () => {setOpen(!open)} : {}}
+                    onClick={() => {
+                      if (!lesson && roomIndex !== 6) {
+                        setOpen(!open);
+                      }
+                    }}
                     key={roomIndex}
-                    className={`grid_cell ${!lesson && roomIndex !== 6 ? 'can_add' : ''}`}
+                    className={`grid_cell ${
+                      !lesson && roomIndex !== 6 ? 'can_add' : ''
+                    }`}
                     style={{
                       backgroundColor: lesson ? '#2DE920' : '',
                       color: lesson ? '#FFFFFF' : '',
@@ -114,7 +120,7 @@ export const Shedule = () => {
         </div>
       </div>
 
-      <SheduleModal open={open} setOpen={setOpen}/>
+      <SheduleModal open={open} setOpen={setOpen} />
     </section>
   );
 };

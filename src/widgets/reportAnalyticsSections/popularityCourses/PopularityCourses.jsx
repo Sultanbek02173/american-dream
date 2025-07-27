@@ -37,7 +37,9 @@ export const PopularityCourses = () => {
     <section className='popularityCourses'>
       <h2 className='popularityCourses_title'>Популярность курсов</h2>
 
-      <UniversalTable columns={columns} data={data} />
+      <div className='popularityCourses_table'>
+        <UniversalTable columns={columns} data={data} />
+      </div>
 
       <div className='popularityCourses_reload'>
         <p>

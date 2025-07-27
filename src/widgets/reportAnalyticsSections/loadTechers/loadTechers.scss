@@ -65,4 +65,12 @@
       }
     }
   }
+
+  &_table {
+    .universalTable {
+      tr {
+        pointer-events: none;
+      }
+    }
+  }
 }

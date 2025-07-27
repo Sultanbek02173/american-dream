@@ -1,6 +1,10 @@
 import ReactDOM from 'react-dom';
 import './sheduleModal.scss';
 import { AnimatePresence, motion } from 'framer-motion';
+import TextField from '@mui/material/TextField';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
+import { menuItemStyle } from '../../shared/utils/MuiStyles';
 
 export const SheduleModal = ({ open, setOpen, lesson }) => {
   const initial = {
@@ -18,6 +22,36 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
       x: -800,
       opacity: 0,
       transition: { duration: 0.5 },
+    },
+  };
+
+  const [value, setValue] = useState('');
+  const handleChange = event => {
+    setValue(event.target.value);
+  };
+
+  const style = {
+    input: {
+      width: '345px',
+      height: '100%',
+      color: '#fff',
+    },
+    label: {
+      color: '#ffffff83',
+    },
+    '& label.Mui-focused': {
+      color: '#fff',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#fff',
+      },
+      '&:hover fieldset': {
+        borderColor: '#fff',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#2de920',
+      },
     },
   };
 
@@ -40,18 +74,91 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
             initial='hidden'
             animate='visibly'
             exit='exit'
-            className='row sheduleModal_container'
+            className='sheduleModal_container'
             onClick={e => e.stopPropagation()}
           >
             <h2>Добавить занятие</h2>
             <form onSubmit={handleSubmit} className='forms'>
-              <div>
-                <input type='text' name='text' />
-                <input type='text' name='text' />
+              <div className='forms_left'>
+                <FormControl
+                  sx={{
+                    width: '570px',
+                    height: '100%',
+                    label: {
+                      color: '#ffffff83',
+                    },
+                    '& label.Mui-focused': {
+                      color: '#fff',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      color: '#fff',
+                      '& fieldset': {
+                        borderColor: '#fff',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#fff',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#2de920',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#fff',
+                    },
+                    '& .Mui-focused .MuiInputLabel-root': {
+                      color: '#fff',
+                    },
+                  }}
+                >
+                  <InputLabel id='demo-simple-select-label'>
+                    Название занятия
+                  </InputLabel>
+                  <Select
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    value={value}
+                    label='Название занятия'
+                    onChange={handleChange}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          backgroundColor: '#313131',
+                          color: '#fff',
+                        },
+                      },
+                    }}
+                  >
+                    <MenuItem value='english' sx={menuItemStyle}>
+                      Английский
+                    </MenuItem>
+                    <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
+                      Ментальная арифметика
+                    </MenuItem>
+                    <MenuItem value='robotics' sx={menuItemStyle}>
+                      Робототехника
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
+                  id='outlined-basic'
+                  label='Группа'
+                  variant='outlined'
+                  sx={style}
+                />
               </div>
-              <div>
-                <input type='text' name='text' />
-                <input type='text' name='text' />
+              <div className='forms_right'>
+                <TextField
+                  id='outlined-basic'
+                  label='Преподаватель'
+                  variant='outlined'
+                  sx={style}
+                />
+                <TextField
+                  id='outlined-basic'
+                  label='Примечание'
+                  variant='outlined'
+                  sx={style}
+                />
               </div>
               <div className='row forms_btn'>
                 <button type='button' onClick={() => setOpen(!open)}>

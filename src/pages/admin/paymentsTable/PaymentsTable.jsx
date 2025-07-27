@@ -19,7 +19,7 @@ export const PaymentsTable = () => {
     { label: 'Финансовая отчётность', content: <PaymentsTabFinancial /> },
   ];
   return (
-    <div className='payments'>
+    <main className='payments'>
       <div className='container'>
         {tabs.map((tab, index) => (
           <button
@@ -34,6 +34,6 @@ export const PaymentsTable = () => {
         ))}
         {tabs[activeTab]?.content}
       </div>
-    </div>
+    </main>
   );
 };

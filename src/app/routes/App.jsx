@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { getRole } from '../../shared';
 import { useEffect, useState } from 'react';
 import {

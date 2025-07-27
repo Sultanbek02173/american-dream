@@ -19,7 +19,7 @@ export const StudentProfile = () => {
   const { 0: state, 1: setState } = useState({
     id: null,
     image: bilol,
-    full_name: 'Алина',
+    first_name: 'Алина',
     last_name: 'Жумабаева',
     telegram: '@alin1244',
     phone: '+996 500 123 456',
@@ -45,9 +45,9 @@ export const StudentProfile = () => {
         <TextField
           id='outlined-basic'
           label='Имя'
-          name='name'
+          name='first_name'
           onChange={onChange}
-          value={state.name}
+          value={state.first_name}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />

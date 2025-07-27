@@ -6,44 +6,46 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../../entities';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
-
+import bilol from '../studentsDetail/image.jpg';
 export const data = [
   {
     id: 1,
+    image: bilol,
     group: 'Группа (A3)',
+    full_name: 'Алина',
+    last_name: 'Жумабаева',
+    telegram: '@alin1244',
+    phone: '+996 500 123 456',
+    login: 'alinaknzzz12',
+    password: 'r_12lfomt',
+    teacher: 'Алия Калымбекова',
     direction: 'Английский',
-    name: 'Алина Жумабаева',
-    teacher: 'Наталья Светлановна',
   },
   {
     id: 2,
-    name: 'Алина Жумабаева',
-    group: 'Группа (A3)',
+    image: bilol,
+    group: 'Группа (A4)',
+    full_name: 'Алина1',
+    last_name: 'Жумабаева',
+    telegram: '@alin1244',
+    phone: '+996 500 123 456',
+    login: 'alinaknzzz12',
+    password: 'r_12lfomt',
+    teacher: 'Алия Калымбекова',
     direction: 'Английский',
-    teacher: 'Наталья Светлановна',
-  },
-  {
-    id: 3,
-    name: 'Алина Жумабаева',
-    group: 'Группа (A3)',
-    direction: 'Английский',
-    teacher: 'Наталья Светлановна',
-  },
-  {
-    id: 4,
-    name: 'Алина Жумабаева',
-    group: 'Группа (A3)',
-    direction: 'Английский',
-    teacher: 'Наталья Светлановна',
-  },
-  {
-    id: 5,
-    name: 'Алина Жумабаева',
-    group: 'Группа (A3)',
-    direction: 'Английский',
-    teacher: 'Наталья Светлановна',
   },
 ];
+
+export const mergeNames = data => {
+  return data.map(item => {
+    const { full_name, last_name, ...rest } = item;
+    return {
+      ...rest,
+      name: `${full_name} ${last_name}`,
+    };
+  });
+};
+
 export const StudentsTable = () => {
   const [value, setValue] = useState('');
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ export const StudentsTable = () => {
     setValue(event.target.value);
   };
 
+  // const data2 = data.map((item) => item)
   const columns = [
     { title: '№', dataIndex: 'id', key: 'id' },
     { title: 'ФИО', dataIndex: 'name', key: 'name' },
@@ -114,7 +117,7 @@ export const StudentsTable = () => {
         </div>
         <UniversalTable
           columns={columns}
-          data={data}
+          data={mergeNames(data)}
           onRowClick={item => navigate(`/students-table/${item.id}`)}
         />
       </div>

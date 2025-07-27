@@ -1,10 +1,10 @@
 @use '../../app/styles/constatnts.scss' as *;
 
 .accaunts_cont {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
+  max-width: 400px;
+  width: 90%;
+  margin: 0 auto;
+  position: relative;
 
   .accaunts {
     padding: 3px;

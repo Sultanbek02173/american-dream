@@ -1,0 +1,106 @@
+@use '../../app/styles/constatnts.scss' as *;
+
+.shedule {
+  max-width: 1340px;
+  margin: 50px auto;
+  color: $white;
+
+  &_header {
+    margin-bottom: 55px;
+    p {
+      gap: 26px;
+      font-size: 24px;
+      font-weight: 300;
+      cursor: pointer;
+    }
+
+    .date {
+      font-size: 26px;
+      font-weight: 400;
+    }
+  }
+
+  &_table {
+    margin-top: 64px;
+
+    .grid {
+      display: grid;
+      grid-template-columns: 80px repeat(7, 1fr);
+      position: relative;
+
+      &_header {
+        display: contents;
+      }
+
+      .grid_cell {
+        height: 149px;
+        border: 1px solid #ffffff66;
+        transition: all 0.3s;
+        cursor: pointer;
+
+        &.can_add {
+          &:hover::after {
+            opacity: 1;
+          }
+
+          &::after {
+            content: '+ Добавить занятие';
+            height: 100%;
+            background-color: #2de920;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+          }
+        }
+      }
+
+      .grid_cell:last-child {
+        border: none;
+        border-top: 1px solid #ffffff66;
+        border-bottom: 1px solid #ffffff66;
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+
+      .room_header {
+        border-left: 1px solid #ffffff66;
+        border-right: 1px solid #ffffff66;
+        padding-bottom: 75px;
+      }
+
+      .room_header:last-child {
+        border-right: none;
+      }
+
+      .room_header,
+      .time_label {
+        text-align: center;
+        font-weight: 300;
+      }
+
+      &_row {
+        display: contents;
+      }
+
+      .lesson {
+        height: 100%;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        h3 {
+          font-weight: 300;
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+}

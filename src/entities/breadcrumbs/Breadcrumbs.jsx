@@ -1,3 +1,4 @@
+import { FormControl, MenuItem, Select, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { setActiveTab, useTabs } from '../../app/store/reducers/tabSlice';
@@ -5,6 +6,8 @@ import { StudentPaymentHistory } from '../studentsTab/StudentPaymentHistory';
 import { StudentProfile } from '../studentsTab/StudentProfile';
 import { StudentSessionHistory } from '../studentsTab/StudentSessionHistory';
 import './breadcrumbs.scss';
+
+import { useState } from 'react';
 
 const routeNameMap = {
   '': 'Главная',
@@ -29,6 +32,27 @@ export const Breadcrumbs = () => {
   const activeTab = tabsState[tabId] ?? 0;
   const location = useLocation();
 
+  const [value, setValue] = useState('mouth1');
+
+  const itemStyle = {
+    color: '#fff',
+    backgroundColor: '#000',
+    '&:hover': {
+      backgroundColor: '#333',
+      color: '#fff',
+    },
+    '&.Mui-selected': {
+      backgroundColor: '#000',
+      color: '#fff',
+    },
+    '&.Mui-selected:hover': {
+      backgroundColor: '#000',
+    },
+  };
+
+  const handleChange = event => {
+    setValue(event.target.value);
+  };
   const pathnames = location.pathname.split('/').filter(Boolean);
 
   const breadcrumbs = pathnames
@@ -56,7 +80,9 @@ export const Breadcrumbs = () => {
   ];
   return (
     <>
-      {location.pathname === '/' || location.pathname === '/applications' ? (
+      {location.pathname === '/' ||
+      location.pathname === '/applications' ||
+      location.pathname === '/schedule' ? (
         ''
       ) : (
         <nav className='breadcrumbs'>
@@ -80,8 +106,112 @@ export const Breadcrumbs = () => {
                   {tab.label}
                 </button>
               ))}
-            {isTableDetail && <h1>w</h1>}
           </div>
+          {isTableDetail && (
+            <FormControl
+              sx={{
+                width: '20%',
+                height: '100%',
+                background: '#424242',
+                // opacity: '60%',
+                '& .MuiOutlinedInput-root': {
+                  color: '#fff', // цвет текста
+                  '& fieldset': {
+                    borderColor: '#424242', // обычная граница
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#424242', // при наведении
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#424242', // при нажатии/фокусе (например, оранжевый)
+                  },
+                },
+              }}
+            >
+              <Select
+                value={value}
+                onChange={handleChange}
+                displayEmpty
+                // renderValue={selected => {
+                //   if (!selected) {
+                //     return (
+                //       <Typography sx={{ color: '#aaa' }}>Месяц №1</Typography>
+                //     );
+                //   }
+                //   return {
+                //     mouth2: 'Месяц №2',
+                //     mouth3: 'Месяц №3',
+                //     mouth4: 'Месяц №4',
+                //     mouth5: 'Месяц №5',
+                //   }[selected];
+                // }}
+                inputProps={{ 'aria-label': 'Выбор месяца' }}
+              >
+                <MenuItem
+                  value='mouth1'
+                  sx={{ ...itemStyle, fontStyle: 'normal' }}
+                >
+                  Месяц №1
+                </MenuItem>
+                <MenuItem value='mouth2' sx={itemStyle}>
+                  Месяц №2
+                </MenuItem>
+                <MenuItem value='mouth3' sx={itemStyle}>
+                  Месяц №3
+                </MenuItem>
+                <MenuItem value='mouth4' sx={itemStyle}>
+                  Месяц №4
+                </MenuItem>
+                <MenuItem value='mouth5' sx={itemStyle}>
+                  Месяц №5
+                </MenuItem>
+              </Select>
+            </FormControl>
+            // <FormControl
+            //   sx={{
+            //     width: '20%',
+            //     height: '100%',
+            //     opacity: '60%',
+            //     '& .MuiOutlinedInput-root': {
+            //       color: '#fff', // цвет текста
+            //       '& fieldset': {
+            //         borderColor: '#fff', // обычная граница
+            //       },
+            //       '&:hover fieldset': {
+            //         borderColor: '#fff', // при наведении
+            //       },
+            //       '&.Mui-focused fieldset': {
+            //         borderColor: '#2de920', // при нажатии/фокусе (например, оранжевый)
+            //       },
+            //     },
+            //     '& .MuiInputLabel-root': {
+            //       color: '#fff', // цвет label по умолчанию
+            //     },
+            //     '& .Mui-focused .MuiInputLabel-root': {
+            //       color: '#fff', // цвет label при фокусе
+            //     },
+            //   }}
+            // >
+            //   {/* <InputLabel id='demo-simple-select-label'>Направление</InputLabel> */}
+            //   <Select
+            //     labelId='demo-simple-select-label'
+            //     id='demo-simple-select'
+            //     value={value}
+            //     label='Направление'
+            //     onChange={handleChange}
+            //   >
+            //     <MenuItem value='english' sx={menuItemStyle}>
+            //       Английский
+            //     </MenuItem>
+            //     <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
+            //       Ментальная арифметика
+            //     </MenuItem>
+            //     <MenuItem value='robotics' sx={menuItemStyle}>
+            //       Робототехника
+            //     </MenuItem>
+            //   </Select>
+            // </FormControl>
+          )}
         </nav>
       )}
     </>

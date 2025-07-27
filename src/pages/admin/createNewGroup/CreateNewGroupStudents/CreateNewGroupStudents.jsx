@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import searchIcon from '../../studentsTable/images/search.svg';
 import { Checkbox, TextField } from '@mui/material';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import { inputStyle } from '../../../../shared/utils/MuiStyles';
 import { eventHandler } from '../../../../shared/utils/eventHandlers';
 import plusIcon from '../../teacherTable/plus.svg';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 export const CreateNewGroupStudents = () => {
   const [isListVisible, setIsListVisible] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);

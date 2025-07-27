@@ -1,0 +1,74 @@
+.accounting {
+  .popularityCourses_reload p {
+    font-family: Inter;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 22px;
+    leading-trim: NONE;
+    line-height: 36px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #fff;
+  }
+}
+.registration {
+  margin-bottom: 130px;
+  &__title {
+    font-family: Inter;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 36px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+    margin-bottom: 30px;
+  }
+  &__subtitle {
+    font-family: Inter;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 20px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+}
+.settlements {
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .universalTable {
+    margin-top: 20px;
+    tr {
+      pointer-events: none;
+    }
+  }
+}
+.income {
+  .universalTable {
+    tr {
+      pointer-events: none;
+    }
+  }
+}
+.expenses {
+  margin-top: 170px;
+  .universalTable {
+    tr {
+      pointer-events: none;
+    }
+  }
+}
+.financialResult {
+  margin-top: 100px;
+  .universalTable {
+    tr {
+      pointer-events: none;
+    }
+  }
+}

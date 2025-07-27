@@ -1,6 +1,6 @@
-import './payment.scss';
 import reload from '../../../shared/imgs/admin/Vector_reload.svg';
 import { VerticalProgress } from '../../../featurs';
+import './payment.scss';
 
 export const Payment = () => {
   return (

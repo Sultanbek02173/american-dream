@@ -1,3 +1,5 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
 .payments {
   .addTeacher__tabs-button {
     width: 25%;
@@ -23,6 +25,44 @@
 
 .paymentsReminder {
   margin-top: 50px;
+  &__input {
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #2de920;
+    font-family: Inter;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 20px;
+    leading-trim: NONE;
+    // line-height: 36px;
+    letter-spacing: 0%;
+    color: #fff;
+    // max-width: 100%;\
+    outline: none;
+    width: 570px;
+    padding-bottom: 6px;
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #313131;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
   &__message {
     width: 900px;
     margin: 0 auto;
@@ -68,6 +108,21 @@
       text-align: right;
     }
     &-amount {
+      margin-top: 40px;
+      input {
+        padding-left: 10px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-family: Inter;
+        font-weight: 300;
+        font-style: Light;
+        font-size: 20px;
+        leading-trim: NONE;
+        line-height: 36px;
+        letter-spacing: 0%;
+        color: #fff;
+      }
       span {
         font-family: Inter;
         font-weight: 300;
@@ -159,6 +214,152 @@
       letter-spacing: 0%;
       color: #fff;
       cursor: pointer;
+    }
+  }
+}
+
+.paymentsFinancial {
+  margin-top: 50px;
+  .pay_user {
+    gap: 20px;
+    margin-top: 20px;
+
+    &_left,
+    &_right {
+      background-color: $dark;
+      padding: 32px;
+      border-radius: 24px;
+      color: $white;
+
+      &_header {
+        margin-bottom: 270px;
+      }
+      .type_pay {
+        color: #2de920;
+        font-size: 16px;
+      }
+
+      p {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 80px;
+        font-weight: 400;
+      }
+    }
+
+    &_left {
+      width: 40%;
+    }
+    &_right {
+      width: 60%;
+    }
+  }
+  .pay_online {
+    background-color: $dark;
+    padding: 32px;
+    border-radius: 24px;
+    color: $white;
+    margin-top: 20px;
+
+    &_header {
+      margin-bottom: 270px;
+      align-items: normal;
+      h2 {
+        font-size: 90px;
+        font-weight: 400;
+      }
+    }
+
+    .type_pay {
+      color: #2de920;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+  &__main {
+    background-color: $dark;
+    padding: 32px;
+    border-radius: 24px;
+    color: $white;
+    margin: 20px 0 100px;
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &-course {
+      font-family: Inter;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 22px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #ffffff99;
+      span {
+        color: #fff;
+      }
+    }
+    &-mainAmount {
+      font-family: Inter;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 22px;
+      leading-trim: NONE;
+      line-height: 36px;
+      letter-spacing: 0%;
+      text-align: right;
+      vertical-align: middle;
+      color: #2de92099;
+    }
+  }
+  &__categories {
+    &-title {
+      font-family: Inter;
+      font-weight: 300;
+      font-style: Light;
+      font-size: 24px;
+      leading-trim: NONE;
+      line-height: 36px;
+      letter-spacing: 0%;
+      color: #fff;
+    }
+  }
+  .swiper-pagination-bullet {
+    background-color: #2de92099; /* серые */
+    opacity: 1; /* обязательно, чтобы был виден */
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    border-radius: 50%;
+  }
+
+  /* Для активной точки */
+  .swiper-pagination-bullet-active {
+    background-color: #2de920; /* синий (любой по желанию) */
+  }
+  .popularityCourses_reload p {
+    font-family: Inter;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 22px;
+    leading-trim: NONE;
+    line-height: 36px;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #fff;
+  }
+  .paymentsFinancial__table {
+    margin-bottom: 100px;
+    .paymentsFinancial__categories-title {
+      margin-bottom: 28px;
+    }
+    .universalTable {
+      tr {
+        pointer-events: none;
+      }
     }
   }
 }

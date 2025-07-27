@@ -10,3 +10,6 @@ export { TeacherPaymentType } from './teacherTabs/TeacherPaymentType';
 export { FixedRate } from './teacherTabs/TeacherPaymentTabs/FixedRate';
 export { HourlyRate } from './teacherTabs/TeacherPaymentTabs/HourlyRate';
 export { ApplicatinModal } from './applicatinModal/ApplicatinModal';
+export { SheduleModal } from './sheduleModal/SheduleModal';
+export { DataTeacherDetail } from './teacherTabs/teacherDetailTabs/DataTeacherDetail/DataTeacherDetail';
+export { TeacherPaymentTypeData } from './teacherTabs/teacherDetailTabs/teacherPaymentTypeData/TeacherPaymentTypeData';

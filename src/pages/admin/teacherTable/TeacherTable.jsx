@@ -2,7 +2,7 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import searchIcon from '../studentsTable/images/search.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { data } from '../studentsTable/StudentsTable';
+import { data, mergeNames } from '../studentsTable/StudentsTable';
 import { UniversalTable } from '../../../entities';
 import plusIcon from './plus.svg';
 import './teacherTable.scss';
@@ -89,7 +89,7 @@ export const TeacherTable = () => {
         </div>
         <UniversalTable
           columns={columns}
-          data={data}
+          data={mergeNames(data)}
           onRowClick={item => navigate(`/teacher-table/${item.id}`)}
         />
       </div>

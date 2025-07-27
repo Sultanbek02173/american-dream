@@ -25,7 +25,10 @@ export const SideBar = ({ routes }) => {
 
   return (
     <AnimatePresence>
-      {location.pathname !== '/applications' && (
+      {location.pathname === '/applications' ||
+      location.pathname === '/schedule' ? (
+        ''
+      ) : (
         <motion.aside
           variants={sidebarVariants}
           initial='hidden'

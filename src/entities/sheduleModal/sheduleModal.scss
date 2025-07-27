@@ -27,26 +27,39 @@
     }
 
     .forms {
-
-      &_left, &_right{
+      &_left,
+      &_right {
         display: flex;
         gap: 20px;
       }
 
-      &_right{
+      input {
+        color: $white;
+        background-color: transparent;
+      }
+
+      &_right {
         margin: 35px 0 75px 0;
       }
 
-      // &_left input{
-      //   margin-bottom: 35px;
-      // }
-      // input {
-      //   background-color: transparent;
-      //   padding: 21px 20px;
-      //   border: 1px solid $white;
-      //   border-radius: 10px;
-      // }
-    }
+      &_btn {
+        gap: 20px;
 
+        button {
+          color: $white;
+          width: 50%;
+          padding: 18px;
+          border: 1px solid $white;
+          border-radius: 10px;
+          background-color: transparent;
+          transition: all 0.3s;
+        }
+
+        button:hover {
+          background-color: $green;
+          border: 1px solid $green;
+        }
+      }
+    }
   }
 }

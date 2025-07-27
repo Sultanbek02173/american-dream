@@ -10,7 +10,7 @@ const schema = yup.object().shape({
   password: yup.string().required('Пароль обязателен'),
   role: yup
     .string()
-    .oneOf(['admin', 'student', 'teacher'], 'Выберите роль')
+    .oneOf(['admin', 'student', 'teacher', 'manager'], 'Выберите роль')
     .required('Роль обязательна'),
 });
 
@@ -62,6 +62,7 @@ export const Login = () => {
             <option value='admin'>Администратор</option>
             <option value='student'>Студент</option>
             <option value='teacher'>Преподаватель</option>
+            <option value='manager'>Менеджер</option>
           </select>
           {errors.role && <span className='error'>{errors.role.message}</span>}
 

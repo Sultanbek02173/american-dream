@@ -26,6 +26,7 @@ export const ActiveStudents = () => {
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
+                color={'#2DE920'}
               />
               <p className='second_text'>Перестали ходить:</p>
               <VerticalProgress
@@ -34,6 +35,7 @@ export const ActiveStudents = () => {
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
+                color={'#2DE920'}
               />
               <p className='third_text'>Средний возраст:</p>
               <VerticalProgress
@@ -41,6 +43,7 @@ export const ActiveStudents = () => {
                 text={'13.7 лет'}
                 width={'100px'}
                 height={'400px'}
+                color={'#2DE920'}
                 border={'100px'}
               />
             </div>

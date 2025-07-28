@@ -71,8 +71,8 @@ const App = () => {
 
   const studentSideBar = [
     { id: 1, img: main, link: '/' },
-    { id: 2, img: message, link: '/report-card' },
-    { id: 3, img: accounting, link: '/students-table' },
+    { id: 2, img: curces, link: '/schedule' },
+    { id: 3, img: reportCard, link: '/students-table' },
     { id: 4, img: lessons, link: '/home-work' },
   ];
 

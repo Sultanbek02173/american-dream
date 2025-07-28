@@ -1,12 +1,11 @@
 import { Box } from '@mui/material';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-export const VerticalProgress = ({ progress, text }) => {
+export const VerticalProgress = ({ progress, text, height, width, border, color }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-300px' });
   const controls = useAnimation();
-  const [currentHeight, setCurrentHeight] = useState(0);
 
   useEffect(() => {
     if (isInView) {
@@ -24,10 +23,10 @@ export const VerticalProgress = ({ progress, text }) => {
     <Box
       ref={ref}
       sx={{
-        width: '100px',
-        height: '400px',
+        width: width,
+        height: height,
         backgroundColor: 'none',
-        borderRadius: '100px',
+        borderRadius: border,
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -39,8 +38,8 @@ export const VerticalProgress = ({ progress, text }) => {
           width: '100%',
           position: 'absolute',
           bottom: 0,
-          background: '#2DE920',
-          borderRadius: '100px',
+          background: color,
+          borderRadius: border,
         }}
       >
         <Box

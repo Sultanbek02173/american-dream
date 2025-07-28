@@ -1,13 +1,15 @@
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
-import { GoPlus } from 'react-icons/go';
 import './shedule.scss';
+import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { SheduleModal } from '../../entities';
 
 export const Shedule = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const inputRef = useRef(null);
 
   const rooms = [
     'Каб. 1',
@@ -18,7 +20,7 @@ export const Shedule = () => {
     'Каб. 6',
     '',
   ];
-  const hours = Array.from({ length: 12 }, (_, i) => 12 + i); // 12:00–23:00
+  const hours = Array.from({ length: 12 }, (_, i) => 12 + i);
 
   const lessons = [
     {
@@ -55,6 +57,10 @@ export const Shedule = () => {
     }
   });
 
+  const handleDateChange = e => {
+    setSelectedDate(dayjs(e.target.value));
+  };
+
   return (
     <section className='shedule'>
       <div className='row shedule_header'>
@@ -62,11 +68,39 @@ export const Shedule = () => {
           <IoIosArrowBack size={24} /> Назад
         </p>
 
-        <p className='row date'>
-          <IoIosArrowBack size={35} color='#2DE920' />
-          01.06.2025
-          <IoIosArrowForward size={35} color='#2DE920' />
-        </p>
+        <div className='row date' style={{ position: 'relative' }}>
+          <IoIosArrowBack
+            size={35}
+            color='#2DE920'
+            onClick={() => setSelectedDate(selectedDate.subtract(1, 'day'))}
+            style={{ cursor: 'pointer' }}
+          />
+
+          <p onClick={() => inputRef.current && inputRef.current.showPicker()}>
+            {selectedDate.format('DD.MM.YYYY')}
+          </p>
+
+          <IoIosArrowForward
+            size={35}
+            color='#2DE920'
+            onClick={() => setSelectedDate(selectedDate.add(1, 'day'))}
+            style={{ cursor: 'pointer' }}
+          />
+
+          <input
+            ref={inputRef}
+            type='date'
+            value={selectedDate.format('YYYY-MM-DD')}
+            onChange={handleDateChange}
+            style={{
+              position: 'absolute',
+              opacity: 0,
+              pointerEvents: 'none',
+              width: 0,
+              height: 0,
+            }}
+          />
+        </div>
       </div>
 
       <div className='shedule_table'>
@@ -87,11 +121,12 @@ export const Shedule = () => {
                 const key = `${hour}-${roomIndex}`;
                 const lesson = lessonMap.get(key);
                 const isMain = lesson?.part === 0;
+
                 return (
                   <div
                     onClick={() => {
                       if (!lesson && roomIndex !== 6) {
-                        setOpen(!open);
+                        setOpen(true);
                       }
                     }}
                     key={roomIndex}

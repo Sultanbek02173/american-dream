@@ -61,7 +61,10 @@ export const LoadTechers = () => {
           </p>
         </div>
       </div>
-      <UniversalTable columns={columns} data={data} />
+      <div className='loadTechers_table'>
+        <UniversalTable columns={columns} data={data} />
+
+      </div>
     </section>
   );
 };

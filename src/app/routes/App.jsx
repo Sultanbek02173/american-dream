@@ -24,6 +24,7 @@ import {
   StudentsDetail,
   StudentsTable,
   TeacherDetail,
+  TeacherGroupDetail,
   TeacherTable,
 } from '../../pages';
 import '../styles/app.scss';
@@ -65,7 +66,7 @@ const App = () => {
 
   const teacherSideBar = [
     { id: 1, img: main, link: '/', name: 'Главный экран' },
-    { id: 2, img: accounting, link: '/applications' },
+    { id: 2, img: accounting, link: '/accounting' },
     { id: 3, img: student, link: '/students' },
   ];
 
@@ -156,6 +157,7 @@ const App = () => {
                       />
 
                       <Route path='/add-teacher' element={<AddTeacherTabs />} />
+                      <Route path='/add-student' element={<AddTeacherTabs />} />
                       <Route
                         path='/create-new-group'
                         element={<CreateNewGroupTabs />}
@@ -199,9 +201,10 @@ const App = () => {
                     <>
                       <Route path='/' element={<MainTeacher />} />
                       <Route
-                        path='/applications'
-                        element={<ScheduleTeacher />}
+                        path='/table/:group'
+                        element={<TeacherGroupDetail />}
                       />
+                      <Route path='/accounting' element={<ScheduleTeacher />} />
                       <Route path='/students' element={<Students />} />
                     </>
                   )}

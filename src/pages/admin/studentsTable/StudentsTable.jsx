@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../../entities';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
 import bilol from '../studentsDetail/image.jpg';
+import plusIcon from '../teacherTable/plus.svg';
+
 export const data = [
   {
     id: 1,
@@ -114,6 +116,13 @@ export const StudentsTable = () => {
               </MenuItem>
             </Select>
           </FormControl>
+          <button
+            onClick={() => navigate('/add-student')}
+            className='studentsTable__head-add'
+          >
+            <img src={plusIcon} alt='' />
+            Добавить ученика
+          </button>
         </div>
         <UniversalTable
           columns={columns}

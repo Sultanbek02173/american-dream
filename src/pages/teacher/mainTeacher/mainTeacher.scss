@@ -22,3 +22,19 @@
     color: #fff;
   }
 }
+.students {
+  margin-top: 100px;
+  padding: 0 77px;
+  .applicationsAdmin_cont_cards {
+    grid-template-columns: repeat(3, 1fr);
+    .card.retake {
+      border-top: 10px solid #cb1111;
+    }
+    .card.verified {
+      border-top: 10px solid #2de920;
+    }
+    .card.failed {
+      border-top: 10px solid #000;
+    }
+  }
+}

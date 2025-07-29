@@ -14,3 +14,6 @@ export { Shedule } from './scheduleAdminSection/Shedule';
 export { AccountingSettlements } from './accounting/accountingSettlements/AccountingSettlements';
 export { AccountingIncome } from './accounting/accountingIncome/AccountingIncome';
 export { AccountingExpenses } from './accounting/accountingExpenses/AccountingExpenses';
+
+export { BeforeLesson } from './studentSections/beforeLesson/BeforeLesson';
+export { HomeWorks } from './studentSections/homeWorks/HomeWorks';

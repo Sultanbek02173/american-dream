@@ -57,3 +57,69 @@ export const menuItemStyle = {
     color: '#fff',
   },
 };
+
+export const firstTextFieldSx = {
+  width: '572px',
+  color: '#FFFFFF',
+  '& label': {
+    color: '#ffffff83',
+  },
+  '& label.Mui-focused': {
+    color: '#fff',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#fff',
+    },
+    '&:hover fieldset': {
+      borderColor: '#fff',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#2de920',
+    },
+  },
+};
+
+export const secondTextFieldSx = {
+  width: '345px',
+  color: '#FFFFFF',
+  '& label': {
+    color: '#ffffff83',
+  },
+  '& label.Mui-focused': {
+    color: '#fff',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#fff',
+    },
+    '&:hover fieldset': {
+      borderColor: '#fff',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#2de920',
+    },
+  },
+};
+
+export const selectSx = {
+  width: '570px',
+  color: '#fff',
+  '& label': {
+    color: '#ffffff83',
+  },
+  '& label.Mui-focused': {
+    color: '#fff',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#fff',
+    },
+    '&:hover fieldset': {
+      borderColor: '#fff',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#2de920',
+    },
+  },
+};

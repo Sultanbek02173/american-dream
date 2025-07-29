@@ -5,13 +5,16 @@ import {
 } from 'react-icons/io';
 import './applicationsAdmin.scss';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ApplicatinModal } from '../../../entities';
+import dayjs from 'dayjs';
 
 export const ApplicationsAdmin = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState('new');
   const [open, setOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const inputRef = useRef(null);
 
   const buttons = [
     { label: 'Новые', value: 'new' },
@@ -46,6 +49,10 @@ export const ApplicationsAdmin = () => {
       title: 'Подготовка к ОРТ',
     },
   ];
+
+  const handleDateChange = e => {
+    setSelectedDate(dayjs(e.target.value));
+  };
   return (
     <div className='applicationsAdmin_cont'>
       <section>
@@ -54,10 +61,41 @@ export const ApplicationsAdmin = () => {
             <IoIosArrowBack size={24} /> Назад
           </p>
 
-          <p className='row date'>
-            <IoIosArrowBack size={35} color='#2DE920' />
-            01.06.2025 <IoIosArrowForward size={35} color='#2DE920' />
-          </p>
+          <div className='row date' style={{ position: 'relative' }}>
+            <IoIosArrowBack
+              size={35}
+              color='#2DE920'
+              onClick={() => setSelectedDate(selectedDate.subtract(1, 'day'))}
+              style={{ cursor: 'pointer' }}
+            />
+
+            <p
+              onClick={() => inputRef.current && inputRef.current.showPicker()}
+            >
+              {selectedDate.format('DD.MM.YYYY')}
+            </p>
+
+            <IoIosArrowForward
+              size={35}
+              color='#2DE920'
+              onClick={() => setSelectedDate(selectedDate.add(1, 'day'))}
+              style={{ cursor: 'pointer' }}
+            />
+
+            <input
+              ref={inputRef}
+              type='date'
+              value={selectedDate.format('YYYY-MM-DD')}
+              onChange={handleDateChange}
+              style={{
+                position: 'absolute',
+                opacity: 0,
+                pointerEvents: 'none',
+                width: 0,
+                height: 0,
+              }}
+            />
+          </div>
         </div>
 
         <div className='applicationsAdmin_cont_btns_fiter row'>

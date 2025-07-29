@@ -1,0 +1,43 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.reportTable {
+  &_header {
+    background-color: #121212;
+    color: $white;
+    padding: 14px;
+    margin-bottom: 36px;
+    color: $white;
+
+    p {
+      width: 50%;
+      text-align: center;
+    }
+  }
+
+  .table_static{
+    align-items: end;
+    margin-bottom: 170px;
+    color: $white;
+
+      .month,
+      .all {
+        width: 50%;
+        justify-content: center;
+        align-items: end;
+        gap: 90px;
+    
+        .list {
+          width: 30px;
+          display: flex;
+          flex-direction: column;
+          gap: 56px;
+        }
+
+        &_indicator{
+            align-items: end;
+            gap: 24px;
+        }
+      }
+  }
+
+}

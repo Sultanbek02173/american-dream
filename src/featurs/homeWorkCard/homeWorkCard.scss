@@ -1,0 +1,35 @@
+@use '../../app/styles/constatnts.scss' as *;
+
+.card {
+  position: relative;
+  background-color: $white;
+  color: $dark;
+  padding: 24px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &_user {
+    width: 80%;
+    h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    &_phone {
+      margin-bottom: 55px;
+    }
+  }
+
+  &_btn {
+    position: absolute;
+    top: 45%;
+    right: -35px;
+    transform: rotate(-90deg);
+    gap: 6px;
+    transition: all 0.3s;
+  }
+
+  &:hover .card_btn {
+    color: $green;
+  }
+}

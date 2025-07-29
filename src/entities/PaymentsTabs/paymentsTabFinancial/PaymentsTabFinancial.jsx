@@ -95,13 +95,34 @@ export const PaymentsTabFinancial = () => {
           </div>
           <div className='payment_statistics_progress'>
             <div className='stastic'>
-              <VerticalProgress progress={85} text={'Наличными'} />
+              <VerticalProgress
+                progress={85}
+                text={'Наличными'}
+                height={'380px'}
+                width={'102px'}
+                border={'100px'}
+                color={'#2DE920'}
+              />
             </div>
             <div className='stastic'>
-              <VerticalProgress progress={70} text={'Перевод'} />
+              <VerticalProgress
+                progress={70}
+                text={'Перевод'}
+                height={'380px'}
+                width={'102px'}
+                border={'100px'}
+                color={'#23a919ff'}
+              />
             </div>
             <div className='stastic'>
-              <VerticalProgress progress={50} text={'Онлайн'} />
+              <VerticalProgress
+                progress={50}
+                text={'Онлайн'}
+                height={'380px'}
+                width={'102px'}
+                border={'100px'}
+                color={'#1d8e15ff'}
+              />
             </div>
           </div>
         </div>

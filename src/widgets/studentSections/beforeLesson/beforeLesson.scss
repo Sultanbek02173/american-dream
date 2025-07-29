@@ -1,0 +1,66 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.before_lesson {
+  margin-top: 57px;
+  color: $white;
+  margin-bottom: 150px;
+
+  &_user {
+    color: rgba(255, 255, 255, 0.314);
+    font-weight: 300;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  &_title {
+    font-weight: 500;
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  &_info {
+    background-color: $dark;
+    padding: 32px;
+    border-radius: 24px;
+
+    &_header {
+      margin-bottom: 76px;
+
+      h3 {
+        font-weight: 400;
+        font-size: 32px;
+      }
+
+      h2 {
+        color: $green;
+        font-weight: 400;
+        font-size: 32px;
+      }
+    }
+
+    &_text {
+      font-weight: 400;
+      font-size: 22px;
+      margin-bottom: 22px;
+      span {
+        color: rgba(255, 255, 255, 0.314);
+      }
+    }
+
+    &_button{
+        margin-top: 94px;
+        width: 100%;
+        padding: 14px;
+        background-color: transparent;
+        border: 1px solid $green;
+        border-radius: 10px;
+        color: $white;
+        font-size: 22px;
+        transition: all .3s;
+    }
+
+    &_button:hover {
+      background-color: $green;
+    }
+  }
+}

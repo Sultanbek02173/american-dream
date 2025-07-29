@@ -1,9 +1,10 @@
+import { BeforeLesson, HomeWorks } from '../../../widgets';
 
 export const MainStudent = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-}
-
+  return (
+    <div className='container'>
+      <BeforeLesson />
+      <HomeWorks />
+    </div>
+  );
+};

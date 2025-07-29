@@ -19,6 +19,7 @@ import {
   ReportCardStudent,
   ReportTableTabs,
   ScheduleAdmin,
+  ScheduleStudent,
   ScheduleTeacher,
   Students,
   StudentsDetail,
@@ -72,8 +73,8 @@ const App = () => {
 
   const studentSideBar = [
     { id: 1, img: main, link: '/' },
-    { id: 2, img: message, link: '/report-card' },
-    { id: 3, img: accounting, link: '/students-table' },
+    { id: 2, img: curces, link: '/schedule' },
+    { id: 3, img: reportCard, link: '/report-card' },
     { id: 4, img: lessons, link: '/home-work' },
   ];
 
@@ -192,8 +193,8 @@ const App = () => {
                         element={<ReportCardStudent />}
                       />
                       <Route
-                        path='/students-table'
-                        element={<StudentsTable />}
+                        path='/schedule'
+                        element={<ScheduleStudent />}
                       />
                     </>
                   )}

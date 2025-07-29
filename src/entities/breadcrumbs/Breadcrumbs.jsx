@@ -23,6 +23,7 @@ const routeNameMap = {
   schedule: 'Табель',
   students: 'Ученики',
   'add-teacher': 'Добавить преподавателя',
+  'report-card': 'Табель',
 };
 
 export const Breadcrumbs = () => {

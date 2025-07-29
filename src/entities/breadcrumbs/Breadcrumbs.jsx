@@ -73,7 +73,7 @@ export const Breadcrumbs = () => {
 
   const isStudentDetail = /^\/students-table\/\d+$/.test(location.pathname);
   const isTableDetail = /^\/report-table\/\d+$/.test(location.pathname);
-
+  const isStudent = /^\/student\/\d+$/.test(location.pathname);
   const tabs = [
     { label: 'Профиль студента', content: <StudentProfile /> },
     { label: 'История занятий', content: <StudentSessionHistory /> },
@@ -213,6 +213,7 @@ export const Breadcrumbs = () => {
             //   </Select>
             // </FormControl>
           )}
+          {isStudent && 'w'}
         </nav>
       )}
     </>

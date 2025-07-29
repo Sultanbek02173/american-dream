@@ -26,6 +26,7 @@ import {
   StudentsTable,
   TeacherDetail,
   TeacherGroupDetail,
+  TeacherStudentDetail,
   TeacherTable,
 } from '../../pages';
 import '../styles/app.scss';
@@ -67,7 +68,7 @@ const App = () => {
 
   const teacherSideBar = [
     { id: 1, img: main, link: '/', name: 'Главный экран' },
-    { id: 2, img: accounting, link: '/accounting' },
+    { id: 2, img: accounting, link: '/schedule' },
     { id: 3, img: student, link: '/students' },
   ];
 
@@ -192,10 +193,7 @@ const App = () => {
                         path='/report-card'
                         element={<ReportCardStudent />}
                       />
-                      <Route
-                        path='/schedule'
-                        element={<ScheduleStudent />}
-                      />
+                      <Route path='/schedule' element={<ScheduleStudent />} />
                     </>
                   )}
                   {role === 'teacher' && (
@@ -205,8 +203,12 @@ const App = () => {
                         path='/table/:group'
                         element={<TeacherGroupDetail />}
                       />
-                      <Route path='/accounting' element={<ScheduleTeacher />} />
+                      <Route path='/schedule' element={<ScheduleTeacher />} />
                       <Route path='/students' element={<Students />} />
+                      <Route
+                        path='/student/:id'
+                        element={<TeacherStudentDetail />}
+                      />
                     </>
                   )}
                 </Routes>

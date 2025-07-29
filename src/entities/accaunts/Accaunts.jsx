@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import './accaunts.scss';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import user from '../../shared/imgs/login/user.jpg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 import { removeRole } from '../../shared';
@@ -15,6 +15,17 @@ export const Accaunts = () => {
     navigate('/login');
     window.location.reload();
   };
+
+  useEffect(() => {
+    const handleEsc = event => {
+      if (event.keyCode === 27) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
   return (
     <>
       {location.pathname === '/' && (

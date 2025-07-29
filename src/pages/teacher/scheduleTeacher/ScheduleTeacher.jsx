@@ -1,9 +1,9 @@
+import { Shedule } from '../../../widgets';
 
 export const ScheduleTeacher = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-}
-
+  return (
+    <div>
+      <Shedule />
+    </div>
+  );
+};

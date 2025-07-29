@@ -28,3 +28,4 @@ export { MainTeacher } from './teacher/mainTeacher/MainTeacher';
 export { ScheduleTeacher } from './teacher/scheduleTeacher/ScheduleTeacher';
 export { Students } from './teacher/students/Students';
 export { TeacherGroupDetail } from './teacher/teacherGroupDetail/TeacherGroupDetail';
+export { TeacherStudentDetail } from './teacher/teacherStudentDetail/TeacherStudentDetail';

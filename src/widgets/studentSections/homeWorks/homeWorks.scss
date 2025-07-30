@@ -1,0 +1,6 @@
+.home_works {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 24px;
+  column-gap: 56px;
+}

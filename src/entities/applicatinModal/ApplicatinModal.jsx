@@ -2,8 +2,9 @@ import { IoIosArrowUp } from 'react-icons/io';
 import './applicatinModal.scss';
 import ReactDOM from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 
-export const ApplicatinModal = ({ open, setOpen }) => {
+export const ApplicatinModal = ({ open, setOpen, children }) => {
   const initial = {
     hidden: {
       x: -800,
@@ -21,12 +22,23 @@ export const ApplicatinModal = ({ open, setOpen }) => {
       transition: { duration: 0.5 },
     },
   };
+  useEffect(() => {
+    const handleEsc = event => {
+      if (event.keyCode === 27) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
   return ReactDOM.createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
           className='modal'
+          onClick={() => setOpen(false)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -40,18 +52,7 @@ export const ApplicatinModal = ({ open, setOpen }) => {
             className='row modal_container'
             onClick={e => e.stopPropagation()}
           >
-            <div className='modal_container_user'>
-              <h3>Айбек Калыков</h3>
-              <p>+996 555 111 222</p>
-              <p>ayibek45676@gmail.com</p>
-              <p>Источник: Форма на сайте</p>
-              <p>Подготовка к ОРТ</p>
-            </div>
-            <div className='modal_container_message'>
-              <p>"Хотел бы узнать расписание и формат занятий"</p>
-              <input type='text' name='user' placeholder='Аслан Караев' />
-              <p>03.06.2025 — 12:42</p>
-            </div>
+            <>{children}</>
 
             <p
               className='modal_container_close row'

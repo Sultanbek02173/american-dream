@@ -17,3 +17,5 @@ export { AccountingExpenses } from './accounting/accountingExpenses/AccountingEx
 
 export { BeforeLesson } from './studentSections/beforeLesson/BeforeLesson';
 export { HomeWorks } from './studentSections/homeWorks/HomeWorks';
+export { RecordLesson } from './studentSections/homeWorkDetail/recordLesson/RecordLesson';
+export { Works } from './studentSections/homeWorkDetail/works/Works';

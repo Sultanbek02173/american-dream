@@ -33,3 +33,12 @@
     color: $green;
   }
 }
+.error {
+  border-top: 10px solid #cb1111;
+}
+.done {
+  border-top: 10px solid #2de920;
+}
+.doesnot {
+  border-top: 10px solid #000;
+}

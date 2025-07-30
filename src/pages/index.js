@@ -12,6 +12,7 @@ export { StudentsTable } from './admin/studentsTable/StudentsTable';
 export { TeacherTable } from './admin/teacherTable/TeacherTable';
 export { StudentsDetail } from './admin/studentsDetail/StudentsDetail';
 export { AddTeacherTabs } from './admin/addTeacherTabs/AddTeacherTabs';
+export { AddStudent } from './admin/addStudent/AddStudent';
 export { CreateNewGroupTabs } from './admin/createNewGroup/CreateNewGroupTabs';
 export { TeacherDetail } from './admin/teacherDetail/TeacherDetail';
 export { ReportTableTabs } from './admin/reportTableDetail/ReportTableTabs';
@@ -22,7 +23,9 @@ export { MainStudent } from './student/mainStudent/MainStudent';
 export { HomeWork } from './student/homeWork/HomeWork';
 export { ReportCardStudent } from './student/reportCardStudent/ReportCardStudent';
 export { ScheduleStudent } from './student/scheduleStudent/ScheduleStudent';
+export { HomeWorkDetail } from './student/homeWorkDetail/HomeWorkDetail';
 
 export { MainTeacher } from './teacher/mainTeacher/MainTeacher';
 export { ScheduleTeacher } from './teacher/scheduleTeacher/ScheduleTeacher';
 export { Students } from './teacher/students/Students';
+export { TeacherGroupDetail } from './teacher/teacherGroupDetail/TeacherGroupDetail';

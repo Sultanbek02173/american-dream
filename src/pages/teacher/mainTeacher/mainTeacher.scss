@@ -1,0 +1,40 @@
+.groups {
+  &__subtitle {
+    font-family: Inter;
+    font-weight: 300;
+    font-style: Light;
+    font-size: 22px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+    opacity: 60%;
+    margin-bottom: 12px;
+  }
+  &__title {
+    font-family: Inter;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 36px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #fff;
+  }
+}
+.students {
+  margin-top: 100px;
+  padding: 0 77px;
+  .applicationsAdmin_cont_cards {
+    grid-template-columns: repeat(3, 1fr);
+    .card.retake {
+      border-top: 10px solid #cb1111;
+    }
+    .card.verified {
+      border-top: 10px solid #2de920;
+    }
+    .card.failed {
+      border-top: 10px solid #000;
+    }
+  }
+}

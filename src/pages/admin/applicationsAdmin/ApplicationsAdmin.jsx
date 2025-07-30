@@ -132,7 +132,22 @@ export const ApplicationsAdmin = () => {
         </div>
       </section>
 
-      <ApplicatinModal setOpen={setOpen} open={open} />
+      <ApplicatinModal setOpen={setOpen} open={open}>
+        <>
+          <div className='modal_container_user'>
+            <h3>Айбек Калыков</h3>
+            <p>+996 555 111 222</p>
+            <p>ayibek45676@gmail.com</p>
+            <p>Источник: Форма на сайте</p>
+            <p>Подготовка к ОРТ</p>
+          </div>
+          <div className='modal_container_message'>
+            <p>"Хотел бы узнать расписание и формат занятий"</p>
+            <input type='text' name='user' placeholder='Аслан Караев' />
+            <p>03.06.2025 — 12:42</p>
+          </div>
+        </>
+      </ApplicatinModal>
     </div>
   );
 };

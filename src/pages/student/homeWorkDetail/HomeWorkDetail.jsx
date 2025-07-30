@@ -1,0 +1,39 @@
+import { useParams } from 'react-router-dom';
+import './homeWorkDetail.scss';
+import { RecordLesson, Works } from '../../../widgets';
+import { setActiveTab, useTabs } from '../../../app/store/reducers/tabSlice';
+import { useDispatch } from 'react-redux';
+
+export const HomeWorkDetail = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const tabId = 'reportTableTabs';
+  const tabsState = useTabs();
+  const activeTab = tabsState[tabId] ?? 0;
+
+  const tabs = [
+    { label: 'Запись урока', content: <RecordLesson /> },
+    { label: 'Домашнее задание', content: <Works /> },
+  ];
+  return (
+    <section className='container home-work-detail'>
+      <h2 className='title'>Урок №{id}</h2>
+      <p className='description'>
+        Документация с помощью swagger, настройка swagger
+      </p>
+
+      {tabs.map((tab, index) => (
+        <button
+          key={index}
+          onClick={() => dispatch(setActiveTab({ tabId, index }))}
+          className={`addTeacher__tabs-button ${
+            index === activeTab && 'active'
+          }`}
+        >
+          {tab.label}
+        </button>
+      ))}
+      {tabs[activeTab]?.content}
+    </section>
+  );
+};

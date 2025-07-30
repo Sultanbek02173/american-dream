@@ -1,6 +1,5 @@
 @use '../../../app/styles/constatnts.scss' as *;
-
-.home_work {
+.home-work-detail {
   margin-top: 56px;
   color: $white;
 
@@ -10,10 +9,10 @@
     margin-bottom: 24px;
   }
 
-  &__content {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 24px;
-    column-gap: 56px;
+  .description {
+    font-size: 22px;
+    margin-bottom: 36px;
+    color: #ffffff68;
+    font-weight: 300;
   }
 }

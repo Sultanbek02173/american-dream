@@ -8,6 +8,7 @@ import {
   ApplicationsManager,
   CreateNewGroupTabs,
   HomeWork,
+  HomeWorkDetail,
   Login,
   MainAdmin,
   MainManagerPage,
@@ -25,6 +26,7 @@ import {
   StudentsDetail,
   StudentsTable,
   TeacherDetail,
+  TeacherGroupDetail,
   TeacherTable,
 } from '../../pages';
 import '../styles/app.scss';
@@ -157,6 +159,7 @@ const App = () => {
                       />
 
                       <Route path='/add-teacher' element={<AddTeacherTabs />} />
+                      <Route path='/add-student' element={<AddTeacherTabs />} />
                       <Route
                         path='/create-new-group'
                         element={<CreateNewGroupTabs />}
@@ -186,19 +189,21 @@ const App = () => {
                     <>
                       <Route path='/' element={<MainStudent />} />
                       <Route path='/home-work' element={<HomeWork />} />
+                      <Route path='/home-work/:id' element={<HomeWorkDetail />} />
                       <Route
                         path='/report-card'
                         element={<ReportCardStudent />}
                       />
-                      <Route
-                        path='/schedule'
-                        element={<ScheduleStudent />}
-                      />
+                      <Route path='/schedule' element={<ScheduleStudent />} />
                     </>
                   )}
                   {role === 'teacher' && (
                     <>
                       <Route path='/' element={<MainTeacher />} />
+                      <Route
+                        path='/table/:group'
+                        element={<TeacherGroupDetail />}
+                      />
                       <Route path='/accounting' element={<ScheduleTeacher />} />
                       <Route path='/students' element={<Students />} />
                     </>

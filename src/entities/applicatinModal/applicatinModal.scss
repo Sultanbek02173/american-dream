@@ -1,5 +1,5 @@
 @use '../../app/styles/constatnts.scss' as *;
-
+@import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 .modal {
   position: fixed;
   top: 0;
@@ -10,6 +10,102 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    &-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      div {
+        display: flex;
+        flex-direction: column;
+        row-gap: 22px;
+        h3 {
+          font-family: Montserrat;
+          font-weight: 500;
+          font-style: Medium;
+          font-size: 18px;
+          leading-trim: NONE;
+          line-height: 100%;
+          letter-spacing: 0%;
+          color: #000000;
+        }
+      }
+    }
+    &-text {
+      font-family: Montserrat;
+      font-weight: 400;
+      font-style: Regular;
+      font-size: 16px;
+      leading-trim: NONE;
+      line-height: 100%;
+      letter-spacing: 0%;
+      color: #000;
+    }
+    &-text.modal__content-tex1 {
+      max-width: 39%;
+    }
+    &-text {
+      a {
+        text-decoration: underline;
+        font-family: Montserrat;
+        font-weight: 500;
+        font-style: Medium;
+        font-size: 16px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+      }
+    }
+    &-body {
+      margin-top: 70px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 130px;
+    }
+    .dataTeacher__row-button {
+      color: #000000;
+      border-color: #000000;
+    }
+    &-row {
+      display: flex;
+      flex-direction: column;
+      row-gap: 12px;
+    }
+    &-row1 {
+      display: flex;
+      align-items: center;
+      column-gap: 30px;
+    }
+
+    &-input {
+      // width: 124px;
+      padding: 10px;
+      border: 1px solid #000000;
+      outline: none;
+      border-radius: 4px;
+      &::placeholder {
+        font-family: Montserrat;
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 16px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #000;
+        opacity: 60%;
+      }
+    }
+    &-input.width {
+      width: 124px;
+      &::placeholder {
+        text-align: center;
+      }
+    }
+  }
 
   &_container {
     position: relative;
@@ -39,19 +135,19 @@
       }
     }
 
-    &_message{
+    &_message {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      p{
+      p {
         max-width: 270px;
       }
 
-      p:last-child{
+      p:last-child {
         margin: 0;
       }
 
-      input{
+      input {
         background-color: transparent;
         outline: none;
         border: 1px solid $dark;
@@ -60,14 +156,14 @@
       }
     }
 
-    &_close{
+    &_close {
       gap: 6px;
       font-size: 14px;
       transform: rotate(-90deg) translateY(15%);
       cursor: pointer;
       transition: all 0.3s;
 
-      &:hover{
+      &:hover {
         color: $green;
       }
     }

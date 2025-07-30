@@ -6,6 +6,9 @@ export const inputStyle = {
       opacity: '100%',
       color: '#fff',
     },
+    '& label.Mui-focused': {
+      color: '#fff',
+    },
     '&.Mui-focused fieldset': {
       opacity: '60%',
       borderColor: '#fff',

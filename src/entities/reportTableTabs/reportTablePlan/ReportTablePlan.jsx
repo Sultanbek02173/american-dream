@@ -56,16 +56,15 @@ export const ReportTablePlan = () => {
               />
             </div>
 
-            <AnimatePresence initial={false}>
+            <AnimatePresence>
               {isOpen && (
                 <motion.div
-                  style={{ overflow: 'hidden' }}
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ height: 0 }}
+                  animate={{ height: 'auto' }}
+                  exit={{ height: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <p>{student.description}</p>
+                  <p className='reportTablePlan__item_content'>{student.description}</p>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -1,0 +1,51 @@
+@use '../../../../app/styles/constatnts.scss' as *;
+
+.works {
+  margin-top: 75px;
+
+  &_home {
+    border-radius: 10px;
+    border: 1px solid $white;
+    padding: 20px 26px;
+    cursor: pointer;
+    overflow: hidden;
+
+    h2 {
+      font-weight: 300;
+      font-size: 22px;
+    }
+
+    &_content {
+      padding-top: 32px;
+      color: #ffffff46;
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 34px;
+    }
+  }
+
+  &_link {
+    margin-top: 150px;
+
+    h2 {
+      font-weight: 400;
+      font-size: 36px;
+      margin-bottom: 36px;
+    }
+
+    .MuiTextField-root {
+      width: 100%;
+    }
+
+    &_input {
+      padding-bottom: 43px;
+    }
+
+    &_limit {
+      text-align: end;
+      margin-top: 12px;
+      color: #ffffff6e;
+      font-weight: 300;
+    }
+  }
+}

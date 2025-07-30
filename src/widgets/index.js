@@ -19,3 +19,6 @@ export { BeforeLesson } from './studentSections/beforeLesson/BeforeLesson';
 export { HomeWorks } from './studentSections/homeWorks/HomeWorks';
 export { RecordLesson } from './studentSections/homeWorkDetail/recordLesson/RecordLesson';
 export { Works } from './studentSections/homeWorkDetail/works/Works';
+export { Statistics } from './studentSections/reportCardStudent/statistics/Statistics';
+export { Syllabus } from './studentSections/reportCardStudent/syllabus/Syllabus';
+export { ReportStudent } from './studentSections/reportCardStudent/repordStudent/ReportStudent';

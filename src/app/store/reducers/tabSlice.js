@@ -13,6 +13,7 @@ const tabSlice = createSlice({
     },
   },
 });
+
 export const { setActiveTab } = tabSlice.actions;
 export const useTabs = () => useSelector(state => state.tabs);
 export default tabSlice.reducer;

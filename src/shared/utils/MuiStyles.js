@@ -8,6 +8,7 @@ export const inputStyle = {
     },
     '&.Mui-focused fieldset': {
       opacity: '60%',
+      // color: '#fff',
       borderColor: '#fff',
     },
     '&:hover fieldset': {
@@ -26,6 +27,9 @@ export const inputStyle = {
   '& .Mui-focused .MuiInputLabel-root': {
     color: '#fff',
     opacity: '60%',
+  },
+  '& label.Mui-focused': {
+    color: '#fff',
   },
 };
 

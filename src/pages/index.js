@@ -13,7 +13,7 @@ export { TeacherTable } from './admin/teacherTable/TeacherTable';
 export { StudentsDetail } from './admin/studentsDetail/StudentsDetail';
 export { AddTeacherTabs } from './admin/addTeacherTabs/AddTeacherTabs';
 export { AddStudent } from './admin/addStudent/AddStudent';
-export { CreateNewGroupTabs } from './admin/createNewGroup/CreateNewGroupTabs';
+export { СreateNewGroupsTabs } from './admin/createNewGroup/СreateNewGroupsTabs';
 export { TeacherDetail } from './admin/teacherDetail/TeacherDetail';
 export { ReportTableTabs } from './admin/reportTableDetail/ReportTableTabs';
 

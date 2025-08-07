@@ -5,7 +5,8 @@ import { CreateNewGroupData } from './CreateNewGroupData/CreateNewGroupData';
 import { CreateNewGroupSchedule } from './CreateNewGroupSchedule/CreateNewGroupSchedule';
 import { CreateNewGroupStudents } from './CreateNewGroupStudents/CreateNewGroupStudents';
 import './createNewGroupTabs.scss';
-export const CreateNewGroupTabs = () => {
+
+export const СreateNewGroupsTabs = () => {
   const dispatch = useDispatch();
   const tabId = 'createNewGroup';
   const tabsState = useTabs();

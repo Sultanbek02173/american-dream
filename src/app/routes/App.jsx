@@ -6,7 +6,7 @@ import {
   AddTeacherTabs,
   ApplicationsAdmin,
   ApplicationsManager,
-  CreateNewGroupTabs,
+  СreateNewGroupsTabs,
   HomeWork,
   HomeWorkDetail,
   Login,
@@ -163,7 +163,7 @@ const App = () => {
                       <Route path='/add-student' element={<AddTeacherTabs />} />
                       <Route
                         path='/create-new-group'
-                        element={<CreateNewGroupTabs />}
+                        element={<СreateNewGroupsTabs />}
                       />
                       <Route path='/add-teacher' element={<AddTeacherTabs />} />
                     </>

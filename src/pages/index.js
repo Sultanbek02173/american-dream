@@ -23,6 +23,7 @@ export { MainStudent } from './student/mainStudent/MainStudent';
 export { HomeWork } from './student/homeWork/HomeWork';
 export { ReportCardStudent } from './student/reportCardStudent/ReportCardStudent';
 export { ScheduleStudent } from './student/scheduleStudent/ScheduleStudent';
+export { HomeWorkDetail } from './student/homeWorkDetail/HomeWorkDetail';
 
 export { MainTeacher } from './teacher/mainTeacher/MainTeacher';
 export { ScheduleTeacher } from './teacher/scheduleTeacher/ScheduleTeacher';

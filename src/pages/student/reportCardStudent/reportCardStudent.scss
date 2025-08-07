@@ -1,0 +1,11 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
+.reportCardStudent {
+  .addTeacher__tabs-button{
+    width: 33%;
+  }
+
+  .addTeacher__tabs-button:nth-child(2){
+    border-right: 2px solid $white;
+  }
+}

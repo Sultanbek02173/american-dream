@@ -49,12 +49,13 @@
       align-items: center;
       gap: 8px;
       margin-top: 12px;
+      cursor: pointer;
 
       button {
         background: none;
+        cursor: pointer;
         border: none;
         color: white;
-        cursor: pointer;
         font-size: 18px;
       }
     }

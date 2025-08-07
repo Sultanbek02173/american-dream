@@ -4,6 +4,8 @@ export { StaticsNow } from './mainAdminSections/staticsNow/StaticsNow';
 export { VisitedStatisc } from './mainAdminSections/visitedStatisc/VisitedStatisc';
 export { NoLessons } from './mainAdminSections/noLessons/NoLessons';
 
+export { ApplicationSection } from './applicationsAdmin/ApplicationSection';
+
 export { ActiveStudents } from './reportAnalyticsSections/activeStudents/ActiveStudents';
 export { Income } from './reportAnalyticsSections/income/Income';
 export { LoadTechers } from './reportAnalyticsSections/loadTechers/LoadTechers';
@@ -17,3 +19,8 @@ export { AccountingExpenses } from './accounting/accountingExpenses/AccountingEx
 
 export { BeforeLesson } from './studentSections/beforeLesson/BeforeLesson';
 export { HomeWorks } from './studentSections/homeWorks/HomeWorks';
+export { RecordLesson } from './studentSections/homeWorkDetail/recordLesson/RecordLesson';
+export { Works } from './studentSections/homeWorkDetail/works/Works';
+export { Statistics } from './studentSections/reportCardStudent/statistics/Statistics';
+export { Syllabus } from './studentSections/reportCardStudent/syllabus/Syllabus';
+export { ReportStudent } from './studentSections/reportCardStudent/repordStudent/ReportStudent';

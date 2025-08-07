@@ -25,6 +25,7 @@
     padding: 19px 26px;
     border: 2px solid #ffffff;
     border-radius: 10px;
+    overflow: hidden;
     &-head {
       display: flex;
       align-items: center;
@@ -91,6 +92,11 @@
         letter-spacing: 0%;
         color: #fff;
       }
+    }
+
+    &_content{
+      padding-top: 32px;
+      color: #ffffff62;
     }
   }
 }

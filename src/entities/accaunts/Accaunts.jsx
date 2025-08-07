@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import './accaunts.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import user from '../../shared/imgs/login/user.jpg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
@@ -8,6 +8,7 @@ import { removeRole } from '../../shared';
 
 export const Accaunts = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handlerLogaut = () => {
@@ -55,9 +56,10 @@ export const Accaunts = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -10, opacity: 0 }}
                 transition={{ duration: 0.25, ease: 'easeOut' }}
+                onClick={handlerLogaut}
               >
                 <IoIosArrowBack size={26} color='#fff' />
-                <button onClick={handlerLogaut}>Выйти с аккаунта</button>
+                <button>Выйти с аккаунта</button>
               </motion.div>
             )}
           </AnimatePresence>

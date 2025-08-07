@@ -13,3 +13,4 @@ export { ApplicatinModal } from './applicatinModal/ApplicatinModal';
 export { SheduleModal } from './sheduleModal/SheduleModal';
 export { DataTeacherDetail } from './teacherTabs/teacherDetailTabs/DataTeacherDetail/DataTeacherDetail';
 export { TeacherPaymentTypeData } from './teacherTabs/teacherDetailTabs/teacherPaymentTypeData/TeacherPaymentTypeData';
+export { Countdown } from './countdown/Countdown';

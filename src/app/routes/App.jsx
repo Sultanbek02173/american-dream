@@ -8,6 +8,7 @@ import {
   ApplicationsManager,
   CreateNewGroupTabs,
   HomeWork,
+  HomeWorkDetail,
   Login,
   MainAdmin,
   MainManagerPage,
@@ -180,6 +181,10 @@ const App = () => {
                         element={<StudentsTable />}
                       />
                       <Route
+                        path='/students-table/:id'
+                        element={<StudentsDetail />}
+                      />
+                      <Route
                         path='/payments-table'
                         element={<PaymentsTable />}
                       />
@@ -189,6 +194,10 @@ const App = () => {
                     <>
                       <Route path='/' element={<MainStudent />} />
                       <Route path='/home-work' element={<HomeWork />} />
+                      <Route
+                        path='/home-work/:id'
+                        element={<HomeWorkDetail />}
+                      />
                       <Route
                         path='/report-card'
                         element={<ReportCardStudent />}
@@ -203,6 +212,7 @@ const App = () => {
                         path='/table/:group'
                         element={<TeacherGroupDetail />}
                       />
+                      <Route path='/accounting' element={<ScheduleTeacher />} />
                       <Route path='/schedule' element={<ScheduleTeacher />} />
                       <Route path='/students' element={<Students />} />
                       <Route

@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import './beforeLesson.scss';
+import { Countdown } from '../../../entities';
 
 export const BeforeLesson = () => {
+  const navigate = useNavigate();
   return (
     <section className='before_lesson'>
       <p className='before_lesson_user'>Hi, Айдана!</p>
@@ -9,7 +12,8 @@ export const BeforeLesson = () => {
       <div className='before_lesson_info'>
         <div className='row before_lesson_info_header'>
           <h3>Английский</h3>
-          <h2>00:23:15:09</h2>
+          {/* <h2>00:23:15:09</h2> */}
+          <Countdown initialTime='00:23:15:09' />
         </div>
         <p className='before_lesson_info_text'>
           <span>Преподаватель: </span>Жаныбек уулу Руслан
@@ -21,7 +25,7 @@ export const BeforeLesson = () => {
           <span>Время: </span>Вторник, 15:00 – 17:00
         </p>
 
-        <button className='before_lesson_info_button'>
+        <button onClick={() => navigate('/schedule')} className='before_lesson_info_button'>
           Открыть расписание
         </button>
       </div>

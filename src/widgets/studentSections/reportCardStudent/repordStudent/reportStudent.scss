@@ -1,0 +1,56 @@
+@use '../../../../app/styles/constatnts.scss' as *;
+
+.report_student {
+  margin-top: 56px;
+  color: $white;
+
+  &_title {
+    margin-bottom: 24px;
+    font-size: 36px;
+    font-weight: 400;
+    margin-top: 100px;
+  }
+
+  &_title:first-child {
+    margin-top: 0;
+  }
+
+  &_table {
+    .universalTable {
+      th {
+        font-size: 16px;
+        color: $green;
+        font-weight: 300;
+        padding: 15px 10px;
+        text-align: center;
+      }
+      tr {
+        pointer-events: none;
+      }
+
+      &__body td:first-child {
+        color: $green;
+      }
+    }
+  }
+
+  &_discount_table {
+    margin-bottom: 150px;
+    .universalTable {
+      th {
+        font-size: 16px;
+        font-weight: 300;
+        padding: 15px 10px;
+        text-align: center;
+      }
+      tr {
+        pointer-events: none;
+      }
+
+      &__body td {
+        color: $green;
+        text-align: center;
+      }
+    }
+  }
+}

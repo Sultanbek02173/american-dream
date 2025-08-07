@@ -1,4 +1,3 @@
-import React from 'react';
 import './UniversalTable.scss';
 
 export const UniversalTable = ({ columns, data, onRowClick }) => {

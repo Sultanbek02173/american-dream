@@ -180,6 +180,10 @@ const App = () => {
                         element={<StudentsTable />}
                       />
                       <Route
+                        path='/students-table/:id'
+                        element={<StudentsDetail />}
+                      />
+                      <Route
                         path='/payments-table'
                         element={<PaymentsTable />}
                       />

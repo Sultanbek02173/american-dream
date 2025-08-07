@@ -1,3 +1,5 @@
+@use '../../../app/styles/constatnts.scss' as *;
+
 .studentsTable {
   width: 100%;
   &__head {
@@ -5,6 +7,7 @@
     display: flex;
     column-gap: 20px;
     width: 100%;
+
     &-search {
       display: flex;
       align-items: center;
@@ -12,6 +15,40 @@
       border-radius: 5px;
       padding-right: 10px;
       width: 33.3%;
+      opacity: 60%;
+      input {
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        padding: 15px 26px;
+        font-family: Inter;
+        font-weight: 400;
+        font-style: Regular;
+        font-size: 18px;
+        leading-trim: NONE;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #ffffff;
+        &::placeholder {
+          font-family: Inter;
+          font-weight: 300;
+          font-style: Light;
+          font-size: 18px;
+          leading-trim: NONE;
+          line-height: 100%;
+          letter-spacing: 0%;
+        }
+      }
+    }
+
+    &-search-manager {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      padding-right: 10px;
+      width: 70%;
       opacity: 60%;
       input {
         width: 100%;
@@ -119,6 +156,11 @@
         }
       }
     }
+  }
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
   }
 }
 

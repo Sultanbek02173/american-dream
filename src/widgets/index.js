@@ -4,6 +4,8 @@ export { StaticsNow } from './mainAdminSections/staticsNow/StaticsNow';
 export { VisitedStatisc } from './mainAdminSections/visitedStatisc/VisitedStatisc';
 export { NoLessons } from './mainAdminSections/noLessons/NoLessons';
 
+export { ApplicationSection } from './applicationsAdmin/ApplicationSection';
+
 export { ActiveStudents } from './reportAnalyticsSections/activeStudents/ActiveStudents';
 export { Income } from './reportAnalyticsSections/income/Income';
 export { LoadTechers } from './reportAnalyticsSections/loadTechers/LoadTechers';

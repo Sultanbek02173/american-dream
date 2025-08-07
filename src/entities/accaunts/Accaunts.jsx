@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import './accaunts.scss';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import user from '../../shared/imgs/login/user.jpg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
@@ -8,6 +8,7 @@ import { removeRole } from '../../shared';
 
 export const Accaunts = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const handlerLogaut = () => {

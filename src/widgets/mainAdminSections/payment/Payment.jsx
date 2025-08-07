@@ -32,6 +32,7 @@ export const Payment = () => {
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
+                color={'#2DE920'}
               />
             </div>
             <div className='stastic'>
@@ -41,6 +42,7 @@ export const Payment = () => {
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
+                color={'#25b11bff'}
               />
             </div>
             <div className='stastic'>
@@ -50,6 +52,7 @@ export const Payment = () => {
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
+                color={'#1c8014ff'}
               />
             </div>
           </div>

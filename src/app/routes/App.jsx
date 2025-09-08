@@ -49,9 +49,7 @@ import curces from '../../shared/imgs/sidebar/curces.svg';
 import lessons from '../../shared/imgs/sidebar/lessons.svg';
 
 const App = () => {
-  // Роль из Redux (обновляется сразу после логина)
   const roleFromStore = useSelector(s => s.auth.role);
-  // Fallback к cookie на первый рендер/после перезагрузки
   const role = roleFromStore ?? getRole() ?? null;
 
   const isLoggedIn = Boolean(role);
@@ -89,13 +87,13 @@ const App = () => {
     ];
 
     switch (role) {
-      case 'admin':
+      case 'Administrator':
         return admin;
-      case 'manager':
+      case 'Manager':
         return management;
-      case 'student':
+      case 'Student':
         return studentSideBar;
-      case 'teacher':
+      case 'Teacher':
         return teacherSideBar;
       default:
         return [];
@@ -123,7 +121,7 @@ const App = () => {
 
               <div className='page-content'>
                 <Routes>
-                  {role === 'admin' && (
+                  {role === 'Administrator' && (
                     <>
                       <Route path='/' element={<MainAdmin />} />
                       <Route path='/accounting' element={<Accounting />} />
@@ -164,7 +162,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'manager' && (
+                  {role === 'Manager' && (
                     <>
                       <Route path='/' element={<MainManagerPage />} />
                       <Route
@@ -187,7 +185,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'student' && (
+                  {role === 'Student' && (
                     <>
                       <Route path='/' element={<MainStudent />} />
                       <Route path='/home-work' element={<HomeWork />} />
@@ -203,7 +201,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'teacher' && (
+                  {role === 'Teacher' && (
                     <>
                       <Route path='/' element={<MainTeacher />} />
                       <Route

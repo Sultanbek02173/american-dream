@@ -8,14 +8,10 @@ import { useNavigate } from 'react-router-dom';
 const schema = yup.object().shape({
   login: yup.string().required('Логин обязателен'),
   password: yup.string().required('Пароль обязателен'),
-  role: yup
-    .string()
-    .oneOf(['admin', 'student', 'teacher', 'manager'], 'Выберите роль')
-    .required('Роль обязательна'),
 });
 
 export const Login = () => {
-  const navigete = useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,9 +20,11 @@ export const Login = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = data => {
-    Cookies.set('user_role', data.role, { expires: 1 });
-    navigete(`/`);
-    window.location.reload();
+    try {
+      Cookies.set('user_role', data.role, { expires: 1 });
+      navigate(`/`);
+      // window.location.reload();
+    } catch (e) {}
   };
   return (
     <div className='login'>
@@ -56,15 +54,6 @@ export const Login = () => {
           {errors.password && (
             <p className='errors'>{errors.password.message}</p>
           )}
-
-          <select {...register('role')}>
-            <option value=''>Выберите роль</option>
-            <option value='admin'>Администратор</option>
-            <option value='student'>Студент</option>
-            <option value='teacher'>Преподаватель</option>
-            <option value='manager'>Менеджер</option>
-          </select>
-          {errors.role && <span className='error'>{errors.role.message}</span>}
 
           <button type='submit'>Войти</button>
         </form>

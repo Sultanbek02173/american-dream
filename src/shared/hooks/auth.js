@@ -1,13 +1,32 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
-export const setRole = (role) => {
-  Cookies.set("user_role", role, { expires: 1 });
+const ROLE_COOKIE = 'user_role';
+const canUseDOM = typeof document !== 'undefined';
+const isSecure =
+  typeof window !== 'undefined' && window.location?.protocol === 'https:';
+const cookieOptions = {
+  expires: 1,
+  path: '/',
+  sameSite: 'Lax',
+  secure: isSecure,
+};
+
+const ALLOWED_ROLES = new Set(['admin', 'manager', 'teacher', 'student']);
+
+export const setRole = role => {
+  if (!canUseDOM) return;
+  if (role && !ALLOWED_ROLES.has(role)) {
+    console.warn(`[roleCookie] Unknown role "${role}" — set anyway`);
+  }
+  Cookies.set(ROLE_COOKIE, role, cookieOptions);
 };
 
 export const getRole = () => {
-  return Cookies.get("user_role");
+  if (!canUseDOM) return null;
+  return Cookies.get(ROLE_COOKIE) || null;
 };
 
 export const removeRole = () => {
-  Cookies.remove("user_role");
+  if (!canUseDOM) return;
+  Cookies.remove(ROLE_COOKIE, { path: '/' });
 };

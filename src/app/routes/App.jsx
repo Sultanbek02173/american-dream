@@ -1,6 +1,9 @@
+// src/app/App.jsx
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { getRole } from '../../shared';
-import { useEffect, useState } from 'react';
+
 import {
   Accounting,
   AddTeacherTabs,
@@ -30,8 +33,9 @@ import {
   TeacherStudentDetail,
   TeacherTable,
 } from '../../pages';
-import '../styles/app.scss';
+
 import { Accaunts, Breadcrumbs, SideBar } from '../../entities';
+import '../styles/app.scss';
 
 import main from '../../shared/imgs/sidebar/mainScreen.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
@@ -45,66 +49,58 @@ import curces from '../../shared/imgs/sidebar/curces.svg';
 import lessons from '../../shared/imgs/sidebar/lessons.svg';
 
 const App = () => {
-  const [role, setRole] = useState(null);
-  const [sidebar, setSidebar] = useState([]);
-  const isLoggedIn = !!role;
+  // Роль из Redux (обновляется сразу после логина)
+  const roleFromStore = useSelector(s => s.auth.role);
+  // Fallback к cookie на первый рендер/после перезагрузки
+  const role = roleFromStore ?? getRole() ?? null;
 
-  const admin = [
-    { id: 1, img: main, link: '/' },
-    { id: 2, img: student, link: '/students-table' },
-    { id: 3, img: teacher, link: '/teacher-table' },
-    { id: 4, img: reportCard, link: '/report-table' },
-    { id: 5, img: payment, link: '/payments' },
-    { id: 6, img: reportAnalytics, link: '/report-analytics' },
-    { id: 7, img: accounting, link: '/accounting' },
-  ];
+  const isLoggedIn = Boolean(role);
 
-  const menegment = [
-    { id: 1, img: main, link: '/' },
-    { id: 2, img: message, link: '/applications' },
-    { id: 3, img: curces, link: '/schedule' },
-    { id: 4, img: student, link: '/students-table' },
-    { id: 5, img: payment, link: '/payments-table' },
-  ];
+  const sidebar = useMemo(() => {
+    const admin = [
+      { id: 1, img: main, link: '/' },
+      { id: 2, img: student, link: '/students-table' },
+      { id: 3, img: teacher, link: '/teacher-table' },
+      { id: 4, img: reportCard, link: '/report-table' },
+      { id: 5, img: payment, link: '/payments' },
+      { id: 6, img: reportAnalytics, link: '/report-analytics' },
+      { id: 7, img: accounting, link: '/accounting' },
+    ];
 
-  const teacherSideBar = [
-    { id: 1, img: main, link: '/', name: 'Главный экран' },
-    { id: 2, img: accounting, link: '/schedule' },
-    { id: 3, img: student, link: '/students' },
-  ];
+    const management = [
+      { id: 1, img: main, link: '/' },
+      { id: 2, img: message, link: '/applications' },
+      { id: 3, img: curces, link: '/schedule' },
+      { id: 4, img: student, link: '/students-table' },
+      { id: 5, img: payment, link: '/payments-table' },
+    ];
 
-  const studentSideBar = [
-    { id: 1, img: main, link: '/' },
-    { id: 2, img: curces, link: '/schedule' },
-    { id: 3, img: reportCard, link: '/report-card' },
-    { id: 4, img: lessons, link: '/home-work' },
-  ];
+    const teacherSideBar = [
+      { id: 1, img: main, link: '/', name: 'Главный экран' },
+      { id: 2, img: accounting, link: '/schedule' },
+      { id: 3, img: student, link: '/students' },
+    ];
 
-  useEffect(() => {
-    const storeRole = getRole();
-    setRole(storeRole);
+    const studentSideBar = [
+      { id: 1, img: main, link: '/' },
+      { id: 2, img: curces, link: '/schedule' },
+      { id: 3, img: reportCard, link: '/report-card' },
+      { id: 4, img: lessons, link: '/home-work' },
+    ];
 
-    switch (storeRole) {
+    switch (role) {
       case 'admin':
-        setSidebar(admin);
-        break;
+        return admin;
       case 'manager':
-        setSidebar(menegment);
-        break;
+        return management;
       case 'student':
-        setSidebar(studentSideBar);
-        break;
+        return studentSideBar;
       case 'teacher':
-        setSidebar(teacherSideBar);
-        break;
+        return teacherSideBar;
       default:
-        setSidebar([]);
+        return [];
     }
-  }, []);
-
-  if (role === null) {
-    return <div>Загрузка...</div>;
-  }
+  }, [role]);
 
   return (
     <div className='app'>
@@ -112,7 +108,7 @@ const App = () => {
         {!isLoggedIn ? (
           <Routes>
             <Route path='/login' element={<Login />} />
-            <Route path='*' element={<Navigate to='/login' />} />
+            <Route path='*' element={<Navigate to='/login' replace />} />
           </Routes>
         ) : (
           <div className='layout'>
@@ -124,16 +120,17 @@ const App = () => {
                 <Accaunts />
                 <Breadcrumbs />
               </div>
+
               <div className='page-content'>
                 <Routes>
                   {role === 'admin' && (
                     <>
+                      <Route path='/' element={<MainAdmin />} />
                       <Route path='/accounting' element={<Accounting />} />
                       <Route
                         path='/applications'
                         element={<ApplicationsAdmin />}
                       />
-                      <Route path='/' element={<MainAdmin />} />
                       <Route path='/payments' element={<PaymentsTable />} />
                       <Route path='/report-table' element={<RepordTable />} />
                       <Route
@@ -158,16 +155,15 @@ const App = () => {
                         path='/teacher-table/:id'
                         element={<TeacherDetail />}
                       />
-
                       <Route path='/add-teacher' element={<AddTeacherTabs />} />
                       <Route path='/add-student' element={<AddTeacherTabs />} />
                       <Route
                         path='/create-new-group'
                         element={<СreateNewGroupsTabs />}
                       />
-                      <Route path='/add-teacher' element={<AddTeacherTabs />} />
                     </>
                   )}
+
                   {role === 'manager' && (
                     <>
                       <Route path='/' element={<MainManagerPage />} />
@@ -190,6 +186,7 @@ const App = () => {
                       />
                     </>
                   )}
+
                   {role === 'student' && (
                     <>
                       <Route path='/' element={<MainStudent />} />
@@ -205,6 +202,7 @@ const App = () => {
                       <Route path='/schedule' element={<ScheduleStudent />} />
                     </>
                   )}
+
                   {role === 'teacher' && (
                     <>
                       <Route path='/' element={<MainTeacher />} />
@@ -221,6 +219,9 @@ const App = () => {
                       />
                     </>
                   )}
+
+                  {/* Фолбэк на неизвестные маршруты */}
+                  <Route path='*' element={<Navigate to='/' replace />} />
                 </Routes>
               </div>
             </div>

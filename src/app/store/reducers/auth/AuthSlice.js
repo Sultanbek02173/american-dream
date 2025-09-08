@@ -1,17 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
 import { userLogin } from './AuthThunk';
+
+const COOKIE_LOGIN = 'login';
+const COOKIE_ACCESS = 'access';
+const COOKIE_ROLE = 'role';
+
+export const setLogin = createAction('SET_LOGIN');
+
+function safeParse(json) {
+  try {
+    return JSON.parse(json);
+  } catch {
+    return null;
+  }
+}
 
 const initialState = {
   loading: false,
   error: null,
-  access: '',
-  access: localStorage.getItem('access') || '',
-  login: JSON.parse(localStorage.getItem('login')) || null,
+  access: Cookies.get(COOKIE_ACCESS) || '',
+  role: Cookies.get(COOKIE_ROLE) || null,
+  login: safeParse(Cookies.get(COOKIE_LOGIN) || 'null'),
   user: null,
 };
-
-const SET_LOGIN = 'SET_LOGIN';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -21,28 +34,25 @@ const authSlice = createSlice({
     builder
       .addCase(userLogin.pending, state => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(userLogin.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.login = payload;
-        state.access = payload?.access;
-        state.access = payload?.role;
+        state.access = payload?.access || '';
+        state.role = payload?.role ?? null;
       })
-      .addCase(userLogin.fulfilled, (state, { payload }) => {
-        state.loading = true;
-        if (payload) {
-          state.error = payload;
-        } else {
-          state.error = { detail: 'Что-то пошло не так. Попробуйте снова.' };
-        }
+      .addCase(userLogin.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload || {
+          detail: 'Что-то пошло не так. Попробуйте снова.',
+        };
       })
-      .addCase(SET_LOGIN, (state, { payload }) => {
+      .addCase(setLogin, (state, { payload }) => {
         state.login = payload;
       });
   },
 });
 
 export const useAuth = () => useSelector(state => state.auth);
-export const setLogin = createAction(SET_LOGIN);
-
 export default authSlice.reducer;

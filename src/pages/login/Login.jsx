@@ -25,6 +25,13 @@ export const Login = () => {
 
   const onSubmit = data => {
     Cookies.set('user_role', data.role, { expires: 1 });
+    Cookies.set(
+      'access_token',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzU3NDEyNzQ5LCJpYXQiOjE3NTczMjYzNDksImp0aSI6IjkyNDJhOTg2ZDYyOTQzN2ViZDdhOGUzNzY2N2NmNjFmIiwidXNlcl9pZCI6MX0.nJ5TYU4WPFgMqKxDgYnY6SXBZUfcfAr6BSMUOR8iYZY',
+      {
+        expires: 1,
+      }
+    );
     navigete(`/`);
     window.location.reload();
   };

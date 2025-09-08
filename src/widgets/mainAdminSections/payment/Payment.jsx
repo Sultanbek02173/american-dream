@@ -1,8 +1,13 @@
 import reload from '../../../shared/imgs/admin/Vector_reload.svg';
 import { VerticalProgress } from '../../../featurs';
 import './payment.scss';
+import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice';
 
 export const Payment = () => {
+  const { dashBoard } = useAdminHome();
+
+  console.log(dashBoard);
+  
   return (
     <section className='payment'>
       <div className='row payment_header'>

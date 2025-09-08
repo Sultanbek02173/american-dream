@@ -47,11 +47,12 @@ import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import message from '../../shared/imgs/sidebar/message.svg';
 import curces from '../../shared/imgs/sidebar/curces.svg';
 import lessons from '../../shared/imgs/sidebar/lessons.svg';
+import { useAuth } from '../store/reducers/auth/AuthSlice';
 
 const App = () => {
-  // Роль из Redux (обновляется сразу после логина)
-  const roleFromStore = useSelector(s => s.auth.role);
-  // Fallback к cookie на первый рендер/после перезагрузки
+  const { role: roleFromStore } = useAuth();
+  console.log(roleFromStore);
+
   const role = roleFromStore ?? getRole() ?? null;
 
   const isLoggedIn = Boolean(role);
@@ -89,13 +90,13 @@ const App = () => {
     ];
 
     switch (role) {
-      case 'admin':
+      case 'Admin':
         return admin;
-      case 'manager':
+      case 'Manager':
         return management;
-      case 'student':
+      case 'Student':
         return studentSideBar;
-      case 'teacher':
+      case 'Teacher':
         return teacherSideBar;
       default:
         return [];

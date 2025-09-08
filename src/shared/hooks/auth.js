@@ -11,7 +11,7 @@ const cookieOptions = {
   secure: isSecure,
 };
 
-const ALLOWED_ROLES = new Set(['admin', 'manager', 'teacher', 'student']);
+const ALLOWED_ROLES = new Set(['Admin', 'Manager', 'Teacher', 'Student']);
 
 export const setRole = role => {
   if (!canUseDOM) return;

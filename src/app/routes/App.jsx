@@ -50,9 +50,7 @@ import lessons from '../../shared/imgs/sidebar/lessons.svg';
 import { useAuth } from '../store/reducers/auth/AuthSlice';
 
 const App = () => {
-  const { role: roleFromStore } = useAuth();
-  console.log(roleFromStore);
-
+  const roleFromStore = useSelector(s => s.auth.role);
   const role = roleFromStore ?? getRole() ?? null;
 
   const isLoggedIn = Boolean(role);
@@ -90,7 +88,7 @@ const App = () => {
     ];
 
     switch (role) {
-      case 'Admin':
+      case 'Administrator':
         return admin;
       case 'Manager':
         return management;
@@ -124,7 +122,7 @@ const App = () => {
 
               <div className='page-content'>
                 <Routes>
-                  {role === 'admin' && (
+                  {role === 'Administrator' && (
                     <>
                       <Route path='/' element={<MainAdmin />} />
                       <Route path='/accounting' element={<Accounting />} />
@@ -165,7 +163,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'manager' && (
+                  {role === 'Manager' && (
                     <>
                       <Route path='/' element={<MainManagerPage />} />
                       <Route
@@ -188,7 +186,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'student' && (
+                  {role === 'Student' && (
                     <>
                       <Route path='/' element={<MainStudent />} />
                       <Route path='/home-work' element={<HomeWork />} />
@@ -204,7 +202,7 @@ const App = () => {
                     </>
                   )}
 
-                  {role === 'teacher' && (
+                  {role === 'Teacher' && (
                     <>
                       <Route path='/' element={<MainTeacher />} />
                       <Route

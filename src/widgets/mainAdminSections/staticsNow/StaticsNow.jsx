@@ -5,11 +5,23 @@ import './staticsNow.scss';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { CircleProgress, ProgressBar } from '../../../featurs';
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { dashBoardGet } from '../../../app/store/admin/homeAdmin/homeAdminThunks';
+import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice';
 
 export const StaticsNow = () => {
   const percentage = 75;
   const radius = 60;
   const stroke = 20;
+
+  const dispatch = useDispatch();
+  const { dashBoard } = useAdminHome();
+  console.log(dashBoard);
+
+  useEffect(() => {
+    dispatch(dashBoardGet());
+  }, [dispatch]);
 
   return (
     <section className='static_section'>
@@ -81,16 +93,22 @@ export const StaticsNow = () => {
           <div className='user_card statist_students'>
             <div className='statist_students_year'>
               <h3>За 1 год</h3>
-              <h2>874</h2>
+              <h2>{dashBoard.new_students_year}</h2>
               <div>
                 <ProgressBar progress={100} />
               </div>
             </div>
             <div className='statist_students_month'>
               <h3>За этот месяц</h3>
-              <h2>58</h2>
+              <h2>{dashBoard.new_students_month}</h2>
               <div>
-                <ProgressBar progress={80} />
+                <ProgressBar
+                  progress={
+                    (dashBoard.new_students_month /
+                      dashBoard.new_students_year) *
+                    100
+                  }
+                />
               </div>
             </div>
           </div>
@@ -100,9 +118,12 @@ export const StaticsNow = () => {
             <h2>Колчевство студентов</h2>
 
             <div className='count_students_circle'>
-              <h2>12</h2>
+              <h2>{dashBoard.new_students_24h}</h2>
               <CircleProgress
-                percentage={percentage}
+                percentage={
+                  (dashBoard.new_students_24h / dashBoard.new_students_year) *
+                  100
+                }
                 radius={radius}
                 stroke={stroke}
                 color={'#2DE920'}

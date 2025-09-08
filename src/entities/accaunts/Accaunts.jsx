@@ -5,16 +5,23 @@ import { useEffect, useState } from 'react';
 import user from '../../shared/imgs/login/user.jpg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 import { removeRole } from '../../shared';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../app/store/reducers/auth/AuthThunk';
 
 export const Accaunts = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const handlerLogaut = () => {
-    removeRole();
-    navigate('/login');
-    window.location.reload();
+  const handlerLogaut = async () => {
+    setOpen(false);
+    try {
+      await dispatch(logoutUser()).unwrap();
+    } finally {
+      navigate('/login', { replace: true });
+    }
+    // window.location.reload();
   };
 
   useEffect(() => {

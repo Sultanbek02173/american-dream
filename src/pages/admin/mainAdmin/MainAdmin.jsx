@@ -14,7 +14,6 @@ export const MainAdmin = () => {
       <Payment />
       <LessonsNow />
       <VisitedStatisc />
-      {/* <NoLessons /> */}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosAuth } from '../../../services/axiosApi';
+import Cookies from 'js-cookie';
 
 export const userLogin = createAsyncThunk(
   '/login',
@@ -14,5 +15,10 @@ export const userLogin = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk('/logoutUser', async () => {
+  if (typeof window !== 'undefined') {
+    Cookies.remove('login');
+    Cookies.remove('access');
+    Cookies.remove('role');
+  }
   return true;
 });

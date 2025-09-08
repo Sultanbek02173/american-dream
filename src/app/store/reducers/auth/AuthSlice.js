@@ -1,7 +1,7 @@
 import { createSlice, createAction } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
-import { userLogin } from './AuthThunk';
+import { logoutUser, userLogin } from './AuthThunk';
 
 const COOKIE_LOGIN = 'login';
 const COOKIE_ACCESS = 'access';
@@ -45,8 +45,11 @@ const authSlice = createSlice({
       .addCase(userLogin.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload || {
-          detail: 'Что-то пошло не так. Попробуйте снова.',
+          non_field_errors: 'Что-то пошло не так. Попробуйте снова.',
         };
+      })
+      .addCase(logoutUser.fulfilled, state => {
+        Object.assign(state, initialState);
       })
       .addCase(setLogin, (state, { payload }) => {
         state.login = payload;

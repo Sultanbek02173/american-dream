@@ -56,6 +56,9 @@ export const formControlStyle = {
   '& .Mui-focused .MuiInputLabel-root': {
     color: '#fff',
   },
+  '& label.Mui-focused': {
+    color: '#fff',
+  },
 };
 
 export const menuItemStyle = {

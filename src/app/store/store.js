@@ -6,6 +6,10 @@ import {
 
 import tabReducer from './reducers/tabSlice';
 import adminHomeReducer from './admin/homeAdmin/homeAdminSlice';
+import studentsReducer from './admin/students/studentsSlice';
+import teachersReducer from './admin/teacher/teachersSlice';
+import reportReducer from './admin/report/reportSlice';
+import entitiesReducer from './admin/entities/entitiesSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
@@ -53,6 +57,10 @@ export const store = configureStore({
     tabs: tabReducer,
     adminHome: adminHomeReducer,
     auth: authReducer,
+    students: studentsReducer,
+    teachers: teachersReducer,
+    report: reportReducer,
+    entities: entitiesReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

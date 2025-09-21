@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useStudents } from '../../app/store/admin/students/studentsSlice';
+import { useParams } from 'react-router-dom';
+import { getStudentPayments } from '../../app/store/admin/students/studentsThunk';
 
 export const StudentPaymentHistory = () => {
+  const dispatch = useDispatch();
+  const { studentPayments } = useStudents();
+  const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(getStudentPayments(id));
+  }, []);
   return (
     <table
       border='0'
@@ -18,13 +29,17 @@ export const StudentPaymentHistory = () => {
         </tr>
       </thead>
       <tbody className='studentsTable__table-body'>
-        <tr>
-          <td>1</td>
-          <td>21.05.2025</td>
-          <td>3000 с</td>
-          <td>Наличные</td>
-          <td>Оплата за Май</td>
-        </tr>
+        {studentPayments?.map(history => {
+          return (
+            <tr>
+              <td>{history.id}</td>
+              <td>{history.date}</td>
+              <td>{history.amount} с</td>
+              <td>{history.payment_type}</td>
+              <td>{history.comment}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

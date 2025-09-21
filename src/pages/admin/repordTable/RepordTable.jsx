@@ -1,13 +1,18 @@
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import searchIcon from '../studentsTable/images/search.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { data } from '../studentsTable/StudentsTable';
 import { UniversalTable } from '../../../entities';
 import plusIcon from '../teacherTable/plus.svg';
 import './repordTable.scss';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
+import { useDispatch } from 'react-redux';
+import { useReport } from '../../../app/store/admin/report/reportSlice';
+import { getGroupList } from '../../../app/store/admin/report/reportThunk';
 export const RepordTable = () => {
+  const dispatch = useDispatch();
+  const { groupList } = useReport();
   const [value, setValue] = useState('');
   const navigate = useNavigate();
   const handleChange = event => {
@@ -21,6 +26,10 @@ export const RepordTable = () => {
     { title: 'Курс', dataIndex: 'course', key: 'course' },
     { title: 'Урок', dataIndex: 'lesson', key: 'lesson' },
   ];
+
+  useEffect(() => {
+    dispatch(getGroupList());
+  }, []);
   return (
     <section className='reportTable'>
       <div className='container'>
@@ -83,15 +92,7 @@ export const RepordTable = () => {
         </div>
         <UniversalTable
           columns={columns}
-          data={[
-            {
-              id: 1,
-              group: 'Группа (A3)',
-              direction: 'Английский',
-              course: 1,
-              lesson: '-',
-            },
-          ]}
+          data={groupList}
           onRowClick={item => navigate(`/report-table/${item.id}`)}
         />
       </div>

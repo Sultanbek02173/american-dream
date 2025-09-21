@@ -5,8 +5,8 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import bilol from '../../../../pages/admin/studentsDetail/image.jpg';
 
 import { eventHandler } from '../../../../shared/utils/eventHandlers';
@@ -15,6 +15,9 @@ import {
   inputStyle,
   menuItemStyle,
 } from '../../../../shared/utils/MuiStyles';
+import { useDispatch } from 'react-redux';
+import { getTeacherProfile } from '../../../../app/store/admin/teacher/teacherThunk';
+import { useTeachers } from '../../../../app/store/admin/teacher/teachersSlice';
 
 const initialState = {
   id: 1,
@@ -30,9 +33,13 @@ const initialState = {
   direction: '',
 };
 
-export const DataTeacherDetail = ({ detail = initialState }) => {
+export const DataTeacherDetail = () => {
+  const { teacherProfile: profile, directions } = useTeachers();
+
+  const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { 0: state, 1: setState } = useState(detail);
+  const { 0: state, 1: setState } = useState(profile);
   const onChange = eventHandler(setState);
 
   const handleSelectChange = event => {
@@ -46,6 +53,10 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
       return value !== '' && value !== null && value !== undefined;
     });
 
+  useEffect(() => {
+    dispatch(getTeacherProfile(id));
+  }, [dispatch, id]);
+
   return (
     <form onSubmit={e => e.preventDefault()} className='dataTeacher'>
       <div className='studentsDetail__form-inputs'>
@@ -53,7 +64,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           label='ФИО'
           name='full_name'
           onChange={onChange}
-          value={state.full_name}
+          value={state?.full_name}
           variant='outlined'
           sx={{ ...inputStyle, width: '100%' }}
         />
@@ -63,7 +74,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           label='Телеграм'
           name='telegram'
           onChange={onChange}
-          value={state.telegram}
+          value={state?.telegram}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
@@ -71,7 +82,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           label='Телефон номер'
           name='phone'
           onChange={onChange}
-          value={state.phone}
+          value={state?.phone}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />
@@ -79,9 +90,9 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Логин'
-          name='login'
+          name='username'
           onChange={onChange}
-          value={state.login}
+          value={state?.username}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />
@@ -89,7 +100,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           label='Пароль'
           name='password'
           onChange={onChange}
-          value={state.password}
+          value={state?.password}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
@@ -99,7 +110,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           <InputLabel id='group-label'>Группа</InputLabel>
           <Select
             labelId='group-label'
-            value={state.group}
+            value={state?.group}
             label='Группа'
             name='group'
             onChange={handleSelectChange}
@@ -113,7 +124,7 @@ export const DataTeacherDetail = ({ detail = initialState }) => {
           <InputLabel id='direction-label'>Направление</InputLabel>
           <Select
             labelId='direction-label'
-            value={state.direction}
+            value={state?.direction}
             label='Направление'
             name='direction'
             onChange={handleSelectChange}

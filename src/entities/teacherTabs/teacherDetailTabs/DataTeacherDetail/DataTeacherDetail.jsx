@@ -47,12 +47,6 @@ export const DataTeacherDetail = () => {
     setState(prev => ({ ...prev, [name]: value }));
   };
 
-  const isAllFieldsFilled = obj =>
-    Object.entries(obj).every(([key, value]) => {
-      if (key === 'image' || key === 'id') return true;
-      return value !== '' && value !== null && value !== undefined;
-    });
-
   useEffect(() => {
     dispatch(getTeacherProfile(id));
   }, [dispatch, id]);
@@ -151,7 +145,7 @@ export const DataTeacherDetail = () => {
         </button>
         <button
           className='dataTeacher__row-button add'
-          disabled={!isAllFieldsFilled(state)}
+          // disabled={!isAllFieldsFilled(state)}
         >
           Добавить
         </button>

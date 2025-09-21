@@ -14,6 +14,7 @@ import entitiesReducer from './admin/entities/entitiesSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
 import scheduleReducer from './admin/schedule/scheduleSlice';
+import reportAnalyticReducer from './admin/reportAnalytic/reportAnalyticSlice';
 
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
 
@@ -66,6 +67,7 @@ export const store = configureStore({
     teachers: teachersReducer,
     report: reportReducer,
     entities: entitiesReducer,
+    reportAnalytic: reportAnalyticReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

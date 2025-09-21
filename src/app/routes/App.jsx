@@ -1,15 +1,15 @@
 // src/app/App.jsx
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { getRole } from '../../shared';
 
 import {
   Accounting,
+  AddStudent,
   AddTeacherTabs,
   ApplicationsAdmin,
   ApplicationsManager,
-  СreateNewGroupsTabs,
   HomeWork,
   HomeWorkDetail,
   Login,
@@ -32,28 +32,32 @@ import {
   TeacherGroupDetail,
   TeacherStudentDetail,
   TeacherTable,
+  СreateNewGroupsTabs,
 } from '../../pages';
 
 import { Accaunts, Breadcrumbs, SideBar } from '../../entities';
 import '../styles/app.scss';
 
-import main from '../../shared/imgs/sidebar/mainScreen.svg';
-import student from '../../shared/imgs/sidebar/students.svg';
-import payment from '../../shared/imgs/sidebar/payments.svg';
-import reportAnalytics from '../../shared/imgs/sidebar/ReportAnalytics.svg';
-import teacher from '../../shared/imgs/sidebar/teacher.svg';
 import accounting from '../../shared/imgs/sidebar/accounting.svg';
-import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
-import message from '../../shared/imgs/sidebar/message.svg';
 import curces from '../../shared/imgs/sidebar/curces.svg';
 import lessons from '../../shared/imgs/sidebar/lessons.svg';
-import { useAuth } from '../store/reducers/auth/AuthSlice';
+import main from '../../shared/imgs/sidebar/mainScreen.svg';
+import message from '../../shared/imgs/sidebar/message.svg';
+import payment from '../../shared/imgs/sidebar/payments.svg';
+import reportAnalytics from '../../shared/imgs/sidebar/ReportAnalytics.svg';
+import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
+import student from '../../shared/imgs/sidebar/students.svg';
+import teacher from '../../shared/imgs/sidebar/teacher.svg';
+
+export const URL = 'https://app.nurcrm.kg/api/main/categories/';
 
 const App = () => {
   const roleFromStore = useSelector(s => s.auth.role);
   const role = roleFromStore ?? getRole() ?? null;
+  const dispatch = useDispatch();
 
   const isLoggedIn = Boolean(role);
+  const navigate = useNavigate();
 
   const sidebar = useMemo(() => {
     const admin = [
@@ -101,132 +105,132 @@ const App = () => {
     }
   }, [role]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       await dispatch(getYourSelf()).unwrap();
+  //     } catch (e) {
+  //       console.log(e);
+  //       Cookies.remove('access');
+  //       navigate('/login', { replace: true });
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch, navigate]);
+
   return (
     <div className='app'>
-      <BrowserRouter>
-        {!isLoggedIn ? (
-          <Routes>
-            <Route path='/login' element={<Login />} />
-            <Route path='*' element={<Navigate to='/login' replace />} />
-          </Routes>
-        ) : (
-          <div className='layout'>
-            <div className='sidebar'>
-              <SideBar routes={sidebar} />
+      {!isLoggedIn ? (
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<Navigate to='/login' replace />} />
+        </Routes>
+      ) : (
+        <div className='layout'>
+          <div className='sidebar'>
+            <SideBar routes={sidebar} />
+          </div>
+          <div className='main'>
+            <div className='container'>
+              <Accaunts />
+              <Breadcrumbs />
             </div>
-            <div className='main'>
-              <div className='container'>
-                <Accaunts />
-                <Breadcrumbs />
-              </div>
 
-              <div className='page-content'>
-                <Routes>
-                  {role === 'Administrator' && (
-                    <>
-                      <Route path='/' element={<MainAdmin />} />
-                      <Route path='/accounting' element={<Accounting />} />
-                      <Route
-                        path='/applications'
-                        element={<ApplicationsAdmin />}
-                      />
-                      <Route path='/payments' element={<PaymentsTable />} />
-                      <Route path='/report-table' element={<RepordTable />} />
-                      <Route
-                        path='/report-table/:id'
-                        element={<ReportTableTabs />}
-                      />
-                      <Route
-                        path='/report-analytics'
-                        element={<ReportAnalytics />}
-                      />
-                      <Route path='/schedule' element={<ScheduleAdmin />} />
-                      <Route
-                        path='/students-table'
-                        element={<StudentsTable />}
-                      />
-                      <Route
-                        path='/students-table/:id'
-                        element={<StudentsDetail />}
-                      />
-                      <Route path='/teacher-table' element={<TeacherTable />} />
-                      <Route
-                        path='/teacher-table/:id'
-                        element={<TeacherDetail />}
-                      />
-                      <Route path='/add-teacher' element={<AddTeacherTabs />} />
-                      <Route path='/add-student' element={<AddTeacherTabs />} />
-                      <Route
-                        path='/create-new-group'
-                        element={<СreateNewGroupsTabs />}
-                      />
-                    </>
-                  )}
+            <div className='page-content'>
+              <Routes>
+                {role === 'Administrator' && (
+                  <>
+                    <Route path='/' element={<MainAdmin />} />
+                    <Route path='/accounting' element={<Accounting />} />
+                    <Route
+                      path='/applications'
+                      element={<ApplicationsAdmin />}
+                    />
+                    <Route path='/payments' element={<PaymentsTable />} />
+                    <Route path='/report-table' element={<RepordTable />} />
+                    <Route
+                      path='/report-table/:id'
+                      element={<ReportTableTabs />}
+                    />
+                    <Route
+                      path='/report-analytics'
+                      element={<ReportAnalytics />}
+                    />
+                    <Route path='/schedule' element={<ScheduleAdmin />} />
+                    <Route path='/students-table' element={<StudentsTable />} />
+                    <Route
+                      path='/students-table/:id'
+                      element={<StudentsDetail />}
+                    />
+                    <Route path='/teacher-table' element={<TeacherTable />} />
+                    <Route
+                      path='/teacher-table/:id'
+                      element={<TeacherDetail />}
+                    />
+                    <Route path='/add-teacher' element={<AddTeacherTabs />} />
+                    <Route path='/add-student' element={<AddStudent />} />
+                    <Route
+                      path='/create-new-group'
+                      element={<СreateNewGroupsTabs />}
+                    />
+                  </>
+                )}
 
-                  {role === 'Manager' && (
-                    <>
-                      <Route path='/' element={<MainManagerPage />} />
-                      <Route
-                        path='/applications'
-                        element={<ApplicationsManager />}
-                      />
-                      <Route path='/schedule' element={<ScheduleAdmin />} />
-                      <Route
-                        path='/students-table'
-                        element={<StudentsTable />}
-                      />
-                      <Route
-                        path='/students-table/:id'
-                        element={<StudentsDetail />}
-                      />
-                      <Route
-                        path='/payments-table'
-                        element={<PaymentsTable />}
-                      />
-                    </>
-                  )}
+                {role === 'Manager' && (
+                  <>
+                    <Route path='/' element={<MainManagerPage />} />
+                    <Route
+                      path='/applications'
+                      element={<ApplicationsManager />}
+                    />
+                    <Route path='/schedule' element={<ScheduleAdmin />} />
+                    <Route path='/students-table' element={<StudentsTable />} />
+                    <Route
+                      path='/students-table/:id'
+                      element={<StudentsDetail />}
+                    />
+                    <Route path='/payments-table' element={<PaymentsTable />} />
+                  </>
+                )}
 
-                  {role === 'Student' && (
-                    <>
-                      <Route path='/' element={<MainStudent />} />
-                      <Route path='/home-work' element={<HomeWork />} />
-                      <Route
-                        path='/home-work/:id'
-                        element={<HomeWorkDetail />}
-                      />
-                      <Route
-                        path='/report-card'
-                        element={<ReportCardStudent />}
-                      />
-                      <Route path='/schedule' element={<ScheduleStudent />} />
-                    </>
-                  )}
+                {role === 'Student' && (
+                  <>
+                    <Route path='/' element={<MainStudent />} />
+                    <Route path='/home-work' element={<HomeWork />} />
+                    <Route path='/home-work/:id' element={<HomeWorkDetail />} />
+                    <Route
+                      path='/report-card'
+                      element={<ReportCardStudent />}
+                    />
+                    <Route path='/schedule' element={<ScheduleStudent />} />
+                  </>
+                )}
 
-                  {role === 'Teacher' && (
-                    <>
-                      <Route path='/' element={<MainTeacher />} />
-                      <Route
-                        path='/table/:group'
-                        element={<TeacherGroupDetail />}
-                      />
-                      <Route path='/accounting' element={<ScheduleTeacher />} />
-                      <Route path='/schedule' element={<ScheduleTeacher />} />
-                      <Route path='/students' element={<Students />} />
-                      <Route
-                        path='/student/:id'
-                        element={<TeacherStudentDetail />}
-                      />
-                    </>
-                  )}
+                {role === 'Teacher' && (
+                  <>
+                    <Route path='/' element={<MainTeacher />} />
+                    <Route
+                      path='/table/:group'
+                      element={<TeacherGroupDetail />}
+                    />
+                    <Route path='/accounting' element={<ScheduleTeacher />} />
+                    <Route path='/schedule' element={<ScheduleTeacher />} />
+                    <Route path='/students' element={<Students />} />
+                    <Route
+                      path='/student/:id'
+                      element={<TeacherStudentDetail />}
+                    />
+                  </>
+                )}
 
-                  {/* Фолбэк на неизвестные маршруты */}
-                  <Route path='*' element={<Navigate to='/' replace />} />
-                </Routes>
-              </div>
+                {/* Фолбэк на неизвестные маршруты */}
+                <Route path='*' element={<Navigate to='/' replace />} />
+              </Routes>
             </div>
           </div>
-        )}
-      </BrowserRouter>
+        </div>
+      )}
     </div>
   );
 };

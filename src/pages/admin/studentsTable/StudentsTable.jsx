@@ -8,13 +8,16 @@ import {
 } from '@mui/material';
 import searchIcon from './images/search.svg';
 import './studentsTable.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../../entities';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
 import bilol from '../studentsDetail/image.jpg';
 import plusIcon from '../teacherTable/plus.svg';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { useStudents } from '../../../app/store/admin/students/studentsSlice';
+import { getStudentList } from '../../../app/store/admin/students/studentsThunk';
 
 export const data = [
   {
@@ -177,7 +180,7 @@ export const data = [
 ];
 
 export const mergeNames = data => {
-  return data.map(item => {
+  return data?.map(item => {
     const { full_name, last_name, ...rest } = item;
     return {
       ...rest,
@@ -188,13 +191,16 @@ export const mergeNames = data => {
 
 export const StudentsTable = () => {
   const [value, setValue] = useState('');
-  const role = Cookies.get('user_role');
+  const role = Cookies.get('role');
+  const dispatch = useDispatch();
+  const { students, directions } = useStudents();
+  console.log(students);
 
+  const mergedData = mergeNames(students);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-  const mergedData = mergeNames(data);
-  const totalPages = Math.ceil(mergedData.length / itemsPerPage);
-  const paginatedData = mergedData.slice(
+  const totalPages = Math.ceil(students?.length / itemsPerPage);
+  const paginatedData = students?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -206,18 +212,28 @@ export const StudentsTable = () => {
 
   const columns = [
     { title: '№', dataIndex: 'id', key: 'id' },
-    { title: 'ФИО', dataIndex: 'name', key: 'name' },
+    { title: 'ФИО', dataIndex: 'full_name', key: 'full_name' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
     { title: 'Преподаватель', dataIndex: 'teacher', key: 'teacher' },
   ];
   const menuItemStyle = role === 'admin' ? '35%' : '40%';
 
+  useEffect(() => {
+    dispatch(getStudentList());
+  }, []);
+
   return (
     <section className='studentsTable'>
       <div className='container'>
         <div className='studentsTable__head'>
-          <div className={role === 'admin' ? 'studentsTable__head-search' : 'studentsTable__head-search-manager'}>
+          <div
+            className={
+              role === 'Administrator'
+                ? 'studentsTable__head-search'
+                : 'studentsTable__head-search-manager'
+            }
+          >
             <input placeholder='Поиск' type='text' />
             <img src={searchIcon} alt='' />
           </div>
@@ -244,6 +260,9 @@ export const StudentsTable = () => {
               '& .Mui-focused .MuiInputLabel-root': {
                 color: '#fff', // цвет label при фокусе
               },
+              '& label.Mui-focused': {
+                color: '#2de920',
+              },
             }}
           >
             <InputLabel id='demo-simple-select-label'>Направление</InputLabel>
@@ -254,19 +273,17 @@ export const StudentsTable = () => {
               label='Направление'
               onChange={handleChange}
             >
-              <MenuItem value='english' sx={menuItemStyle}>
-                Английский
-              </MenuItem>
-              <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-                Ментальная арифметика
-              </MenuItem>
-              <MenuItem value='robotics' sx={menuItemStyle}>
-                Робототехника
-              </MenuItem>
+              {directions?.map(direction => {
+                return (
+                  <MenuItem value={direction} sx={menuItemStyle}>
+                    {direction}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
 
-          {role === 'admin' && (
+          {role === 'Administrator' && (
             <button
               onClick={() => navigate('/add-student')}
               className='studentsTable__head-add'
@@ -282,7 +299,7 @@ export const StudentsTable = () => {
           onRowClick={item => navigate(`/students-table/${item.id}`)}
         />
 
-        {mergedData.length > itemsPerPage && (
+        {students.length > itemsPerPage && (
           <div className='studentsTable__pagination'>
             <Pagination
               count={totalPages}

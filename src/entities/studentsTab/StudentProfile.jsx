@@ -4,166 +4,193 @@ import {
   MenuItem,
   Select,
   TextField,
+  Button,
+  Box,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import bilol from '../../pages/admin/studentsDetail/image.jpg';
 import { eventHandler } from '../../shared/utils/eventHandlers';
 import { data } from '../../pages/admin/studentsTable/StudentsTable';
 import { inputStyle, menuItemStyle } from '../../shared/utils/MuiStyles';
+import { useDispatch } from 'react-redux';
+import {
+  getStudentList,
+  getStudentProfile /* updateStudentProfile */,
+  updateStudentProfile,
+} from '../../app/store/admin/students/studentsThunk';
+import { useStudents } from '../../app/store/admin/students/studentsSlice';
 
 export const StudentProfile = () => {
+  const dispatch = useDispatch();
+  const { studentProfile: profile, directions } = useStudents();
   const { id } = useParams();
-  const [value, setValue] = useState('mentalArithmetic');
-  const detail = data.find(item => item.id == id);
-  const { 0: state, 1: setState } = useState({
-    id: null,
-    image: bilol,
-    first_name: 'Алина',
-    last_name: 'Жумабаева',
-    telegram: '@alin1244',
-    phone: '+996 500 123 456',
-    login: 'alinaknzzz12',
-    password: 'r_12lfomt',
-    teacher: 'Алия Калымбекова',
-    direction: value,
-  });
+
+  const [state, setState] = useState(profile);
+  const [value, setValue] = useState(profile?.direction ?? 'mentalArithmetic');
+  console.log(state);
+
+  const [touched, setTouched] = useState(false);
+
+  const detail = data.find(item => String(item.id) === String(id));
 
   useEffect(() => {
-    setState(prev => ({ ...prev, direction: value }));
+    dispatch(getStudentProfile(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setState(profile);
+    if (profile?.direction) setValue(profile.direction);
+    setTouched(false);
+  }, [profile]);
+
+  useEffect(() => {
+    setState(prev =>
+      prev ? { ...prev, direction: value } : { direction: value }
+    );
   }, [value]);
 
+  const baseOnChange = eventHandler(setState);
+  const onChange = e => {
+    if (!touched) setTouched(true);
+    baseOnChange(e);
+  };
+
   const handleChange = event => {
+    if (!touched) setTouched(true);
     setValue(event.target.value);
   };
-  const onChange = eventHandler(setState);
+
+  const handleEdit = async () => {
+    try {
+      await dispatch(updateStudentProfile({ id, data: state })).unwrap();
+      setTouched(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getStudentList());
+  }, []);
 
   return (
     <form className='studentsDetail__form'>
       <img className='studentsDetail__form-avatar' src={bilol} alt='' />
+
       <div className='studentsDetail__form-inputs'>
         <TextField
-          id='outlined-basic'
           label='Имя'
           name='first_name'
           onChange={onChange}
-          value={state.first_name}
+          value={state?.first_name ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />
         <TextField
-          id='outlined-basic'
           label='Фамилия'
           name='last_name'
           onChange={onChange}
-          value={state.last_name}
+          value={state?.last_name ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
-          id='outlined-basic'
           label='Телеграм'
           name='telegram'
           onChange={onChange}
-          value={state.telegram}
+          value={state?.telegram ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
         <TextField
-          id='outlined-basic'
           label='Телефон номер'
           name='phone'
           onChange={onChange}
-          value={state.phone}
+          value={state?.phone ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
-          id='outlined-basic'
           label='Логин'
-          name='login'
+          name='username'
           onChange={onChange}
-          value={state.login}
+          value={state?.username ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '45%' }}
         />
         <TextField
-          id='outlined-basic'
           label='Пароль'
           name='password'
           onChange={onChange}
-          value={state.password}
+          value={state?.password ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
-          id='outlined-basic'
           label='Преподаватель'
           name='teacher'
           onChange={onChange}
-          value={state.teacher}
+          value={state?.teacher ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
-        {/* <TextField
-              id="outlined-basic"
-              label="Фамилия"
-              value={"Жумабаева"}
-              variant="outlined"
-              sx={{ ...inputStyle, width: "45%" }}
-            /> */}
         <FormControl
           sx={{
             width: '45%',
             height: '100%',
-            opacity: '60%',
+            opacity: 0.6,
             '& .MuiOutlinedInput-root': {
-              color: '#fff', // цвет текста
-              '& fieldset': {
-                borderColor: '#fff', // обычная граница
-              },
-              '&:hover fieldset': {
-                borderColor: '#fff', // при наведении
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#fff', // при нажатии/фокусе (например, оранжевый)
-              },
+              color: '#fff',
+              '& fieldset': { borderColor: '#fff' },
+              '&:hover fieldset': { borderColor: '#fff' },
+              '&.Mui-focused fieldset': { borderColor: '#fff' },
             },
-            '& .MuiInputLabel-root': {
-              color: '#fff', // цвет label по умолчанию
-            },
-            '& .Mui-focused .MuiInputLabel-root': {
-              color: '#fff', // цвет label при фокусе
-            },
+            '& .MuiInputLabel-root': { color: '#fff' },
+            '& .MuiInputLabel-root.Mui-focused': { color: '#fff' },
           }}
         >
-          <InputLabel id='demo-simple-select-label'>Направление</InputLabel>
+          <InputLabel id='direction-label'>Направление</InputLabel>
           <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
+            labelId='direction-label'
+            id='direction'
             value={value}
             label='Направление'
             name='direction'
             onChange={handleChange}
           >
-            <MenuItem value='english' sx={menuItemStyle}>
-              Английский
-            </MenuItem>
-            <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-              Ментальная арифметика
-            </MenuItem>
-            <MenuItem value='robotics' sx={menuItemStyle}>
-              Робототехника
-            </MenuItem>
+            {directions?.map(direction => {
+              return (
+                <MenuItem value={direction} sx={menuItemStyle}>
+                  {direction}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </div>
+
+      {touched && (
+        <Box mt={2} textAlign='right'>
+          <Button
+            className='dataTeacher__row-button add'
+            variant='contained'
+            onClick={handleEdit}
+            
+          >
+            Редактировать
+          </Button>
+        </Box>
+      )}
     </form>
   );
 };

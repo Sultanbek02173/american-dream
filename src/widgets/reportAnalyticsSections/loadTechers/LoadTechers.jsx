@@ -1,69 +1,47 @@
 import './loadTechers.scss';
 import { UniversalTable } from '../../../entities';
-import { useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { teacherWorkloadGet } from '../../../app/store/admin/reportAnalytic/reportAnalyticThunks';
+import { useReportAnalytic } from '../../../app/store/admin/reportAnalytic/reportAnalyticSlice';
 
 export const LoadTechers = () => {
-  const [active, setActive] = useState(true);
-  const columns = [
-    { title: 'Преподаватель', dataIndex: 'teachers', key: 'teachers' },
-    { title: 'Занятий в неделю', dataIndex: 'lessons', key: 'lessons' },
-    { title: 'Ученики', dataIndex: 'students', key: 'students' },
-    { title: 'Доход с группы', dataIndex: 'payment', key: 'payment' },
-  ];
+  const dispatch = useDispatch();
+  const { teacherWorkload, teacherWorkloadLoaded, loading } =
+    useReportAnalytic();
 
-  const data = [
-    {
-      teachers: 'Садыков А.',
-      lessons: '12',
-      students: '30',
-      payment: '85 000 сом',
-    },
-    {
-      teachers: 'Алиева Д.',
-      lessons: '8',
-      students: '18',
-      payment: '52 000 сом',
-    },
-    {
-      teachers: 'Садыков А.',
-      lessons: '12',
-      students: '30',
-      payment: '85 000 сом',
-    },
-    {
-      teachers: 'Алиева Д.',
-      lessons: '8',
-      students: '18',
-      payment: '52 000 сом',
-    },
-  ];
+  const columns = useMemo(
+    () => [
+      { title: 'Преподаватель', dataIndex: 'teachers', key: 'teachers' },
+      { title: 'Занятий в неделю', dataIndex: 'lessons', key: 'lessons' },
+      { title: 'Ученики', dataIndex: 'students', key: 'students' },
+      { title: 'Доход с группы', dataIndex: 'payment', key: 'payment' },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    if (!teacherWorkloadLoaded) {
+      dispatch(teacherWorkloadGet());
+    }
+  }, [dispatch, teacherWorkloadLoaded]);
+
+  const tableData = useMemo(() => {
+    return (teacherWorkload || []).map((t, i) => ({
+      key: t.id ?? i,
+      teachers: t.teacher ?? '-',
+      lessons: t.lessons_count ?? 0,
+      students: t.students_count ?? t.students ?? 0,
+      payment: `${t.group_income} сом` ?? '0 сом',
+    }));
+  }, [teacherWorkload]);
+
   return (
     <section className='loadTechers'>
       <h2 className='loadTechers_title'>Загрузка по преподавателям</h2>
-      <div className='row'>
-        <p className='loadTechers_text'>Нагрузка преподавателей</p>
-        <div className='row periods'>
-          <p
-            className={active ? 'active' : ''}
-            onClick={() => {
-              setActive(true);
-            }}
-          >
-            Неделя
-          </p>
-          <p
-            className={!active ? 'not_active' : ''}
-            onClick={() => {
-              setActive(false);
-            }}
-          >
-            Месяц
-          </p>
-        </div>
-      </div>
-      <div className='loadTechers_table'>
-        <UniversalTable columns={columns} data={data} />
 
+      <div className='loadTechers_table'>
+        <UniversalTable columns={columns} data={tableData} loading={loading} />
       </div>
     </section>
   );

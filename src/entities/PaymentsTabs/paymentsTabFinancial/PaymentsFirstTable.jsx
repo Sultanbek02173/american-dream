@@ -1,7 +1,7 @@
 import React from 'react';
 import { UniversalTable } from '../../universalTable/UniversalTable';
 
-const PaymentsFirstTable = () => {
+const PaymentsFirstTable = ({net_profit}) => {
   const columns = [
     { title: 'Дата', dataIndex: 'date', key: 'date' },
     { title: 'Показатель', dataIndex: 'indicator', key: 'indicator' },
@@ -10,7 +10,7 @@ const PaymentsFirstTable = () => {
   const data = [
     {
       date: '01.06.2025',
-      amount: '3 000 с',
+      amount: `${net_profit || 0} с`,
       indicator: 'Чистая прибыль',
     },
   ];

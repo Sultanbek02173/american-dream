@@ -60,7 +60,6 @@ export const Login = () => {
         setError('password', { type: 'server', message: msg });
       }
 
-      // Можно оставить лог для отладки
       console.log('login error:', e);
     }
   };

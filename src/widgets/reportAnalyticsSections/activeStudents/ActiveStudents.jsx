@@ -1,7 +1,17 @@
+import { useDispatch } from 'react-redux';
 import { CircleProgress, VerticalProgress } from '../../../featurs';
 import './activeStudents.scss';
+import { useEffect } from 'react';
+import { analyticGet } from '../../../app/store/admin/reportAnalytic/reportAnalyticThunks';
+import { useReportAnalytic } from '../../../app/store/admin/reportAnalytic/reportAnalyticSlice';
 
 export const ActiveStudents = () => {
+  const dispatch = useDispatch();
+  const { analytic } = useReportAnalytic();
+
+  useEffect(() => {
+    dispatch(analyticGet());
+  }, [dispatch]);
   return (
     <section className='activeStudents'>
       <h2 className='activeStudents_title'>Количество активных учеников</h2>
@@ -9,7 +19,9 @@ export const ActiveStudents = () => {
 
       <div className='activeStudents_statistics'>
         <div className='activeStudents_statistics_header'>
-          <h2 className='count_student'>142</h2>
+          <h2 className='count_student'>
+            {analytic.active_today ? analytic.active_today : '0'}
+          </h2>
 
           <div className='row main_stistic'>
             <div className='activeStudents_statistics_header_text'>
@@ -22,7 +34,9 @@ export const ActiveStudents = () => {
               <p className='first_text'>Новые за неделю:</p>
               <VerticalProgress
                 progress={80}
-                text={'+12'}
+                text={
+                  analytic.new_this_week ? `+${analytic.new_this_week}` : '0'
+                }
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
@@ -31,7 +45,9 @@ export const ActiveStudents = () => {
               <p className='second_text'>Перестали ходить:</p>
               <VerticalProgress
                 progress={80}
-                text={'-4'}
+                text={
+                  analytic.left_this_week ? `-${analytic.left_this_week}` : '0'
+                }
                 width={'100px'}
                 height={'400px'}
                 border={'100px'}
@@ -40,7 +56,7 @@ export const ActiveStudents = () => {
               <p className='third_text'>Средний возраст:</p>
               <VerticalProgress
                 progress={80}
-                text={'13.7 лет'}
+                text={analytic.avg_age ? analytic.avg_age : '0'}
                 width={'100px'}
                 height={'400px'}
                 color={'#2DE920'}
@@ -51,33 +67,20 @@ export const ActiveStudents = () => {
         </div>
 
         <div className='row activeStudents_statistics_lessons'>
-          <div className='row item'>
-            <p>Английский</p>
-            <CircleProgress
-              percentage={45}
-              radius={100}
-              stroke={30}
-              color={'#313131'}
-            />
-          </div>
-          <div className='row item'>
-            <p>Математика</p>
-            <CircleProgress
-              percentage={30}
-              radius={100}
-              stroke={30}
-              color={'#313131'}
-            />
-          </div>
-          <div className='row item'>
-            <p>Робототехника</p>
-            <CircleProgress
-              percentage={25}
-              radius={100}
-              stroke={30}
-              color={'#313131'}
-            />
-          </div>
+          {analytic.directions_distribution &&
+            Object.entries(analytic.directions_distribution).map(
+              ([subject, percentage]) => (
+                <div className='row item' key={subject}>
+                  <p>{subject}</p>
+                  <CircleProgress
+                    percentage={percentage}
+                    radius={100}
+                    stroke={30}
+                    color={'#313131'}
+                  />
+                </div>
+              )
+            )}
         </div>
       </div>
     </section>

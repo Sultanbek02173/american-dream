@@ -6,12 +6,17 @@ import {
 
 import tabReducer from './reducers/tabSlice';
 import adminHomeReducer from './admin/homeAdmin/homeAdminSlice';
+import applicationAdminReducer from './admin/application/applicationSlice';
 import studentsReducer from './admin/students/studentsSlice';
 import teachersReducer from './admin/teacher/teachersSlice';
 import reportReducer from './admin/report/reportSlice';
 import entitiesReducer from './admin/entities/entitiesSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
+import scheduleReducer from './admin/schedule/scheduleSlice';
+import reportAnalyticReducer from './admin/reportAnalytic/reportAnalyticSlice';
+import paymentsReducer from './admin/payments/paymentsSlice';
+import paymentTeacherReducer from './admin/paymentsTeacher/paymentsTeacherSlice';
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
 
 import Cookies from 'js-cookie';
@@ -57,10 +62,15 @@ export const store = configureStore({
     tabs: tabReducer,
     adminHome: adminHomeReducer,
     auth: authReducer,
+    applicationAdmin: applicationAdminReducer,
+    schedule: scheduleReducer,
     students: studentsReducer,
     teachers: teachersReducer,
     report: reportReducer,
     entities: entitiesReducer,
+    reportAnalytic: reportAnalyticReducer,
+    payments: paymentsReducer,
+    paymentTeacher: paymentTeacherReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

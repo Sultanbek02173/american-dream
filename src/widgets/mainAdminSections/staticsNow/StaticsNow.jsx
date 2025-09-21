@@ -9,23 +9,35 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { dashBoardGet } from '../../../app/store/admin/homeAdmin/homeAdminThunks';
 import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice';
+import Cookies from 'js-cookie';
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+dayjs.locale('ru'); 
 
 export const StaticsNow = () => {
-  const percentage = 75;
   const radius = 60;
   const stroke = 20;
 
+  const role = Cookies.get('role');
   const dispatch = useDispatch();
   const { dashBoard } = useAdminHome();
-  console.log(dashBoard);
 
   useEffect(() => {
-    dispatch(dashBoardGet());
-  }, [dispatch]);
+    dispatch(dashBoardGet(role));
+  }, [dispatch, role]);
+
+  const payment = {
+    in_progress: 'В работе',
+    rejected: 'Отказ',
+    registered: 'Записан',
+    new: 'Новые',
+  };
 
   return (
     <section className='static_section'>
-      <p className='static_section_hi'>Hi, Админ!</p>
+      <p className='static_section_hi'>
+        Hi, {role === 'Manager' ? 'Менеджер' : 'Админ'}!
+      </p>
       <div className='static_section_header flex_item'>
         <h2>Ключевые показатели за сегодня</h2>
         <div className='static_section_header_btn'>
@@ -67,40 +79,51 @@ export const StaticsNow = () => {
 
       <div className='static_section_cards'>
         <div className='right_card'>
-          <div className='user_card'>
-            <div className='user_card_description'>
-              <h2>Тимур.Х</h2>
-              <p className='date'>24 мая, 09:45</p>
-            </div>
-            <div className='user_card_description'>
-              <h3>Курс:</h3>
-              <p>Математика 5 класс</p>
-            </div>
-            <div className='user_card_description'>
-              <h3>Статус:</h3>
-              <p>
-                <MdKeyboardArrowDown /> Без оплаты
-              </p>
-            </div>
-            <p className='user_card_note'>
-              <span>Примечание:</span> Ученик записан после бесплатного пробного
-              урока, ожидается подтверждение родителя.
-            </p>
-            <p className='user_card_served'>
-              <span>Обслуживал(а):</span> Бексултан.Г
-            </p>
-          </div>
+          {dashBoard.recent_invoices &&
+            dashBoard.recent_invoices.slice(0, 1).map((student, indx) => (
+              <div key={indx} className='user_card'>
+                <div className='user_card_description'>
+                  <h2>{student.student__first_name}</h2>
+                  <p className='date'>
+                    {dayjs(student.created_at).format('D MMMM, HH:mm')}
+                  </p>
+                </div>
+                <div className='user_card_description'>
+                  <h3>Курс:</h3>
+                  <p>{student.course}</p>
+                </div>
+                <div className='user_card_description'>
+                  <h3>Статус:</h3>
+                  <p>
+                    <MdKeyboardArrowDown />{' '}
+                    {payment[student.status] || student.status}
+                  </p>
+                </div>
+                <p className='user_card_note'>
+                  <span>Примечание:</span> {student.comment}
+                </p>
+                <p className='user_card_served'>
+                  <span>Обслуживал(а):</span> {student.name}
+                </p>
+              </div>
+            ))}
           <div className='user_card statist_students'>
             <div className='statist_students_year'>
               <h3>За 1 год</h3>
-              <h2>{dashBoard.new_students_year}</h2>
+              <h2>
+                {dashBoard.new_students_year ? dashBoard.new_students_year : 0}
+              </h2>
               <div>
-                <ProgressBar progress={100} />
+                <ProgressBar progress={dashBoard.new_students_year ? 100 : 0} />
               </div>
             </div>
             <div className='statist_students_month'>
               <h3>За этот месяц</h3>
-              <h2>{dashBoard.new_students_month}</h2>
+              <h2>
+                {dashBoard.new_students_month
+                  ? dashBoard.new_students_month
+                  : 0}
+              </h2>
               <div>
                 <ProgressBar
                   progress={
@@ -115,14 +138,19 @@ export const StaticsNow = () => {
         </div>
         <div className='left_card'>
           <div className='user_card count_students'>
-            <h2>Колчевство студентов</h2>
+            <h2>Количество студентов</h2>
 
             <div className='count_students_circle'>
-              <h2>{dashBoard.new_students_24h}</h2>
+              <h2>
+                {dashBoard.new_students_24h ? dashBoard.new_students_24h : 0}
+              </h2>
               <CircleProgress
                 percentage={
-                  (dashBoard.new_students_24h / dashBoard.new_students_year) *
-                  100
+                  dashBoard.new_students_24h
+                    ? ((dashBoard.new_students_24h /
+                        dashBoard.new_students_year) *
+                      100).toFixed(1)
+                    : 0
                 }
                 radius={radius}
                 stroke={stroke}
@@ -135,30 +163,32 @@ export const StaticsNow = () => {
             </div>
           </div>
 
-          <div className='user_card last_info'>
-            <div className='flex_item last_info_description'>
-              <h3>Тимур.Х</h3>
-              <p>24 мая, 09:45</p>
-            </div>
-            <div className='flex_item last_info_description'>
-              <p>Курс:</p>
-              <p>Математика 5 класс</p>
-            </div>
-            <div className='flex_item last_info_description'>
-              <p>Статус:</p>
-              <p>
-                <MdKeyboardArrowDown />
-                Ожидает
-              </p>
-            </div>
-            <p className='user_card_note'>
-              <span>Примечание:</span> Ученик записан после бесплатного пробного
-              урока, ожидается подтверждение родителя.
-            </p>
-            <p className='user_card_served'>
-              <span>Обслуживал(а):</span> Бексултан.Г
-            </p>
-          </div>
+          {dashBoard.recent_invoices &&
+            dashBoard.recent_invoices.slice(1, 2).map((student, indx) => (
+              <div key={indx} className='user_card last_info'>
+                <div className='flex_item last_info_description'>
+                  <h3>{student.name}</h3>
+                  <p>{dayjs(student.created_at).format('D MMMM, HH:mm')}</p>
+                </div>
+                <div className='flex_item last_info_description'>
+                  <p>Курс:</p>
+                  <p>{student.course}</p>
+                </div>
+                <div className='flex_item last_info_description'>
+                  <p>Статус:</p>
+                  <p>
+                    <MdKeyboardArrowDown />
+                    {payment[student.status] || student.status}
+                  </p>
+                </div>
+                <p className='user_card_note'>
+                  <span>Примечание:</span> {student.comment}
+                </p>
+                <p className='user_card_served'>
+                  <span>Обслуживал(а):</span> {student.name}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </section>

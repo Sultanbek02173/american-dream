@@ -11,7 +11,6 @@ import { useParams } from 'react-router-dom';
 export const TeacherDetail = () => {
   const { id } = useParams();
   const detail = data.find(item => item.id == id);
-  console.log(detail);
 
   const dispatch = useDispatch();
   const tabId = 'teacherDetailTabs';

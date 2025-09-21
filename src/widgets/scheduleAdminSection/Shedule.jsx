@@ -4,12 +4,14 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef } from 'react';
 import { SheduleModal } from '../../entities';
+import Cookies from 'js-cookie';
 
-export const Shedule = () => {
+export const Shedule = ({ schedule, createSchedule }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const inputRef = useRef(null);
+  const role = Cookies.get('role');
 
   const rooms = [
     'Каб. 1',
@@ -20,37 +22,14 @@ export const Shedule = () => {
     'Каб. 6',
     '',
   ];
-  const hours = Array.from({ length: 12 }, (_, i) => 12 + i);
+  const hours = Array.from({ length: 14 }, (_, i) => 10 + i);
 
-  const lessons = [
-    {
-      time: 12,
-      roomIndex: 2,
-      duration: 2,
-      title: 'Английский',
-      teacher: 'Анна К.',
-      group: 'A3',
-    },
-    {
-      time: 17,
-      roomIndex: 1,
-      duration: 2,
-      title: 'Робототехника',
-      teacher: 'Жанар Б.',
-      group: 'B2',
-    },
-    {
-      time: 17,
-      roomIndex: 2,
-      duration: 2,
-      title: 'Английский',
-      teacher: 'Анна К.',
-      group: 'A3',
-    },
-  ];
+  const filteredSchedule = schedule.filter(
+    lesson => lesson.date === selectedDate.format('YYYY-MM-DD')
+  );
 
   const lessonMap = new Map();
-  lessons.forEach(lesson => {
+  filteredSchedule.forEach(lesson => {
     for (let i = 0; i < lesson.duration; i++) {
       const key = `${lesson.time + i}-${lesson.roomIndex}`;
       lessonMap.set(key, { ...lesson, part: i });
@@ -60,6 +39,9 @@ export const Shedule = () => {
   const handleDateChange = e => {
     setSelectedDate(dayjs(e.target.value));
   };
+
+  // ✅ список ролей, которым разрешено редактирование
+  const canEdit = role === 'Manager' || role === 'Administrator';
 
   return (
     <section className='shedule'>
@@ -125,17 +107,25 @@ export const Shedule = () => {
                 return (
                   <div
                     onClick={() => {
-                      if (!lesson && roomIndex !== 6) {
-                        setOpen(true);
+                      if (canEdit && !lesson && roomIndex !== 6) {
+                        setOpen({
+                          time: hour,
+                          roomIndex,
+                          date: selectedDate.format('YYYY-MM-DD'),
+                        });
                       }
                     }}
                     key={roomIndex}
                     className={`grid_cell ${
-                      !lesson && roomIndex !== 6 ? 'can_add' : ''
+                      canEdit && !lesson && roomIndex !== 6 ? 'can_add' : ''
                     }`}
                     style={{
                       backgroundColor: lesson ? '#2DE920' : '',
                       color: lesson ? '#FFFFFF' : '',
+                      cursor:
+                        canEdit && !lesson && roomIndex !== 6
+                          ? 'pointer'
+                          : 'default',
                     }}
                   >
                     {isMain && (
@@ -155,7 +145,13 @@ export const Shedule = () => {
         </div>
       </div>
 
-      <SheduleModal open={open} setOpen={setOpen} />
+      <SheduleModal
+        open={open}
+        setOpen={setOpen}
+        selectedDate={selectedDate}
+        createSchedule={createSchedule}
+        cellInfo={open}
+      />
     </section>
   );
 };

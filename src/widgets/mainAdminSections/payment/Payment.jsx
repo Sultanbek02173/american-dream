@@ -6,8 +6,6 @@ import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice'
 export const Payment = () => {
   const { dashBoard } = useAdminHome();
 
-  console.log(dashBoard);
-  
   return (
     <section className='payment'>
       <div className='row payment_header'>
@@ -23,7 +21,12 @@ export const Payment = () => {
 
         <div className='row'>
           <div className='payment_statistics_sum'>
-            <h2>14 200 c</h2>
+            <h2>
+              {dashBoard?.payments_today?.amount
+                ? dashBoard?.payments_today?.amount
+                : 0}
+              c
+            </h2>
             <p>
               Общая сумма всех поступлений за день, включая наличные, переводы и
               онлайн-оплаты.
@@ -32,7 +35,11 @@ export const Payment = () => {
           <div className='payment_statistics_progress'>
             <div className='stastic'>
               <VerticalProgress
-                progress={85}
+                progress={
+                  (dashBoard?.payments_by_method?.cash /
+                    dashBoard?.payments_today?.amount) *
+                  100
+                }
                 text={'Наличными'}
                 width={'100px'}
                 height={'400px'}
@@ -42,7 +49,11 @@ export const Payment = () => {
             </div>
             <div className='stastic'>
               <VerticalProgress
-                progress={70}
+                progress={
+                  (dashBoard?.payments_by_method?.transfer /
+                    dashBoard?.payments_today?.amount) *
+                  100
+                }
                 text={'Перевод'}
                 width={'100px'}
                 height={'400px'}
@@ -52,7 +63,11 @@ export const Payment = () => {
             </div>
             <div className='stastic'>
               <VerticalProgress
-                progress={50}
+                progress={
+                  (dashBoard?.payments_by_method?.online /
+                    dashBoard?.payments_today?.amount) *
+                  100
+                }
                 text={'Онлайн'}
                 width={'100px'}
                 height={'400px'}
@@ -71,7 +86,12 @@ export const Payment = () => {
             <p className='type_pay'>Перевод</p>
           </div>
           <div>
-            <h2>5 200 c</h2>
+            <h2>
+              {dashBoard?.payments_by_method?.transfer
+                ? dashBoard?.payments_by_method?.transfer
+                : 0}
+              c
+            </h2>
           </div>
         </div>
         <div className='pay_user_right'>
@@ -80,14 +100,24 @@ export const Payment = () => {
             <p className='type_pay'>Наличные</p>
           </div>
           <div>
-            <h2>6 000 c</h2>
+            <h2>
+              {dashBoard?.payments_by_method?.cash
+                ? dashBoard?.payments_by_method?.cash
+                : 0}
+              c
+            </h2>
           </div>
         </div>
       </div>
       <div className='pay_online'>
         <div className='row pay_online_header'>
           <p>Сумма:</p>
-          <h2>3 000 c</h2>
+          <h2>
+            {dashBoard?.payments_by_method?.online
+              ? dashBoard?.payments_by_method?.online
+              : 0}
+            c
+          </h2>
         </div>
         <div>
           <p className='type_pay'>Онлайн</p>

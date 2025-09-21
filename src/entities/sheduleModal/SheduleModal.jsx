@@ -19,8 +19,10 @@ const schema = yup.object({
   group: yup.string().required('Введите группу'),
   teacher: yup.string().required('Введите имя преподавателя'),
   note: yup.string(),
+  duration: yup.number().required('Укажите длительность').min(1).max(5),
 });
-export const SheduleModal = ({ open, setOpen, lesson }) => {
+
+export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
   const initial = {
     hidden: {
       x: -800,
@@ -53,6 +55,26 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
     resolver: yupResolver(schema),
   });
 
+  const onSubmit = data => {
+    if (!cellInfo) return;
+
+    const payload = {
+      classroom_id: cellInfo.roomIndex + 1,
+      date: cellInfo.date,
+      direction: data.lessonName,
+      duration: data.duration,
+      group: data.group,
+      note: data.note,
+      roomIndex: cellInfo.roomIndex,
+      teacher: data.teacher,
+      time: cellInfo.time,
+    };
+
+    createSchedule(payload);
+    setOpen(false);
+    reset();
+  };
+
   return ReactDOM.createPortal(
     <AnimatePresence>
       {open && (
@@ -72,13 +94,7 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
             onClick={e => e.stopPropagation()}
           >
             <h2>Добавить занятие</h2>
-            <form
-              onSubmit={handleSubmit(data => {
-                console.log(data);
-                setOpen(false);
-              })}
-              className='forms'
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className='forms'>
               <div className='forms_left'>
                 <Controller
                   name='lessonName'
@@ -100,13 +116,16 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                           },
                         }}
                       >
-                        <MenuItem value='english' sx={menuItemStyle}>
+                        <MenuItem value='Англиский' sx={menuItemStyle}>
                           Английский
                         </MenuItem>
-                        <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
+                        <MenuItem
+                          value='Ментальная арифметика'
+                          sx={menuItemStyle}
+                        >
                           Ментальная арифметика
                         </MenuItem>
-                        <MenuItem value='robotics' sx={menuItemStyle}>
+                        <MenuItem value='Робототехника' sx={menuItemStyle}>
                           Робототехника
                         </MenuItem>
                       </Select>
@@ -125,6 +144,23 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                       variant='outlined'
                       sx={secondTextFieldSx}
                       error={!!errors.group}
+                    />
+                  )}
+                />
+
+                <Controller
+                  name='duration'
+                  control={control}
+                  defaultValue={1}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type='number'
+                      label='Длительность (часов)'
+                      variant='outlined'
+                      sx={secondTextFieldSx}
+                      error={!!errors.duration}
+                      inputProps={{ min: 1, max: 5 }}
                     />
                   )}
                 />

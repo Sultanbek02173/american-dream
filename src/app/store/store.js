@@ -6,8 +6,10 @@ import {
 
 import tabReducer from './reducers/tabSlice';
 import adminHomeReducer from './admin/homeAdmin/homeAdminSlice';
-
+import applicationAdminReducer from './admin/application/applicationSlice';
 import authReducer from './reducers/auth/AuthSlice';
+import scheduleReducer from './admin/schedule/scheduleSlice';
+
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
 
 import Cookies from 'js-cookie';
@@ -53,6 +55,8 @@ export const store = configureStore({
     tabs: tabReducer,
     adminHome: adminHomeReducer,
     auth: authReducer,
+    applicationAdmin: applicationAdminReducer,
+    schedule: scheduleReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

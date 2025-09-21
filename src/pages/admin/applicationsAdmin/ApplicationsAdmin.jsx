@@ -5,9 +5,15 @@ import {
 } from 'react-icons/io';
 import './applicationsAdmin.scss';
 import { useNavigate } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApplicatinModal } from '../../../entities';
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useDispatch } from 'react-redux';
+import { applicationGet } from '../../../app/store/admin/application/applicationThunks';
+import { useApplicationAdmin } from '../../../app/store/admin/application/applicationSlice';
+
+dayjs.extend(customParseFormat);
 
 export const ApplicationsAdmin = () => {
   const navigate = useNavigate();
@@ -15,44 +21,42 @@ export const ApplicationsAdmin = () => {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const inputRef = useRef(null);
+  const [modalData, setModalData] = useState();
 
-  const buttons = [
-    { label: 'Новые', value: 'new' },
-    { label: 'В работе', value: 'now' },
-    { label: 'Записан', value: 'recorded' },
-    { label: 'Отказ', value: 'refusal' },
-  ];
-
-  const cardUser = [
-    {
-      id: 0,
-      user: 'Айбек Калыков',
-      number: '+996 555 111 222',
-      title: 'Подготовка к ОРТ',
-    },
-    {
-      id: 1,
-      user: 'Айбек Калыков',
-      number: '+996 555 111 222',
-      title: 'Подготовка к ОРТ',
-    },
-    {
-      id: 2,
-      user: 'Айбек Калыков',
-      number: '+996 555 111 222',
-      title: 'Подготовка к ОРТ',
-    },
-    {
-      id: 3,
-      user: 'Айбек Калыков',
-      number: '+996 555 111 222',
-      title: 'Подготовка к ОРТ',
-    },
-  ];
+  const dispatch = useDispatch();
+  const { application } = useApplicationAdmin();
+  console.log(application);
 
   const handleDateChange = e => {
     setSelectedDate(dayjs(e.target.value));
   };
+
+  const filteredApplications = Array.isArray(application)
+    ? application.filter(card => {
+        if (!card || !card.status || !card.updated_at) return false;
+        const statusMatch = active ? card.status === active : true;
+        const parsedDate = dayjs(card.updated_at, 'DD.MM.YYYY HH:mm', true);
+        if (!parsedDate.isValid()) return false;
+        const cardDate = parsedDate.format('YYYY-MM-DD');
+        const selected = selectedDate.format('YYYY-MM-DD');
+        const dateMatch = cardDate === selected;
+        return statusMatch && dateMatch;
+      })
+    : [];
+
+  const buttons = [
+    { label: 'Новые', value: 'new' },
+    { label: 'В работе', value: 'in_progress' },
+    { label: 'Записан', value: 'registered' },
+    { label: 'Отказ', value: 'rejected' },
+  ];
+
+  useEffect(() => {
+    dispatch(applicationGet());
+  }, [dispatch]);
+
+  console.log(modalData);
+
   return (
     <div className='applicationsAdmin_cont'>
       <section>
@@ -111,42 +115,55 @@ export const ApplicationsAdmin = () => {
         </div>
 
         <div className='applicationsAdmin_cont_cards'>
-          {cardUser &&
-            cardUser.map(card => (
+          {filteredApplications.length > 0 ? (
+            filteredApplications.map(card => (
               <div
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                  setOpen(!open);
+                  setModalData(card);
+                }}
                 key={card.id}
                 className='row card'
               >
                 <div className='card_user'>
-                  <h3>{card.user}</h3>
-                  <p className='card_user_phone'>{card.number}</p>
-
-                  <p>{card.title}</p>
+                  <h3>{card.name || 'Без имени'}</h3>
+                  <p className='card_user_phone'>{card.phone || '—'}</p>
+                  <p>
+                    {card.comment
+                      ? card.comment.length > 20
+                        ? `${card.comment.slice(0, 20)}...`
+                        : card.comment
+                      : 'Нет комментария'}
+                  </p>
                 </div>
                 <p className='row card_btn'>
                   Расвернуть <IoIosArrowDown size={20} />
                 </p>
               </div>
-            ))}
+            ))
+          ) : (
+            <p style={{ textAlign: 'center', marginTop: 20 }}>Заявок нет</p>
+          )}
         </div>
       </section>
 
       <ApplicatinModal setOpen={setOpen} open={open}>
-        <>
-          <div className='modal_container_user'>
-            <h3>Айбек Калыков</h3>
-            <p>+996 555 111 222</p>
-            <p>ayibek45676@gmail.com</p>
-            <p>Источник: Форма на сайте</p>
-            <p>Подготовка к ОРТ</p>
-          </div>
-          <div className='modal_container_message'>
-            <p>"Хотел бы узнать расписание и формат занятий"</p>
-            <input type='text' name='user' placeholder='Аслан Караев' />
-            <p>03.06.2025 — 12:42</p>
-          </div>
-        </>
+        {modalData && (
+          <>
+            <div className='modal_container_user'>
+              <h3>{modalData.name}</h3>
+              <p>{modalData.phone}</p>
+              <p>{modalData.email}</p>
+              <p>Источник: Форма на сайте</p>
+              <p>{modalData.course}</p>
+            </div>
+            <div className='modal_container_message'>
+              <p>{modalData.comment}</p>
+              <input type='text' name='user' placeholder='Аслан Караев' />
+              <p>{modalData.updated_at}</p>
+            </div>
+          </>
+        )}
       </ApplicatinModal>
     </div>
   );

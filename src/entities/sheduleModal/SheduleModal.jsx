@@ -21,6 +21,7 @@ import {
 import { useEntities } from '../../app/store/admin/entities/entitiesSlice';
 import { getTeacherList } from '../../app/store/admin/teacher/teacherThunk';
 import { useTeachers } from '../../app/store/admin/teacher/teachersSlice';
+import Cookies from 'js-cookie';
 
 const schema = yup.object({
   lessonName: yup.string().required('Выберите занятие'),
@@ -56,7 +57,7 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
   const dispatch = useDispatch();
   const { directions, groups } = useEntities();
   const { teacherList } = useTeachers();
-  console.log(groups);
+  const role = Cookies.get('role')
 
   const {
     control,
@@ -88,9 +89,11 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
   };
 
   useEffect(() => {
-    dispatch(getDirections());
-    dispatch(getTeacherList());
-    dispatch(getGroups());
+    if(role === 'Administrator' || role === 'Manager'){
+      dispatch(getDirections());
+      dispatch(getTeacherList());
+      dispatch(getGroups());
+    }
   }, [dispatch]);
 
   return ReactDOM.createPortal(

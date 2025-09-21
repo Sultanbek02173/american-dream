@@ -146,14 +146,17 @@ export const Shedule = ({ schedule, createSchedule }) => {
           ))}
         </div>
       </div>
-
-      <SheduleModal
-        open={open}
-        setOpen={setOpen}
-        selectedDate={selectedDate}
-        createSchedule={createSchedule}
-        cellInfo={open}
-      />
+        {
+          canEdit && (
+            <SheduleModal
+              open={open}
+              setOpen={setOpen}
+              selectedDate={selectedDate}
+              createSchedule={createSchedule}
+              cellInfo={open}
+            />
+          )
+        }
     </section>
   );
 };

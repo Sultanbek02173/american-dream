@@ -15,7 +15,8 @@ import entitiesReducer from './admin/entities/entitiesSlice';
 import authReducer from './reducers/auth/AuthSlice';
 import scheduleReducer from './admin/schedule/scheduleSlice';
 import reportAnalyticReducer from './admin/reportAnalytic/reportAnalyticSlice';
-
+import paymentsReducer from './admin/payments/paymentsSlice';
+import paymentTeacherReducer from './admin/paymentsTeacher/paymentsTeacherSlice';
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
 
 import Cookies from 'js-cookie';
@@ -68,6 +69,8 @@ export const store = configureStore({
     report: reportReducer,
     entities: entitiesReducer,
     reportAnalytic: reportAnalyticReducer,
+    payments: paymentsReducer,
+    paymentTeacher: paymentTeacherReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

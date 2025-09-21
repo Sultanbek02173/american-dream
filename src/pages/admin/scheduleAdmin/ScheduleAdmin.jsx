@@ -13,8 +13,6 @@ export const ScheduleAdmin = () => {
   const { schedule } = useScheduleAdmin();
 
   const createSchedule = data => {
-    console.log(data);
-
     const newSchedule = {
       classroom_id: data.classroom_id,
       group: data.group,

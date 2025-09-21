@@ -1,10 +1,18 @@
-import { Shedule } from "../../../widgets";
+import { useEffect } from 'react';
+import { Shedule } from '../../../widgets';
+import { useDispatch } from 'react-redux';
+import { useScheduleAdmin } from '../../../app/store/admin/schedule/scheduleSlice';
+import { scheduleGet } from '../../../app/store/admin/schedule/scheduleThunks';
 
 export const ScheduleStudent = () => {
-    return (
-        <div>
-            <Shedule />
-        </div>
-    );
-}
-
+  const dispatch = useDispatch();
+  const { schedule } = useScheduleAdmin();
+  useEffect(() => {
+    dispatch(scheduleGet());
+  }, [dispatch]);
+  return (
+    <div>
+      <Shedule schedule={schedule} />
+    </div>
+  );
+};

@@ -1,7 +1,15 @@
+import { useDispatch } from 'react-redux';
 import { HomeWorkCard } from '../../../featurs';
 import './homeWorks.scss';
+import { useEffect } from 'react';
+import { homeworkGet } from '../../../app/store/student/homeWork/homeworkThunks';
+import { useHomework } from '../../../app/store/student/homeWork/homeworkSlice';
 
 export const HomeWorks = () => {
+  const dispatch = useDispatch();
+  const { homework } = useHomework();
+  console.log(homework);
+
   const homeWorks = [
     {
       id: 1,
@@ -32,13 +40,17 @@ export const HomeWorks = () => {
       status: 'error',
     },
   ];
+
+  useEffect(() => {
+    dispatch(homeworkGet());
+  }, [dispatch]);
   return (
     <section className='home_works'>
-      {homeWorks.map(homeWork => (
+      {homework?.map(homeWork => (
         <HomeWorkCard
-          user={homeWork.user}
+          user={homeWork.title}
           group={homeWork.group}
-          lesson={homeWork.title}
+          lesson={homeWork.description}
           status={homeWork.status}
           key={homeWork.id}
         />

@@ -12,8 +12,7 @@ import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice'
 import Cookies from 'js-cookie';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-
-dayjs.locale('ru'); // русский язык для дат
+dayjs.locale('ru'); 
 
 export const StaticsNow = () => {
   const radius = 60;
@@ -148,9 +147,9 @@ export const StaticsNow = () => {
               <CircleProgress
                 percentage={
                   dashBoard.new_students_24h
-                    ? (dashBoard.new_students_24h /
+                    ? ((dashBoard.new_students_24h /
                         dashBoard.new_students_year) *
-                      100
+                      100).toFixed(1)
                     : 0
                 }
                 radius={radius}

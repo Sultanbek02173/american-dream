@@ -113,7 +113,7 @@ export const secondTextFieldSx = {
 };
 
 export const selectSx = {
-  width: '570px',
+  width: '50%',
   color: '#fff',
   '& label': {
     color: '#ffffff83',

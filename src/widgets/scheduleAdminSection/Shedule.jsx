@@ -24,14 +24,19 @@ export const Shedule = ({ schedule, createSchedule }) => {
   ];
   const hours = Array.from({ length: 14 }, (_, i) => 10 + i);
 
-  const filteredSchedule = schedule.filter(
-    lesson => lesson.date === selectedDate.format('YYYY-MM-DD')
-  );
-
+  const filteredSchedule = Array.isArray(schedule)
+    ? schedule.filter(
+        lesson => lesson.date === selectedDate.format('YYYY-MM-DD')
+      )
+    : [];
+    
+    console.log(schedule);
   const lessonMap = new Map();
   filteredSchedule.forEach(lesson => {
+    const baseHour = parseInt(lesson.time.split(':')[0], 10);
+    
     for (let i = 0; i < lesson.duration; i++) {
-      const key = `${lesson.time + i}-${lesson.roomIndex}`;
+      const key = `${baseHour + i}-${lesson.roomIndex}`;
       lessonMap.set(key, { ...lesson, part: i });
     }
   });
@@ -40,7 +45,6 @@ export const Shedule = ({ schedule, createSchedule }) => {
     setSelectedDate(dayjs(e.target.value));
   };
 
-  // ✅ список ролей, которым разрешено редактирование
   const canEdit = role === 'Manager' || role === 'Administrator';
 
   return (
@@ -131,7 +135,7 @@ export const Shedule = ({ schedule, createSchedule }) => {
                     {isMain && (
                       <div className='lesson'>
                         <div>
-                          <h3>{lesson.title}</h3>
+                          <h3>{lesson.direction || lesson.title}</h3>
                           <p>{lesson.teacher}</p>
                         </div>
                         <div>{lesson.group}</div>
@@ -144,14 +148,17 @@ export const Shedule = ({ schedule, createSchedule }) => {
           ))}
         </div>
       </div>
-
-      <SheduleModal
-        open={open}
-        setOpen={setOpen}
-        selectedDate={selectedDate}
-        createSchedule={createSchedule}
-        cellInfo={open}
-      />
+        {
+          canEdit && (
+            <SheduleModal
+              open={open}
+              setOpen={setOpen}
+              selectedDate={selectedDate}
+              createSchedule={createSchedule}
+              cellInfo={open}
+            />
+          )
+        }
     </section>
   );
 };

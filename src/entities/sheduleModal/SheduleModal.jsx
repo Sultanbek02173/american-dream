@@ -3,7 +3,7 @@ import './sheduleModal.scss';
 import { AnimatePresence, motion } from 'framer-motion';
 import TextField from '@mui/material/TextField';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   firstTextFieldSx,
   menuItemStyle,
@@ -13,6 +13,15 @@ import {
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+import {
+  getDirections,
+  getGroups,
+} from '../../app/store/admin/entities/entitiesThunk';
+import { useEntities } from '../../app/store/admin/entities/entitiesSlice';
+import { getTeacherList } from '../../app/store/admin/teacher/teacherThunk';
+import { useTeachers } from '../../app/store/admin/teacher/teachersSlice';
+import Cookies from 'js-cookie';
 
 const schema = yup.object({
   lessonName: yup.string().required('Выберите занятие'),
@@ -45,6 +54,10 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
   const handleChange = event => {
     setValue(event.target.value);
   };
+  const dispatch = useDispatch();
+  const { directions, groups } = useEntities();
+  const { teacherList } = useTeachers();
+  const role = Cookies.get('role')
 
   const {
     control,
@@ -74,6 +87,14 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
     setOpen(false);
     reset();
   };
+
+  useEffect(() => {
+    if(role === 'Administrator' || role === 'Manager'){
+      dispatch(getDirections());
+      dispatch(getTeacherList());
+      dispatch(getGroups());
+    }
+  }, [dispatch]);
 
   return ReactDOM.createPortal(
     <AnimatePresence>
@@ -116,18 +137,12 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                           },
                         }}
                       >
-                        <MenuItem value='Англиский' sx={menuItemStyle}>
-                          Английский
-                        </MenuItem>
-                        <MenuItem
-                          value='Ментальная арифметика'
-                          sx={menuItemStyle}
-                        >
-                          Ментальная арифметика
-                        </MenuItem>
-                        <MenuItem value='Робототехника' sx={menuItemStyle}>
-                          Робототехника
-                        </MenuItem>
+                        {directions &&
+                          directions.map(direction => (
+                            <MenuItem value={direction.name} sx={menuItemStyle}>
+                              {direction.name}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                   )}
@@ -138,13 +153,33 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                   control={control}
                   defaultValue=''
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label='Группа'
-                      variant='outlined'
-                      sx={secondTextFieldSx}
-                      error={!!errors.group}
-                    />
+                    <FormControl sx={selectSx} error={!!errors.teacher}>
+                      <InputLabel>Группа</InputLabel>
+                      <Select
+                        {...field}
+                        sx={{ color: '#fff' }}
+                        label='Группа'
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: '#313131',
+                              color: '#fff',
+                            },
+                          },
+                        }}
+                      >
+                        {groups &&
+                          groups.map(group => (
+                            <MenuItem
+                              key={group.id}
+                              value={group.group_name}
+                              sx={menuItemStyle}
+                            >
+                              {group.group_name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
                   )}
                 />
 
@@ -172,13 +207,33 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                   control={control}
                   defaultValue=''
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label='Преподаватель'
-                      variant='outlined'
-                      sx={firstTextFieldSx}
-                      error={!!errors.teacher}
-                    />
+                    <FormControl sx={selectSx} error={!!errors.teacher}>
+                      <InputLabel>Преподаватель</InputLabel>
+                      <Select
+                        {...field}
+                        sx={{ color: '#fff' }}
+                        label='Преподаватель'
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: '#313131',
+                              color: '#fff',
+                            },
+                          },
+                        }}
+                      >
+                        {teacherList &&
+                          teacherList.map(teacher => (
+                            <MenuItem
+                              key={teacher.id}
+                              value={teacher.full_name}
+                              sx={menuItemStyle}
+                            >
+                              {teacher.full_name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
                   )}
                 />
 
@@ -191,7 +246,7 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                       {...field}
                       label='Примечание'
                       variant='outlined'
-                      sx={secondTextFieldSx}
+                      sx={selectSx}
                     />
                   )}
                 />

@@ -63,7 +63,12 @@ const authSlice = createSlice({
         };
       })
       .addCase(logoutUser.fulfilled, state => {
-        Object.assign(state, initialState);
+        state.loading = false;
+        state.error = null;
+        state.access = '';
+        state.role = null;
+        state.login = null;
+        state.user = null;
       })
       .addCase(setLogin, (state, { payload }) => {
         state.login = payload;

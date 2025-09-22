@@ -7,12 +7,14 @@ import { scheduleGet } from '../../../app/store/admin/schedule/scheduleThunks';
 export const ScheduleStudent = () => {
   const dispatch = useDispatch();
   const { schedule } = useScheduleAdmin();
+  console.log(schedule);
+  
   useEffect(() => {
     dispatch(scheduleGet());
   }, [dispatch]);
   return (
-    <div>
+    <>
       <Shedule schedule={schedule} />
-    </div>
+    </>
   );
 };

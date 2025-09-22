@@ -29,10 +29,12 @@ export const Shedule = ({ schedule, createSchedule }) => {
         lesson => lesson.date === selectedDate.format('YYYY-MM-DD')
       )
     : [];
-
+    
+    console.log(schedule);
   const lessonMap = new Map();
   filteredSchedule.forEach(lesson => {
     const baseHour = parseInt(lesson.time.split(':')[0], 10);
+    
     for (let i = 0; i < lesson.duration; i++) {
       const key = `${baseHour + i}-${lesson.roomIndex}`;
       lessonMap.set(key, { ...lesson, part: i });

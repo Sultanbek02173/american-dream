@@ -3,10 +3,13 @@ import { ApplicatinModal, UniversalTable } from '../../../entities';
 import './mainTeacher.scss';
 import { IoIosArrowDown } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
+import { useAccaunt } from '../../../app/store/reducers/accaunt/accauntSlice';
 
 export const MainTeacher = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { accaunt } = useAccaunt();
+
   const columns = [
     { title: '№', dataIndex: 'id', key: 'id' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
@@ -48,7 +51,9 @@ export const MainTeacher = () => {
     <main>
       <section className='groups'>
         <div className='container'>
-          <p className='groups__subtitle'>Hi, Аслан!</p>
+          <p className='groups__subtitle'>
+            Hi, {accaunt?.first_name ?? 'User'}!
+          </p>
           <h3 className='groups__title'>Мои группы</h3>
           <UniversalTable
             columns={columns}
@@ -73,7 +78,7 @@ export const MainTeacher = () => {
                 <div
                   onClick={() => setOpen(!open)}
                   key={card.id}
-                  className={`row card ${card.status}`} // retake, verified, failed
+                  className={`row card ${card.status}`}
                 >
                   <div className='card_user'>
                     <h3>{card.user}</h3>

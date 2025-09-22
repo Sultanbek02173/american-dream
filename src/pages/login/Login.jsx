@@ -1,6 +1,5 @@
 import './login.scss';
 import * as yup from 'yup';
-// import Cookies from 'js-cookie'; // <- не используется, можно удалить
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate } from 'react-router-dom';
@@ -30,13 +29,11 @@ export const Login = () => {
 
   const onSubmit = async ({ username, password }) => {
     try {
-      clearErrors('root'); // убираем старую серверную ошибку перед новым submit
+      clearErrors('root'); 
       await dispatch(userLogin({ username, password })).unwrap();
       navigate('/');
     } catch (e) {
-      // e может быть строкой или объектом из rejectWithValue
       const err = e || {};
-      // Ошибка формы целиком (типичный случай: non_field_errors)
       const formMsg =
         (Array.isArray(err.non_field_errors) &&
           err.non_field_errors.join(' ')) ||
@@ -46,7 +43,6 @@ export const Login = () => {
 
       setError('root.server', { type: 'server', message: formMsg });
 
-      // Если бэк вернёт ошибки по полям — тоже покажем их у инпутов
       if (err.username) {
         const msg = Array.isArray(err.username)
           ? err.username.join(' ')
@@ -98,7 +94,6 @@ export const Login = () => {
             <p className='errors'>{errors.password.message}</p>
           )}
 
-          {/* Глобальная серверная ошибка (например, неверные логин/пароль) */}
           {errors.root?.server?.message && (
             <p className='errors'>{errors.root.server.message}</p>
           )}

@@ -1,20 +1,12 @@
 import { TextField } from '@mui/material';
-import React, { useState } from 'react';
-import { eventHandler } from '../../../shared/utils/eventHandlers';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { inputStyle } from '../../../shared/utils/MuiStyles';
-import { setActiveTab } from '../../../app/store/reducers/tabSlice';
 import { useDispatch } from 'react-redux';
+import { setActiveTab } from '../../../app/store/reducers/tabSlice';
 
-export const FixedRate = () => {
-  const { 0: state, 1: setState } = useState({
-    amount: '30 000 с',
-  });
+export const FixedRate = ({ amount, onChange }) => {
   const tabId = 'addTeacherTabs';
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-  const onChange = eventHandler(setState);
 
   return (
     <form onSubmit={e => e.preventDefault()} className='FixedRate'>
@@ -23,13 +15,13 @@ export const FixedRate = () => {
           id='outlined-basic'
           label='В месяц'
           name='amount'
-          onChange={onChange}
-          value={state.amount}
+          onChange={e => onChange(e.target.value)}
+          value={amount}
           variant='outlined'
           sx={{ ...inputStyle, width: '100%' }}
         />
       </div>
-      <div className='dataTeacher__row'>
+      {/* <div className='dataTeacher__row'>
         <button
           onClick={() => dispatch(setActiveTab({ tabId, index: 0 }))}
           className='dataTeacher__row-button'
@@ -39,12 +31,12 @@ export const FixedRate = () => {
         </button>
         <button
           className='dataTeacher__row-button add'
-          disabled={!state.amount}
+          disabled={!amount}
           type='submit'
         >
           Добавить
         </button>
-      </div>
+      </div> */}
     </form>
   );
 };

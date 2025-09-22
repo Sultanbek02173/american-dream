@@ -1,9 +1,7 @@
 import { Radio } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FixedRate } from '../../TeacherPaymentTabs/FixedRate';
 import { HourlyRate } from '../../TeacherPaymentTabs/HourlyRate';
-// import { FixedRate } from './TeacherPaymentTabs/FixedRate';
-// import { HourlyRate } from './TeacherPaymentTabs/HourlyRate';
 
 export const TeacherPaymentTypeData = () => {
   const [selectedValue, setSelectedValue] = useState(1);

@@ -5,143 +5,139 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bilol from '../../pages/admin/studentsDetail/image.jpg';
+import {
+  getDirections,
+  getGroups,
+} from '../../app/store/admin/entities/entitiesThunk';
 import { eventHandler } from '../../shared/utils/eventHandlers';
 import {
   formControlStyle,
   inputStyle,
   menuItemStyle,
 } from '../../shared/utils/MuiStyles';
+import { useEntities } from '../../app/store/admin/entities/entitiesSlice';
+import { useDispatch } from 'react-redux';
 
-
-export const DataTeacher = () => {
-  const [state, setState] = useState({
-    id: 1,
-    image: bilol,
-    full_name: 'Алина',
-    telegram: '@alin1244',
-    phone: '+996 500 123 456',
-    login: 'alinaknzzz12',
-    password: 'r_12lfomt',
-    teacher: 'Алия Калымбекова',
-    group: 'eng-01',
-    direction: 'mentalArithmetic',
-  });
+export const DataTeacher = ({ formData, setFormData }) => {
+  const { directions, groups } = useEntities();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onChange = eventHandler(setState);
+  useEffect(() => {
+    dispatch(getDirections());
+    dispatch(getGroups());
+  }, []);
 
-  const handleSelectChange = event => {
-    const { name, value } = event.target;
-    setState(prev => ({ ...prev, [name]: value }));
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
-
-  const isAllFieldsFilled = obj =>
-    Object.entries(obj).every(([key, value]) => {
-      if (key === 'image' || key === 'id') return true;
-      return value !== '' && value !== null && value !== undefined;
-    });
 
   return (
     <form onSubmit={e => e.preventDefault()} className='dataTeacher'>
       <div className='studentsDetail__form-inputs'>
         <TextField
-          label='ФИО'
-          name='full_name'
-          onChange={onChange}
-          value={state.full_name}
-          variant='outlined'
+          label='Имя'
+          name='first_name'
+          value={formData.first_name}
+          onChange={handleChange}
+          sx={{ ...inputStyle, width: '50%' }}
+        />
+        <TextField
+          label='Фамилия'
+          name='last_name'
+          value={formData.last_name}
+          onChange={handleChange}
+          sx={{ ...inputStyle, width: '50%' }}
+        />
+      </div>
+      <div className='studentsDetail__form-inputs'>
+        <TextField
+          label='Возраст'
+          name='age'
+          value={formData.age}
+          onChange={handleChange}
           sx={{ ...inputStyle, width: '100%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Телеграм'
           name='telegram'
-          onChange={onChange}
-          value={state.telegram}
-          variant='outlined'
+          value={formData.telegram}
+          onChange={handleChange}
           sx={{ ...inputStyle, width: '55%' }}
         />
         <TextField
-          label='Телефон номер'
+          label='Телефон'
           name='phone'
-          onChange={onChange}
-          value={state.phone}
-          variant='outlined'
+          value={formData.phone}
+          onChange={handleChange}
           sx={{ ...inputStyle, width: '45%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Логин'
-          name='login'
-          onChange={onChange}
-          value={state.login}
-          variant='outlined'
+          name='username'
+          value={formData.username}
+          onChange={handleChange}
           sx={{ ...inputStyle, width: '45%' }}
         />
         <TextField
           label='Пароль'
           name='password'
-          onChange={onChange}
-          value={state.password}
-          variant='outlined'
+          value={formData.password}
+          onChange={handleChange}
           sx={{ ...inputStyle, width: '55%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <FormControl sx={{ ...formControlStyle, width: '55%' }}>
           <InputLabel id='group-label'>Группа</InputLabel>
           <Select
             labelId='group-label'
-            value={state.group}
-            label='Группа'
-            name='group'
-            onChange={handleSelectChange}
+            value={formData.group_ids[0] || ''}
+            onChange={e =>
+              setFormData(prev => ({ ...prev, group_ids: [e.target.value] }))
+            }
           >
-            <MenuItem value='eng-01' sx={menuItemStyle}>
-              ENG-01
-            </MenuItem>
+            {groups.map(group => (
+              <MenuItem key={group.id} value={group.id} sx={menuItemStyle}>
+                {group.group_name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
+
         <FormControl sx={{ ...formControlStyle, width: '45%' }}>
           <InputLabel id='direction-label'>Направление</InputLabel>
           <Select
             labelId='direction-label'
-            value={state.direction}
-            label='Направление'
-            name='direction'
-            onChange={handleSelectChange}
+            value={formData.direction_ids[0] || ''}
+            onChange={e =>
+              setFormData(prev => ({
+                ...prev,
+                direction_ids: [e.target.value],
+              }))
+            }
           >
-            <MenuItem value='english' sx={menuItemStyle}>
-              Английский
-            </MenuItem>
-            <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-              Ментальная арифметика
-            </MenuItem>
-            <MenuItem value='robotics' sx={menuItemStyle}>
-              Робототехника
-            </MenuItem>
+            {directions.map(direction => (
+              <MenuItem
+                key={direction.id}
+                value={direction.id}
+                sx={menuItemStyle}
+              >
+                {direction.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-      </div>
-      <div className='dataTeacher__row'>
-        <button
-          className='dataTeacher__row-button'
-          type='button'
-          onClick={() => navigate('/teacher-table')}
-        >
-          Отменить
-        </button>
-        <button
-          className='dataTeacher__row-button add'
-          disabled={!isAllFieldsFilled(state)}
-        >
-          Добавить
-        </button>
       </div>
     </form>
   );

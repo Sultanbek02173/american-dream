@@ -32,7 +32,7 @@ import {
   TeacherGroupDetail,
   TeacherStudentDetail,
   TeacherTable,
-  СreateNewGroupsTabs,
+  CreateNewGroupsTabs,
 } from '../../pages';
 
 import { Accaunts, Breadcrumbs, SideBar } from '../../entities';
@@ -172,7 +172,7 @@ const App = () => {
                     <Route path='/add-student' element={<AddStudent />} />
                     <Route
                       path='/create-new-group'
-                      element={<СreateNewGroupsTabs />}
+                      element={<CreateNewGroupsTabs />}
                     />
                   </>
                 )}

@@ -12,3 +12,18 @@ export const getGroupList = createAsyncThunk(
     }
   }
 );
+
+export const createGroup = createAsyncThunk(
+  'create/group',
+  async (data, { rejectWithValue }) => {
+    try {
+      const { data: response } = await axiosApi.post(
+        '/administration/groups/',
+        data
+      );
+      return response;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  }
+);

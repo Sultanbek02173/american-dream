@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getTeacherList, getTeacherProfile } from './teacherThunk';
+import {
+  createTeacher,
+  getTeacherList,
+  getTeacherProfile,
+} from './teacherThunk';
 import { useSelector } from 'react-redux';
 
 const initialState = {
@@ -28,6 +32,17 @@ const teachersSlice = createSlice({
       .addCase(getTeacherList.rejected, (state, { payload }) => {
         state.error = payload;
         state.loading = false;
+      })
+
+      .addCase(createTeacher.pending, state => {
+        state.loading = true;
+      })
+      .addCase(createTeacher.fulfilled, (state, { payload }) => {
+        state.loading = false;
+      })
+      .addCase(createTeacher.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
       })
 
       .addCase(getTeacherProfile.pending, state => {

@@ -1,36 +1,53 @@
-import React, { useState } from 'react';
+// CreateNewGroupStudents.jsx
 import { motion, AnimatePresence } from 'framer-motion';
 import searchIcon from '../../studentsTable/images/search.svg';
-import { Checkbox, TextField } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { inputStyle } from '../../../../shared/utils/MuiStyles';
-import { eventHandler } from '../../../../shared/utils/eventHandlers';
-import plusIcon from '../../teacherTable/plus.svg';
-export const CreateNewGroupStudents = () => {
+import {
+  formControlStyle,
+  inputStyle,
+  menuItemStyle,
+} from '../../../../shared/utils/MuiStyles';
+import { useStudents } from '../../../../app/store/admin/students/studentsSlice';
+import { useDispatch } from 'react-redux';
+import { getStudentList } from '../../../../app/store/admin/students/studentsThunk';
+import { useEffect, useMemo, useState } from 'react';
+import { useTeachers } from '../../../../app/store/admin/teacher/teachersSlice';
+import { getTeacherList } from '../../../../app/store/admin/teacher/teacherThunk';
+
+export const CreateNewGroupStudents = ({
+  teacher,
+  setTeacher,
+  selectedStudents,
+  addStudent,
+  removeStudent,
+}) => {
   const [isListVisible, setIsListVisible] = useState(false);
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const [state, setState] = useState({
-    teacher: '',
-    search: '',
-  });
+  const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
+  const { students } = useStudents();
+  const { teacherList } = useTeachers();
 
-  const students = [
-    { id: 1, name: 'Алина Жумабаева Кларковна' },
-    { id: 2, name: 'Максат Абдыкадыров' },
-    { id: 3, name: 'Алия Ахметова' },
-    { id: 4, name: 'Ислам Жээналиев' },
-    { id: 5, name: 'Нурайым Осмонова' },
-    { id: 6, name: 'Айгуль Сыдыкова' },
-  ];
+  useEffect(() => {
+    dispatch(getStudentList());
+    dispatch(getTeacherList());
+  }, [dispatch]);
 
-  const onChange = eventHandler(setState);
-
-  const toggleStudent = id => {
-    setSelectedStudents(prev =>
-      prev.includes(id) ? prev.filter(sid => sid !== id) : [...prev, id]
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return students;
+    return students.filter(s =>
+      (s.full_name || s.name || '').toLowerCase().includes(q)
     );
-  };
+  }, [students, search]);
 
   const fadeIn = {
     hidden: { opacity: 0, height: 0 },
@@ -42,6 +59,11 @@ export const CreateNewGroupStudents = () => {
       width: '100%',
     },
     exit: { opacity: 0, height: 0 },
+  };
+
+  const toggleStudent = id => {
+    if (selectedStudents.includes(id)) removeStudent(id);
+    else addStudent(id);
   };
 
   return (
@@ -56,21 +78,32 @@ export const CreateNewGroupStudents = () => {
         <input
           placeholder='Поиск'
           name='search'
-          onChange={onChange}
+          onChange={e => setSearch(e.target.value)}
           type='text'
+          value={search}
         />
         <img src={searchIcon} alt='' />
       </div>
 
       <div className='studentsDetail__form-inputs'>
-        <TextField
-          label='Преподаватель'
-          name='full_name'
-          onChange={onChange}
-          value={state.teacher}
-          variant='outlined'
-          sx={{ ...inputStyle, width: '100%' }}
-        />
+        <FormControl sx={{ ...formControlStyle, width: '100%' }}>
+          <InputLabel id='direction-label'>Преподаватель</InputLabel>
+          <Select
+            labelId='direction-label'
+            label='Преподаватель'
+            name='teacher'
+            value={teacher}
+            onChange={e =>
+              setTeacher(e.target.value ? Number(e.target.value) : null)
+            }
+          >
+            {teacherList.map(teacher => (
+              <MenuItem key={teacher.id} value={teacher.id} sx={menuItemStyle}>
+                {teacher.full_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
 
       <div
@@ -78,7 +111,7 @@ export const CreateNewGroupStudents = () => {
         onClick={() => setIsListVisible(prev => !prev)}
         style={{ cursor: 'pointer' }}
       >
-        <img src={plusIcon} alt='' />
+        <img src={/* plus icon path */ ''} alt='' />
         <p>Добавить ученика</p>
       </div>
 
@@ -92,25 +125,16 @@ export const CreateNewGroupStudents = () => {
             variants={fadeIn}
             transition={{ duration: 0.4 }}
           >
-            {students.map(student => (
+            {filtered.map(student => (
               <div className='paymentType__tabs-item' key={student.id}>
                 <Checkbox
-                  icon={
-                    <CheckBoxOutlineBlankIcon sx={{ fontSize: 32 }} /> // размер неактивного чекбокса
-                  }
-                  checkedIcon={
-                    <CheckBoxIcon sx={{ fontSize: 32 }} /> // размер активного чекбокса
-                  }
+                  icon={<CheckBoxOutlineBlankIcon sx={{ fontSize: 32 }} />}
+                  checkedIcon={<CheckBoxIcon sx={{ fontSize: 32 }} />}
                   checked={selectedStudents.includes(student.id)}
                   onChange={() => toggleStudent(student.id)}
-                  sx={{
-                    color: '#fff',
-                    '&.Mui-checked': {
-                      color: '#2DE920',
-                    },
-                  }}
+                  sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
                 />
-                <p>{student.name}</p>
+                <p>{student.full_name || student.name}</p>
               </div>
             ))}
           </motion.div>
@@ -126,14 +150,9 @@ export const CreateNewGroupStudents = () => {
                 <Checkbox
                   checked
                   onChange={() => toggleStudent(id)}
-                  sx={{
-                    color: '#fff',
-                    '&.Mui-checked': {
-                      color: '#2DE920',
-                    },
-                  }}
+                  sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
                 />
-                <p>{student?.name}</p>
+                <p>{student?.full_name || student?.name || `ID ${id}`}</p>
               </div>
               <p className='createGroupStudents__selected-date'>
                 {new Date().toLocaleString('ru-RU')}

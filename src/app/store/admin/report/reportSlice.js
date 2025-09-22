@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { getGroupList } from './reportThunk';
+import { createGroup, getGroupList } from './reportThunk';
 
 const initialState = {
   loading: false,
@@ -24,6 +24,17 @@ const reportSlice = createSlice({
         state.directions = payload?.directions;
       })
       .addCase(getGroupList.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+      })
+
+      .addCase(createGroup.pending, state => {
+        state.loading = true;
+      })
+      .addCase(createGroup.fulfilled, (state, { payload }) => {
+        state.loading = false;
+      })
+      .addCase(createGroup.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

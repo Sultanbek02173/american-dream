@@ -13,6 +13,21 @@ export const getTeacherList = createAsyncThunk(
   }
 );
 
+export const createTeacher = createAsyncThunk(
+  'create/teachers',
+  async credentials => {
+    try {
+      const { data } = await axiosApi.post(
+        `/administration/teachers-add/`,
+        credentials
+      );
+      return data;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  }
+);
+
 export const getTeacherProfile = createAsyncThunk(
   'get/teacherProfile',
   async (id, { rejectWithValue }) => {

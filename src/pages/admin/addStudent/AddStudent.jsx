@@ -27,8 +27,8 @@ export const AddStudent = () => {
     phone: '',
     username: '',
     age: '18',
-    group: '',
-    direction: '',
+    direction_ids: [],
+    group_ids: [],
   });
   const { directions, groups } = useEntities();
   const dispatch = useDispatch();
@@ -43,8 +43,6 @@ export const AddStudent = () => {
       'phone',
       'username',
       'password',
-      'group',
-      'direction',
     ];
 
     return requiredFields.every(field => {
@@ -57,6 +55,7 @@ export const AddStudent = () => {
     e.preventDefault();
     try {
       await dispatch(createStudent(state)).unwrap();
+      navigate('/students-table');
     } catch (e) {
       console.log(e);
     }
@@ -122,31 +121,40 @@ export const AddStudent = () => {
               <InputLabel id='group-label'>Группа</InputLabel>
               <Select
                 labelId='group-label'
-                value={state.group}
-                label='Группа'
-                name='group'
-                onChange={onChange}
+                value={state.group_ids[0] || ''}
+                onChange={e =>
+                  setState(prev => ({
+                    ...prev,
+                    group_ids: [e.target.value],
+                  }))
+                }
               >
-                {groups.map(group => {
-                  return (
-                    <MenuItem value={group.id} sx={menuItemStyle}>
-                      {group.group_name}
-                    </MenuItem>
-                  );
-                })}
+                {groups.map(group => (
+                  <MenuItem key={group.id} value={group.id} sx={menuItemStyle}>
+                    {group.group_name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
+
             <FormControl sx={{ ...formControlStyle, width: '45%' }}>
               <InputLabel id='direction-label'>Направление</InputLabel>
               <Select
                 labelId='direction-label'
-                value={state.direction}
-                label='Направление'
-                name='direction'
-                onChange={onChange}
+                value={state.direction_ids[0] || ''}
+                onChange={e =>
+                  setState(prev => ({
+                    ...prev,
+                    direction_ids: [e.target.value],
+                  }))
+                }
               >
                 {directions.map(direction => (
-                  <MenuItem value={direction.id} sx={menuItemStyle}>
+                  <MenuItem
+                    key={direction.id}
+                    value={direction.id}
+                    sx={menuItemStyle}
+                  >
                     {direction.name}
                   </MenuItem>
                 ))}

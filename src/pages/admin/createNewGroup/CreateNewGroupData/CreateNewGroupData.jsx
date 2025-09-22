@@ -1,75 +1,113 @@
-import { TextField } from '@mui/material';
-import { useState } from 'react';
-import bilol from '../../../admin/studentsDetail/image.jpg';
+// CreateNewGroupData.jsx
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from '@mui/material';
+import {
+  formControlStyle,
+  inputStyle,
+  menuItemStyle,
+} from '../../../../shared/utils/MuiStyles';
+import { useDispatch } from 'react-redux';
+import { useEntities } from '../../../../app/store/admin/entities/entitiesSlice';
+import { useEffect } from 'react';
+import { getDirections } from '../../../../app/store/admin/entities/entitiesThunk';
 
-import { eventHandler } from '../../../../shared/utils/eventHandlers';
-import { inputStyle } from '../../../../shared/utils/MuiStyles';
-export const CreateNewGroupData = () => {
-  const [state, setState] = useState({
-    id: 1,
-    course_name: 'Алина',
-    age_group: '@alin1244',
-    format: '+996 500 123 456',
-    duration: 'alinaknzzz12',
-    creation_date: 'r_12lfomt',
-    comment: 'mentalArithmetic',
-  });
+export const CreateNewGroupData = ({ value, onChange }) => {
+  const dispatch = useDispatch();
+  const { directions = [] } = useEntities();
 
-  const onChange = eventHandler(setState);
+  useEffect(() => {
+    dispatch(getDirections());
+  }, [dispatch]);
+
+  const handle = e => onChange(e.target.name, e.target.value);
+
   return (
     <form onSubmit={e => e.preventDefault()}>
       <div className='studentsDetail__form-inputs'>
         <TextField
-          label='Название курса'
-          name='course_name'
-          onChange={onChange}
-          value={state.course_name}
+          label='Название группы'
+          name='group_name'
+          onChange={handle}
+          value={value.group_name ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '100%' }}
         />
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Возрастная группа'
           name='age_group'
-          onChange={onChange}
-          value={state.age_group}
+          onChange={handle}
+          value={value.age_group ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '55%' }}
         />
-        <TextField
-          label='Формат'
-          name='format'
-          onChange={onChange}
-          value={state.format}
-          variant='outlined'
-          sx={{ ...inputStyle, width: '45%' }}
-        />
+
+        <FormControl sx={{ ...formControlStyle, width: '45%' }}>
+          <InputLabel id='format-label'>Формат</InputLabel>
+          <Select
+            labelId='format-label'
+            label='Формат'
+            name='format'
+            value={value.format ?? ''}
+            onChange={handle}
+          >
+            <MenuItem value='online' sx={menuItemStyle}>
+              Онлайн
+            </MenuItem>
+            <MenuItem value='offline' sx={menuItemStyle}>
+              Офлайн
+            </MenuItem>
+          </Select>
+        </FormControl>
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
-          label='Продолжительность'
-          name='duration'
-          onChange={onChange}
-          value={state.duration}
+          label='Длительность курса (мес)'
+          name='duration_months'
+          // оставляем строкой, но подсказываем числовой ввод
+          value={value.duration_months}
+          onChange={handle}
           variant='outlined'
+          inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
           sx={{ ...inputStyle, width: '45%' }}
         />
-        <TextField
-          label='Дата создания'
-          name='creation_date'
-          onChange={onChange}
-          value={state.creation_date}
-          variant='outlined'
-          sx={{ ...inputStyle, width: '55%' }}
-        />
+
+        <FormControl sx={{ ...formControlStyle, width: '55%' }}>
+          <InputLabel id='direction-label'>Направление</InputLabel>
+          <Select
+            labelId='direction-label'
+            label='Направление'
+            name='direction'
+            value={value.direction ?? ''} // строка!
+            onChange={handle}
+          >
+            {directions.map(direction => (
+              <MenuItem
+                key={direction.id}
+                value={direction.id} // приводим к строке
+                sx={menuItemStyle}
+              >
+                {direction.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
+
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Комментарий'
           name='comment'
-          onChange={onChange}
-          value={state.comment}
+          onChange={handle}
+          value={value.comment ?? ''}
           variant='outlined'
           sx={{ ...inputStyle, width: '100%' }}
         />

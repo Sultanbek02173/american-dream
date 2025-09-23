@@ -14,7 +14,6 @@ export const HomeWorkDetail = () => {
   const tabsState = useTabs();
   const activeTab = tabsState[tabId] ?? 0;
   const { homeworkDetail } = useHomework();
-
   console.log(homeworkDetail);
   
 
@@ -31,6 +30,7 @@ export const HomeWorkDetail = () => {
       label: 'Домашнее задание',
       content: (
         <Works
+          id={id}
           deadLine={homeworkDetail?.homework_deadline}
           homework_requirements={homeworkDetail?.homework_requirements}
         />
@@ -40,9 +40,7 @@ export const HomeWorkDetail = () => {
   return (
     <section className='container home-work-detail'>
       <h2 className='title'>Урок №{id}</h2>
-      <p className='description'>
-        Документация с помощью swagger, настройка swagger
-      </p>
+      <p className='description'>{homeworkDetail?.title ?? '...'}</p>
 
       {tabs.map((tab, index) => (
         <button

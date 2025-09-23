@@ -26,3 +26,44 @@ export const homeworkDetailGet = createAsyncThunk(
     }
   }
 );
+
+const fileToDataURL = file =>
+  new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+
+export const homeWorkPost = createAsyncThunk(
+  'homeworkDetail/submit',
+  async ({ id, links = [], files = [], comment }, { rejectWithValue }) => {
+    try {
+      const filesPayload = await Promise.all(
+        files.slice(0, 5).map(async f => ({
+          name: f.name,
+          type: f.type || 'application/octet-stream',
+          content_base64: await fileToDataURL(f),
+        }))
+      );
+
+      const payload = {
+        project_links: links.filter(Boolean).slice(0, 5),
+        files: filesPayload,
+      };
+
+      if (comment) payload.comment = comment;
+
+      const { data } = await axiosApi.post(
+        `/student/homework/${id}/submit/`,
+        payload,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      return data;
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);

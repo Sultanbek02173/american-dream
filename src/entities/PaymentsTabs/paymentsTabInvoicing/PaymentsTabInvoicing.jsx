@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { eventHandler } from '../../../shared/utils/eventHandlers';
 import { inputStyle } from '../../../shared/utils/MuiStyles';
 import { TextField } from '@mui/material';

@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { homeworkGet } from './homeworkThunks';
+import { homeworkDetailGet, homeworkGet } from './homeworkThunks';
 
 const initialState = {
   homework: [],
+  homeworkDetail: {},
   loading: false,
   error: null,
 };
@@ -23,6 +24,15 @@ const homework = createSlice({
       })
       .addCase(homeworkGet.rejected, (state, { payload }) => {
         state.loading = false;
+        state.error = payload;
+      })
+      .addCase(homeworkDetailGet.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.homeworkDetail = payload;
+      })
+      .addCase(homeworkDetailGet.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.homeworkDetail = {};
         state.error = payload;
       });
   },

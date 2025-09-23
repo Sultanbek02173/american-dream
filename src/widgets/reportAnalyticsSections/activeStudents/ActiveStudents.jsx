@@ -56,7 +56,7 @@ export const ActiveStudents = () => {
               <p className='third_text'>Средний возраст:</p>
               <VerticalProgress
                 progress={80}
-                text={analytic.avg_age ? analytic.avg_age : '0'}
+                text={analytic.avg_age ? (analytic.avg_age).toFixed(1) : '0'}
                 width={'100px'}
                 height={'400px'}
                 color={'#2DE920'}
@@ -67,8 +67,8 @@ export const ActiveStudents = () => {
         </div>
 
         <div className='row activeStudents_statistics_lessons'>
-          {analytic.directions_distribution &&
-            Object.entries(analytic.directions_distribution).map(
+          {analytic?.directions_distribution &&
+            Object.entries(analytic.directions_distribution)?.map(
               ([subject, percentage]) => (
                 <div className='row item' key={subject}>
                   <p>{subject}</p>

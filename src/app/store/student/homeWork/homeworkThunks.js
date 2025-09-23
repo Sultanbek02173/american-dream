@@ -13,3 +13,16 @@ export const homeworkGet = createAsyncThunk(
     }
   }
 );
+
+export const homeworkDetailGet = createAsyncThunk(
+  'homeworkDetail/get',
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosApi.get(`/student/homework/${id}/`);
+      return data;
+    } catch (e) {
+      console.log(e);
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);

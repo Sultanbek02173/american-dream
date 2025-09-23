@@ -13,6 +13,7 @@ import reportReducer from './admin/report/reportSlice';
 import entitiesReducer from './admin/entities/entitiesSlice';
 import accauntReducer from './reducers/accaunt/accauntSlice';
 import homeworkReducer from './student/homeWork/homeworkSlice';
+import historyPaymentsReducer from './admin/historyPayments/historyPaymentsSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
 import scheduleReducer from './admin/schedule/scheduleSlice';
@@ -75,6 +76,7 @@ export const store = configureStore({
     paymentTeacher: paymentTeacherReducer,
     accaunt: accauntReducer,
     homework: homeworkReducer,
+    historyPayments: historyPaymentsReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

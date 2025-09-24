@@ -39,31 +39,34 @@ export const homeWorkPost = createAsyncThunk(
   'homeworkDetail/submit',
   async ({ id, links = [], files = [], comment }, { rejectWithValue }) => {
     try {
-      const filesPayload = await Promise.all(
-        files.slice(0, 5).map(async f => ({
-          name: f.name,
-          type: f.type || 'application/octet-stream',
-          content_base64: await fileToDataURL(f),
-        }))
-      );
+      const fd = new FormData();
 
-      const payload = {
-        project_links: links.filter(Boolean).slice(0, 5),
-        files: filesPayload,
-      };
+      fd.append('homework', String(id)); // если нужно — подгоните имя
 
-      if (comment) payload.comment = comment;
+      // ССЫЛКИ — каждый элемент отдельным append, БЕЗ индексов!
+      links
+        .filter(Boolean)
+        .slice(0, 5)
+        .forEach(l => {
+          fd.append('project_links', l); // вариант 1
+          fd.append('project_links[]', l); // вариант 2 (на случай, если бек ждёт [])
+        });
 
-      const { data } = await axiosApi.post(
-        `/student/homework/${id}/submit/`,
-        payload,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      // ФАЙЛЫ — только реальные File, БЕЗ объектов {name,type,...} и БЕЗ индексов!
+      files
+        .filter(f => f instanceof File)
+        .slice(0, 5)
+        .forEach(f => {
+          fd.append('files', f, f.name); // вариант 1
+          fd.append('files[]', f, f.name); // вариант 2
+        });
 
+      if (comment) fd.append('comment', comment);
+
+      const { data } = await axiosApi.patch(`/student/homework/${id}/`, fd);
       return data;
     } catch (e) {
-      console.error(e);
-      return rejectWithValue(e.response?.data || e.message);
+      return rejectWithValue(e?.response?.data || e.message);
     }
   }
 );

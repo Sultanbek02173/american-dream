@@ -33,6 +33,8 @@ export const HomeWorkDetail = () => {
           id={id}
           deadLine={homeworkDetail?.homework_deadline}
           homework_requirements={homeworkDetail?.homework_requirements}
+          link={homeworkDetail?.homework_submission?.project_links}
+          file={homeworkDetail?.homework_submission?.files}
         />
       ),
     },

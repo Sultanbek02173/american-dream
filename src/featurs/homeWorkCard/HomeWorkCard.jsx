@@ -8,7 +8,7 @@ export const HomeWorkCard = ({ user, group, lesson, status }) => {
         <h3>{user}</h3>
         <p className='card_user_phone'>{group}</p>
 
-        <p>{lesson.length > 30 ? `${lesson.slice(0, 25)}...` : lesson}</p>
+        <p>{lesson?.length > 20 ? `${lesson.slice(0, 20)}...` : lesson}</p>
       </div>
       <p className='row card_btn'>
         Расвернуть <IoIosArrowDown size={20} />

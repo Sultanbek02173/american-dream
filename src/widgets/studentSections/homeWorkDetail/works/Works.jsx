@@ -1,7 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import './works.scss';
-import { useMemo, useState } from 'react';
-import { TextField, Button, IconButton, Tooltip } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
+import {
+  TextField,
+  Button,
+  IconButton,
+  Tooltip,
+  Link as MuiLink,
+  Divider,
+} from '@mui/material';
 import { inputStyle } from '../../../../shared/utils/MuiStyles';
 import { useDispatch } from 'react-redux';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -12,22 +19,68 @@ import { homeWorkPost } from '../../../../app/store/student/homeWork/homeworkThu
 const MAX_LINKS = 5;
 const MAX_FILES = 5;
 
-export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
+const normalizeLinksProp = linkProp => {
+  if (!linkProp) return [];
+  if (Array.isArray(linkProp)) return linkProp.filter(Boolean).map(String);
+  return [String(linkProp)].filter(Boolean);
+};
+
+const normalizeFilesProp = fileProp => {
+  if (!fileProp) return [];
+  const toObj = f => {
+    if (typeof f === 'string') {
+      const nameGuess = f.split('/').pop() || 'файл';
+      return { name: nameGuess, url: f, _existing: true };
+    }
+    if (f && typeof f === 'object') {
+      const name =
+        f.name || f.filename || (f.url ? f.url.split('/').pop() : 'файл');
+      return { id: f.id, name, url: f.url || f.link || '', _existing: true };
+    }
+    return null;
+  };
+  if (Array.isArray(fileProp)) return fileProp.map(toObj).filter(Boolean);
+  const one = toObj(fileProp);
+  return one ? [one] : [];
+};
+
+export const Works = ({
+  id,
+  deadLine,
+  homework_requirements,
+  onSuccess,
+  link,
+  file,
+}) => {
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
   const [links, setLinks] = useState(['']);
+
+  const [existingFiles, setExistingFiles] = useState([]);
+
   const [files, setFiles] = useState([]);
+
+  const [open, setOpen] = useState(false);
   const [comment, setComment] = useState('');
 
-  const linksLeft = useMemo(
-    () => Math.max(0, MAX_LINKS - links.filter(Boolean).length),
-    [links]
-  );
-  const filesLeft = useMemo(
-    () => Math.max(0, MAX_FILES - files.filter(Boolean).length),
-    [files]
-  );
+  useEffect(() => {
+    const initLinks = normalizeLinksProp(link);
+    setLinks(initLinks.length ? initLinks : ['']);
+
+    const initExisting = normalizeFilesProp(file);
+    setExistingFiles(initExisting);
+  }, [link, file]);
+
+  const linksLeft = useMemo(() => {
+    const used = links.filter(Boolean).length;
+    return Math.max(0, MAX_LINKS - used);
+  }, [links]);
+
+  const filesLeft = useMemo(() => {
+    const used =
+      (existingFiles?.length || 0) + (files.filter(Boolean).length || 0);
+    return Math.max(0, MAX_FILES - used);
+  }, [existingFiles, files]);
 
   const formatDate = time => {
     if (!time) return 'dd.mm.yyyy hh:mm';
@@ -62,8 +115,15 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
     });
   };
 
+  const canAddMoreFiles = filesLeft > 0;
+
   const addFileField = () => {
-    setFiles(prev => (prev.length < MAX_FILES ? [...prev, null] : prev));
+    if (!canAddMoreFiles) return;
+    setFiles(prev =>
+      prev.length + (existingFiles?.length || 0) < MAX_FILES
+        ? [...prev, null]
+        : prev
+    );
   };
 
   const removeFileField = idx => {
@@ -86,14 +146,21 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
       .map(l => l.trim())
       .filter(Boolean)
       .slice(0, MAX_LINKS);
-    const cleanFiles = files.filter(Boolean).slice(0, MAX_FILES);
+    const cleanFiles = files
+      .filter(f => f instanceof File)
+      .slice(0, Math.max(0, MAX_FILES - (existingFiles?.length || 0)));
 
     try {
       await dispatch(
-        homeWorkPost({ id, links: cleanLinks, files: cleanFiles, comment })
+        homeWorkPost({
+          id,
+          links: cleanLinks,
+          files: cleanFiles,
+          comment,
+        })
       ).unwrap();
+
       onSuccess?.();
-      setLinks(['']);
       setFiles([]);
       setComment('');
     } catch (err) {
@@ -103,8 +170,8 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
 
   const submitDisabled = useMemo(() => {
     const hasLinks = links.some(l => l.trim().length > 0);
-    const hasFiles = files.some(Boolean);
-    return !(hasLinks || hasFiles);
+    const hasNewFiles = files.some(f => f instanceof File);
+    return !(hasLinks || hasNewFiles);
   }, [links, files]);
 
   return (
@@ -142,9 +209,7 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
             <IconButton
               onClick={() => removeLinkField(idx)}
               disabled={links.length === 1 && !value}
-              sx={{
-                color: '#fff',
-              }}
+              sx={{ color: '#fff' }}
             >
               <DeleteOutlineIcon />
             </IconButton>
@@ -157,9 +222,7 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
               <IconButton
                 onClick={addLinkField}
                 disabled={links.length >= MAX_LINKS}
-                sx={{
-                  color: '#fff',
-                }}
+                sx={{ color: '#fff' }}
               >
                 <AddLinkIcon />
               </IconButton>
@@ -168,15 +231,44 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
           <p className='works_limit'>Осталось ссылок: {linksLeft}</p>
         </div>
 
+        {existingFiles?.length > 0 && (
+          <>
+            <Divider sx={{ my: 2 }} />
+            <div className='works_files_existing'>
+              <h3>Ранее прикреплённые</h3>
+              <ul className='works_files_list'>
+                {existingFiles.map((f, i) => (
+                  <li
+                    key={`ex-file-${f.id ?? f.url ?? i}`}
+                    className='works_file_item'
+                  >
+                    {f.url ? (
+                      <MuiLink
+                        href={f.url}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        underline='hover'
+                      >
+                        {f.name || 'файл'}
+                      </MuiLink>
+                    ) : (
+                      <span>{f.name || 'файл'}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
         <div className='works_files'>
-          {files?.map((file, idx) => {
+          {files?.map((fileVal, idx) => {
             const inputId = `file-${idx}`;
             return (
               <div key={`file-${idx}`} className='works_row'>
                 <TextField
                   sx={{ ...inputStyle, flex: 1 }}
                   label={`Файл #${idx + 1}`}
-                  value={file ? file.name : ''}
+                  value={fileVal ? fileVal.name : ''}
                   placeholder='Не выбран'
                   InputProps={{ readOnly: true }}
                 />
@@ -203,14 +295,16 @@ export const Works = ({ id, deadLine, homework_requirements, onSuccess }) => {
           })}
 
           <div className='works_actions_inline'>
-            <Tooltip title='Добавить файл'>
+            <Tooltip
+              title={
+                canAddMoreFiles ? 'Добавить файл' : 'Достигнут лимит файлов'
+              }
+            >
               <span>
                 <IconButton
                   onClick={addFileField}
-                  disabled={files.length >= MAX_FILES}
-                  sx={{
-                    color: '#fff',
-                  }}
+                  disabled={!canAddMoreFiles}
+                  sx={{ color: '#fff' }}
                 >
                   <UploadFileIcon />
                 </IconButton>

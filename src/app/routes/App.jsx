@@ -112,10 +112,10 @@ const App = () => {
         await dispatch(getYourSelf()).unwrap();
       } catch (e) {
         console.log(e);
-        Cookies.remove('access');
-        Cookies.remove('role');
-        Cookies.remove('login');
-        navigate('/login', { replace: true });
+        // Cookies.remove('access');
+        // Cookies.remove('role');
+        // Cookies.remove('login');
+        // navigate('/login', { replace: true });
       }
     };
 
@@ -227,7 +227,6 @@ const App = () => {
                   </>
                 )}
 
-                {/* Фолбэк на неизвестные маршруты */}
                 <Route path='*' element={<Navigate to='/' replace />} />
               </Routes>
             </div>

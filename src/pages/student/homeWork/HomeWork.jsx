@@ -20,15 +20,16 @@ export const HomeWork = () => {
       <div className='home_work__content'>
         {homework?.map(homeWork => (
           <div
-            onClick={() => navigate(`/home-work/${homeWork.id}`)}
-            key={homeWork.id}
+            onClick={() =>
+              navigate(`/home-work/${homeWork?.id}`)
+            }
+            key={homeWork?.id}
           >
             <HomeWorkCard
-              user={homeWork.teacher_full_name}
-              group={homeWork.group_name}
-              lesson={homeWork.description}
-              status={homeWork.status}
-              key={homeWork.id}
+              user={homeWork?.teacher_full_name}
+              group={homeWork?.group_name}
+              lesson={homeWork?.description}
+              status={homeWork?.homework_submission?.status}
             />
           </div>
         ))}

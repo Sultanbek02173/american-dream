@@ -1,4 +1,3 @@
-// store/slices/homeworkSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { syllabusGet } from './syllabusThunks';
@@ -25,12 +24,11 @@ const syllabusSlice = createSlice({
       })
       .addCase(syllabusGet.rejected, (state, { payload }) => {
         state.listLoading = false;
-        state.error = payload || 'Не удалось получить список домашних заданий';
+        state.error = payload || 'Не удалось получить учебный план';
       });
   },
 });
 
 
-export const useHomework = () => useSelector(state => state.homework);
-
+export const useSyllabus = () => useSelector(state => state.syllabus);
 export default syllabusSlice.reducer;

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 export const HomeWorks = () => {
   const dispatch = useDispatch();
   const { homework } = useHomework();
+
   console.log(homework);
 
   useEffect(() => {
@@ -17,12 +18,12 @@ export const HomeWorks = () => {
   return (
     <section className='home_works'>
       {homework?.slice(0, 6)?.map(homeWork => (
-        <Link key={homeWork.id} to={`/home-work/${homeWork.id}`}>
+        <Link key={homeWork?.id} to={`/home-work/${homeWork?.id}`}>
           <HomeWorkCard
-            user={homeWork.teacher_full_name}
-            group={homeWork.group_name}
-            lesson={homeWork.description}
-            status={homeWork.status}
+            user={homeWork?.teacher_full_name}
+            group={homeWork?.group_name}
+            lesson={homeWork?.description}
+            status={homeWork?.homework_submission?.status}
           />
         </Link>
       ))}

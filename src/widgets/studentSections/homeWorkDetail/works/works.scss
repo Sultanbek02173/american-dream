@@ -48,8 +48,22 @@
       font-weight: 300;
       padding-bottom: 15px;
     }
-  }
-    &_limit {
-      margin-bottom: 15px;
+
+    .works_submit{
+      width: 100%;
+
+      button{
+        width: 100%;
+        background-color: #2DE920;
+      }
+
+      button:disabled{
+        border: 1px solid #2DE920;
+        background-color: transparent;
+      }
     }
+  }
+  &_limit {
+    margin-bottom: 15px;
+  }
 }

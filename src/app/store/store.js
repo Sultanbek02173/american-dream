@@ -16,6 +16,10 @@ import homeworkReducer from './student/homeWork/homeworkSlice';
 import historyPaymentsReducer from './admin/historyPayments/historyPaymentsSlice';
 import syllabusReducer from './student/syllabus/syllabusSlice';
 import progressReducer from './student/progress/progressSlice';
+import scheduleStudentReducer from './student/sheduleStudent/sheduleStudentSlice';
+import groupReducer from './teacher/group/groupSlice';
+import studentListReducer from './teacher/studentList/studentListSlice';
+import homeworkStudentReducer from './teacher/studentHomework/studentHomeworkSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
 import scheduleReducer from './admin/schedule/scheduleSlice';
@@ -81,6 +85,10 @@ export const store = configureStore({
     historyPayments: historyPaymentsReducer,
     syllabus: syllabusReducer,
     progress: progressReducer,
+    scheduleStudent: scheduleStudentReducer,
+    group: groupReducer,
+    studentList: studentListReducer,
+    homeworkStudent: homeworkStudentReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

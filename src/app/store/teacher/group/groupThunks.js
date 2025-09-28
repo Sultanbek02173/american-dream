@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosApi } from '../../../services/axiosApi';
 
-export const progressGet = createAsyncThunk(
-  'progress/get',
+export const groupGet = createAsyncThunk(
+  'group/get',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axiosApi.get(`/student/progress/`);
+      const { data } = await axiosApi.get(`/teacher/group-table/`);
       return data;
     } catch (e) {
       console.log(e);
@@ -14,13 +14,11 @@ export const progressGet = createAsyncThunk(
   }
 );
 
-export const discountGet = createAsyncThunk(
-  'discount/get',
-  async (_, { rejectWithValue }) => {
+export const groupDetailGet = createAsyncThunk(
+  'groupDetail/get',
+  async (id, { rejectWithValue }) => {
     try {
-      const { data } = await axiosApi.get(
-        `/administration/discount-regulations/`
-      );
+      const { data } = await axiosApi.get(`/teacher/groups/${id}/dashboard/`);
       return data;
     } catch (e) {
       console.log(e);

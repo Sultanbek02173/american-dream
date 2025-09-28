@@ -112,10 +112,10 @@ const App = () => {
         await dispatch(getYourSelf()).unwrap();
       } catch (e) {
         console.log(e);
-        // Cookies.remove('access');
-        // Cookies.remove('role');
-        // Cookies.remove('login');
-        // navigate('/login', { replace: true });
+        Cookies.remove('access');
+        Cookies.remove('role');
+        Cookies.remove('login');
+        navigate('/login', { replace: true });
       }
     };
 
@@ -214,7 +214,7 @@ const App = () => {
                   <>
                     <Route path='/' element={<MainTeacher />} />
                     <Route
-                      path='/table/:group'
+                      path='/table/:id'
                       element={<TeacherGroupDetail />}
                     />
                     <Route path='/accounting' element={<ScheduleTeacher />} />

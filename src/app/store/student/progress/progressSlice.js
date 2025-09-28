@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { progressGet } from './progressThunks';
+import { discountGet, progressGet } from './progressThunks';
 
 const initialState = {
   progress: [],
+  discount: [],
+  discountLoad: false,
+  discountErr: null,
   listLoading: false,
   error: null,
 };
@@ -25,6 +28,18 @@ const progressSlice = createSlice({
       .addCase(progressGet.rejected, (state, { payload }) => {
         state.listLoading = false;
         state.error = payload || 'Не удалось получить данные';
+      })
+      .addCase(discountGet.pending, state => {
+        state.discountLoad = true;
+        state.discountErr = null;
+      })
+      .addCase(discountGet.fulfilled, (state, { payload }) => {
+        state.discountLoad = false;
+        state.discount = payload ?? [];
+      })
+      .addCase(discountGet.rejected, (state, { payload }) => {
+        state.discountLoad = false;
+        state.discountErr = payload || 'Не удалось получить данные';
       });
   },
 });

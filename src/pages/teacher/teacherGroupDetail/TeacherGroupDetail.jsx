@@ -8,20 +8,40 @@ import {
   ReportTableStatistic,
   ReportTableStudents,
 } from '../../../entities/reportTableTabs';
-// import './reportTableDetail.scss';
+import { useEffect } from 'react';
+import { groupDetailGet } from '../../../app/store/teacher/group/groupThunks';
+import { useParams } from 'react-router-dom';
+import { useGroup } from '../../../app/store/teacher/group/groupSlice';
+
 export const TeacherGroupDetail = () => {
   const dispatch = useDispatch();
   const tabId = 'reportTableTabs';
   const tabsState = useTabs();
   const activeTab = tabsState[tabId] ?? 0;
+  const { id } = useParams();
+  const { groupDetail } = useGroup();
+
   const tabs = [
-    { label: 'Данные', content: <ReportTableData /> },
-    { label: 'Ученики', content: <ReportTableStudents /> },
-    { label: 'Планы обучения', content: <ReportTablePlan /> },
-    { label: 'Дз', content: <ReportTableHomeWork /> },
+    { label: 'Данные', content: <ReportTableData data={groupDetail?.group} /> },
+    {
+      label: 'Ученики',
+      content: <ReportTableStudents students={groupDetail?.students} />,
+    },
+    {
+      label: 'Планы обучения',
+      content: <ReportTablePlan syllabus={groupDetail?.months} />,
+    },
+    {
+      label: 'Дз',
+      content: <ReportTableHomeWork homeworks={groupDetail?.months} />,
+    },
     { label: 'Табель', content: <ReportTableInTable /> },
     { label: 'Статистика', content: <ReportTableStatistic /> },
   ];
+
+  useEffect(() => {
+    dispatch(groupDetailGet(id));
+  }, [dispatch]);
   return (
     <section className='reportTableDetail'>
       <div className='container'>

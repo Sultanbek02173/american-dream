@@ -1,15 +1,19 @@
 // store/slices/homeworkSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { homeworkDetailGet, homeworkGet, homeWorkPost } from './homeworkThunks';
+import {
+  homeworkDetailGet,
+  homeworkGet,
+  homeWorkPost, // JSON + dataURL (основной)
+} from './homeworkThunks';
 
 const initialState = {
-  homework: [], 
-  homeworkDetail: null, 
-  listLoading: false, 
-  detailLoading: false, 
-  submitLoading: false, 
-  error: null, 
+  homework: [],
+  homeworkDetail: null,
+  listLoading: false,
+  detailLoading: false,
+  submitLoading: false,
+  error: null,
 };
 
 const homework = createSlice({
@@ -22,6 +26,7 @@ const homework = createSlice({
   },
   extraReducers: builder => {
     builder
+      // список
       .addCase(homeworkGet.pending, state => {
         state.listLoading = true;
         state.error = null;
@@ -35,6 +40,7 @@ const homework = createSlice({
         state.error = payload || 'Не удалось получить список домашних заданий';
       })
 
+      // детали
       .addCase(homeworkDetailGet.pending, state => {
         state.detailLoading = true;
         state.error = null;
@@ -49,6 +55,7 @@ const homework = createSlice({
         state.error = payload || 'Не удалось получить детали домашнего задания';
       })
 
+      // submit — JSON + dataURL
       .addCase(homeWorkPost.pending, state => {
         state.submitLoading = true;
         state.error = null;
@@ -65,7 +72,5 @@ const homework = createSlice({
 });
 
 export const { clearHomeworkError } = homework.actions;
-
 export const useHomework = () => useSelector(state => state.homework);
-
 export default homework.reducer;

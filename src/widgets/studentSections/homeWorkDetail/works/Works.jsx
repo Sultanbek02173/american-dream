@@ -1,3 +1,4 @@
+// src/widgets/.../Works.jsx
 import { AnimatePresence, motion } from 'framer-motion';
 import './works.scss';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,6 +16,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { homeWorkPost } from '../../../../app/store/student/homeWork/homeworkThunks';
+import { useNavigate } from 'react-router-dom'; // <-- добавлено
 
 const MAX_LINKS = 5;
 const MAX_FILES = 5;
@@ -53,13 +55,11 @@ export const Works = ({
   file,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // <-- добавлено
 
   const [links, setLinks] = useState(['']);
-
   const [existingFiles, setExistingFiles] = useState([]);
-
   const [files, setFiles] = useState([]);
-
   const [open, setOpen] = useState(false);
   const [comment, setComment] = useState('');
 
@@ -146,6 +146,7 @@ export const Works = ({
       .map(l => l.trim())
       .filter(Boolean)
       .slice(0, MAX_LINKS);
+
     const cleanFiles = files
       .filter(f => f instanceof File)
       .slice(0, Math.max(0, MAX_FILES - (existingFiles?.length || 0)));
@@ -154,17 +155,19 @@ export const Works = ({
       await dispatch(
         homeWorkPost({
           id,
-          links: cleanLinks,
-          files: cleanFiles,
+          links: cleanLinks, // project_links: string[]
+          files: cleanFiles, // files: dataURL[]
           comment,
         })
       ).unwrap();
 
-      onSuccess?.();
-      setFiles([]);
-      setComment('');
+      onSuccess?.(); // если нужно локально что-то обновить
+      navigate('/home-work'); // <-- редирект после успеха
     } catch (err) {
       console.error(err);
+    } finally {
+      setFiles([]);
+      setComment('');
     }
   };
 
@@ -260,6 +263,7 @@ export const Works = ({
             </div>
           </>
         )}
+
         <div className='works_files'>
           {files?.map((fileVal, idx) => {
             const inputId = `file-${idx}`;
@@ -276,6 +280,7 @@ export const Works = ({
                   id={inputId}
                   type='file'
                   hidden
+                  accept='*/*'
                   onChange={e => handlePickFile(idx, e)}
                 />
                 <label htmlFor={inputId}>
@@ -319,6 +324,7 @@ export const Works = ({
             variant='contained'
             onClick={handleSubmit}
             disabled={submitDisabled}
+            sx={{ mt: 2 }}
           >
             Отправить
           </Button>

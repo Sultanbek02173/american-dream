@@ -2,7 +2,10 @@ import { useDispatch } from 'react-redux';
 import { UniversalTable } from '../../../../entities';
 import './reportStudent.scss';
 import { useEffect, useMemo } from 'react';
-import { progressGet } from '../../../../app/store/student/progress/progressThunks';
+import {
+  discountGet,
+  progressGet,
+} from '../../../../app/store/student/progress/progressThunks';
 import { useProgress } from '../../../../app/store/student/progress/progressSlice';
 
 const statusToDisplay = v => {
@@ -41,10 +44,11 @@ const buildLessonColumns = count => {
 
 export const ReportStudent = () => {
   const dispatch = useDispatch();
-  const { progress = [] } = useProgress();
+  const { progress = [], discount } = useProgress();
 
   useEffect(() => {
     dispatch(progressGet());
+    dispatch(discountGet());
   }, [dispatch]);
 
   // 1) Подготавливаем СТРОГО СУЩЕСТВУЮЩИЕ уроки, отсортированные по дате (резерв — по id)
@@ -116,7 +120,13 @@ export const ReportStudent = () => {
     { title: 'Баллы за ДЗ', dataIndex: 'score', key: 'score' },
     { title: 'Минимальное кол-во посещений', dataIndex: 'visit', key: 'visit' },
   ];
-  const dataDiscount = [{ discount: '2000', score: '70-80', visit: '8' }];
+  const dataDiscount = [
+    {
+      discount: discount[0]?.discount_amount ?? 0,
+      score: discount[0]?.homework_points ?? '-',
+      visit: discount[0]?.discount_amount ?? '0',
+    },
+  ];
 
   return (
     <section className='report_student'>

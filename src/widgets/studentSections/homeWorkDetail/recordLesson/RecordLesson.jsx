@@ -9,6 +9,7 @@ export const RecordLesson = ({ lessonLink }) => {
         height={'690px'}
         style={{ borderRadius: '10px' }}
         src={lessonLink}
+        controls
       />
     </section>
   );

@@ -9,6 +9,7 @@ import { useGroup } from '../../../app/store/teacher/group/groupSlice';
 import { groupGet } from '../../../app/store/teacher/group/groupThunks';
 import { homeworkStudentGet } from '../../../app/store/teacher/studentHomework/studentHomeworkThunks';
 import { useHomeworkStudent } from '../../../app/store/teacher/studentHomework/studentHomeworkSlice';
+import { axiosApi } from '../../../app/services/axiosApi'; // ✅ добавляем axios
 
 const fmtDateTime = iso => {
   if (!iso) return '';
@@ -46,6 +47,10 @@ export const MainTeacher = () => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // ✅ новые стейты для оценки и комментария
+  const [score, setScore] = useState('');
+  const [comment, setComment] = useState('');
+
   const navigate = useNavigate();
   const { accaunt } = useAccaunt();
   const dispatch = useDispatch();
@@ -77,7 +82,7 @@ export const MainTeacher = () => {
     { title: 'Урок', dataIndex: 'lesson', key: 'lesson' },
   ];
 
-  // ✅ единственная версия cards + фильтр по status !== 'black'
+  // ✅ фильтруем заявки по status !== 'black'
   const cards = useMemo(() => {
     const arr = Array.isArray(homeworkStudent?.results)
       ? homeworkStudent.results
@@ -99,7 +104,28 @@ export const MainTeacher = () => {
 
   const handleOpenCard = item => {
     setSelectedItem(item?.raw ?? null);
+    setScore(item?.raw?.score ?? '');
+    setComment(item?.raw?.teacher_comment ?? '');
     setOpen(true);
+  };
+
+  // ✅ PATCH запрос
+  const handleSubmit = async status => {
+    if (!selectedItem?.id) return;
+
+    try {
+      await axiosApi.patch(`/teacher/teacher/homework/${selectedItem.id}/`, {
+        score: score || null,
+        teacher_comment: comment,
+        status: status,
+      });
+
+      // обновляем список
+      dispatch(homeworkStudentGet());
+      setOpen(false);
+    } catch (e) {
+      console.error('Ошибка при обновлении дз:', e);
+    }
   };
 
   return (
@@ -154,7 +180,7 @@ export const MainTeacher = () => {
                 <div>
                   <h3>
                     {selectedItem?.student_full_name ||
-                      `Ученик #${selectedItem?.student ?? ''}`}
+                      `Ученик #${selectedItem?.student_name ?? ''}`}
                   </h3>
                   <p>{selectedItem?.group_name || '—'}</p>
                 </div>
@@ -179,23 +205,41 @@ export const MainTeacher = () => {
 
               <div className='modal__content-body'>
                 <div className='modal__content-row'>
-                  <p className='modal__content-text'>
-                    Ссылка на ДЗ:{' '}
-                    {selectedItem?.project_links?.length ? (
-                      <a
-                        href={selectedItem.project_links[0]}
-                        target='_blank'
-                        rel='noreferrer'
-                      >
-                        {selectedItem.project_links[0]}
-                      </a>
+                  <div className='modal__content-text'>
+                    <p style={{ marginBottom: '10px' }}>Ссылки на ДЗ:</p>
+                    {Array.isArray(selectedItem?.project_links) &&
+                    selectedItem.project_links.length > 0 ? (
+                      <ul>
+                        {selectedItem.project_links.map((link, idx) => (
+                          <li key={idx}>
+                            <a href={link} target='_blank' rel='noreferrer'>
+                              {link}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     ) : (
                       '—'
                     )}
-                  </p>
-                  <p className='modal__content-text'>
-                    Файл ДЗ: <span style={{ opacity: 0.7 }}>—</span>
-                  </p>
+                  </div>
+
+                  <div className='modal__content-text'>
+                    <p style={{ marginBottom: '10px' }}>Файлы ДЗ:</p>
+                    {Array.isArray(selectedItem?.project_files) &&
+                    selectedItem.project_files.length > 0 ? (
+                      <ul>
+                        {selectedItem.project_files.map((file, idx) => (
+                          <li key={idx}>
+                            <a href={file} target='_blank' rel='noreferrer'>
+                              Скачать файл {idx + 1}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span style={{ opacity: 0.7 }}>—</span>
+                    )}
+                  </div>
                 </div>
 
                 <div className='modal__content-row1'>
@@ -205,13 +249,15 @@ export const MainTeacher = () => {
                     max={10}
                     placeholder='Баллы:'
                     className='modal__content-input width'
-                    defaultValue={selectedItem?.score ?? ''}
+                    value={score}
+                    onChange={e => setScore(e.target.value)}
                   />
                   <input
                     type='text'
                     placeholder='Комментарий:'
                     className='modal__content-input'
-                    defaultValue={selectedItem?.teacher_comment ?? ''}
+                    value={comment}
+                    onChange={e => setComment(e.target.value)}
                   />
                 </div>
               </div>
@@ -220,11 +266,15 @@ export const MainTeacher = () => {
                 <button
                   className='dataTeacher__row-button'
                   type='button'
-                  onClick={() => setOpen(false)}
+                  onClick={() => handleSubmit('red')}
                 >
                   Отказаться
                 </button>
-                <button className='dataTeacher__row-button add'>
+                <button
+                  className='dataTeacher__row-button add'
+                  type='button'
+                  onClick={() => handleSubmit('green')}
+                >
                   Отправить
                 </button>
               </div>

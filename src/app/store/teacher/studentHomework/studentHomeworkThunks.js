@@ -13,3 +13,18 @@ export const homeworkStudentGet = createAsyncThunk(
     }
   }
 );
+
+export const homeworkStudentUpdate = createAsyncThunk(
+  'homeworkStudent/update',
+  async ({ id, score, teacher_comment, status }, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosApi.patch(
+        `/teacher/teacher/homework/${id}/`,
+        { score, teacher_comment, status }
+      );
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);

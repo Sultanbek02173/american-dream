@@ -13,3 +13,16 @@ export const studentListGet = createAsyncThunk(
     }
   }
 );
+
+export const studentDetailGet = createAsyncThunk(
+  'studentDetail/get',
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosApi.get(`/administration/students/${id}/profile/`);
+      return data;
+    } catch (e) {
+      console.log(e);
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);

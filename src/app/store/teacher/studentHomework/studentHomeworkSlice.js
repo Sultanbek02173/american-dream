@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { homeworkStudentGet } from './studentHomeworkThunks';
+import { homeworkStudentGet, homeworkStudentUpdate } from './studentHomeworkThunks';
 
 const initialState = {
   homeworkStudent: [],
@@ -25,6 +25,17 @@ const homeworkStudentSlice = createSlice({
       .addCase(homeworkStudentGet.rejected, (state, { payload }) => {
         state.listLoading = false;
         state.error = payload || 'Не удалось получить учебный план';
+      })
+      .addCase(homeworkStudentUpdate.fulfilled, (state, { payload }) => {
+        if (Array.isArray(state.homeworkStudent?.results)) {
+          state.homeworkStudent.results = state.homeworkStudent.results.map(h =>
+            h.id === payload.id ? payload : h
+          );
+        } else if (Array.isArray(state.homeworkStudent)) {
+          state.homeworkStudent = state.homeworkStudent.map(h =>
+            h.id === payload.id ? payload : h
+          );
+        }
       });
   },
 });

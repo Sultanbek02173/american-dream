@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { studentListGet } from './studentListThunks';
+import { studentDetailGet, studentListGet } from './studentListThunks';
 
 const initialState = {
   studentList: [],
+  studentDetail: {},
+  studentLoad: false,
   listLoading: false,
   error: null,
 };
@@ -25,7 +27,12 @@ const studentListSlice = createSlice({
       .addCase(studentListGet.rejected, (state, { payload }) => {
         state.listLoading = false;
         state.error = payload || 'Не удалось получить учебный план';
-      });
+      })
+      .addCase(studentDetailGet.fulfilled, (state, { payload }) => {
+        state.studentLoad = false;
+        state.studentDetail = payload ?? [];
+      })
+      ;
   },
 });
 

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { data } from '../../pages/admin/studentsTable/StudentsTable';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useStudents } from '../../app/store/admin/students/studentsSlice';
 import { useParams } from 'react-router-dom';

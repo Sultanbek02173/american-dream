@@ -49,7 +49,7 @@ import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
 import teacher from '../../shared/imgs/sidebar/teacher.svg';
 import { getYourSelf } from '../store/reducers/auth/AuthThunk';
-
+import Cookies from 'js-cookie';
 export const URL = 'https://app.nurcrm.kg/api/main/categories/';
 
 const App = () => {

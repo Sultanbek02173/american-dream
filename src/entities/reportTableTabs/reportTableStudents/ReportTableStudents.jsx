@@ -5,15 +5,11 @@ import { UniversalTable } from '../../universalTable/UniversalTable';
 const getPaymentsSummary = (payments = []) => {
   const toNum = v => (v == null ? 0 : Number(v)) || 0;
 
-  const total = payments.reduce(
-    (sum, p) => sum + toNum(p.total ?? p.amount ?? p.to_pay),
-    0
-  );
-  const paid = payments.reduce(
-    (sum, p) => sum + toNum(p.paid ?? p.amount_paid ?? p.paid_sum),
-    0
-  );
-  const remaining = Math.max(total - paid, 0);
+  console.log(payments);
+
+  const total = payments.reduce((sum, p) => sum + toNum(p.paid_amount), 0);
+  const paid = payments.reduce((sum, p) => sum + toNum(p.final_amount), 0);
+  const remaining = payments.reduce((sum, p) => sum + toNum(p.balance), 0);
 
   return { total, paid, remaining };
 };

@@ -21,6 +21,8 @@ export const TeacherGroupDetail = () => {
   const { id } = useParams();
   const { groupDetail } = useGroup();
 
+  console.log(groupDetail);
+
   const tabs = [
     { label: 'Данные', content: <ReportTableData data={groupDetail?.group} /> },
     {
@@ -35,7 +37,15 @@ export const TeacherGroupDetail = () => {
       label: 'Дз',
       content: <ReportTableHomeWork homeworks={groupDetail?.months} />,
     },
-    { label: 'Табель', content: <ReportTableInTable /> },
+    {
+      label: 'Табель',
+      content: (
+        <ReportTableInTable
+          students={groupDetail?.students}
+          groupId={groupDetail?.group?.id}
+        />
+      ),
+    },
     { label: 'Статистика', content: <ReportTableStatistic /> },
   ];
 

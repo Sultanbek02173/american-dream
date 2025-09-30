@@ -21,7 +21,6 @@ export const ScheduleAdmin = () => {
       date: data.date,
       note: data.note,
       teacher: data.teacher,
-      group: data.group,
     };
     dispatch(schedulePost(newSchedule))
       .unwrap()

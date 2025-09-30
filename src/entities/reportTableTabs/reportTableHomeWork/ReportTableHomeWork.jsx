@@ -1,8 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 import openIcon from '../reportTablePlan/open.svg';
 import closeIcon from '../reportTablePlan/close.svg';
-
+import { updateLessonRecording } from '../../../app/store/teacher/group/groupThunks';
+import './record.scss';
 // helper: формат даты в "DD.MM.YYYY HH:MM"
 const fmtDateTime = iso => {
   if (!iso) return '';
@@ -22,19 +25,18 @@ const fmtDateTime = iso => {
 };
 
 export const ReportTableHomeWork = ({ homeworks }) => {
-  // Диагностика: посмотри, что реально приходит
-  console.log('ReportTableHomeWork > homeworks:', homeworks);
+  const dispatch = useDispatch();
+  const role = Cookies.get('role');
+  const canEdit = ['Teacher', 'Administrator', 'Manager'].includes(role);
 
+  // flat list занятий
   const items = useMemo(() => {
-    // 1) если пришёл объект { months: [...] }
-    // 2) если пришёл просто массив месяцев [...]
     const months = Array.isArray(homeworks?.months)
       ? homeworks.months
       : Array.isArray(homeworks)
       ? homeworks
       : [];
 
-    // Если в months пришло что-то странное — отфильтруем до объектов с lessons
     const safeMonths = months.filter(m => m && typeof m === 'object');
 
     const flat = safeMonths.flatMap(m => {
@@ -45,9 +47,9 @@ export const ReportTableHomeWork = ({ homeworks }) => {
         month_number: m.month_number ?? l.month ?? null,
         title: l.title,
         description: l.description,
-        teacher: l.teacher ?? '', // если поле появится
-        link: l.lesson_links,
-        record: l.lesson_recording,
+        teacher: l.teacher ?? '',
+        // link: l.lesson_links,        // ⬅️ убрали вывод ссылок урока
+        record: l.lesson_recording, // ссылка на запись урока (редактируемая)
         data_delivery: fmtDateTime(l.homework_deadline),
         link_hw: l.homework_links,
         file_hw: l.homework_files,
@@ -67,7 +69,31 @@ export const ReportTableHomeWork = ({ homeworks }) => {
   const [openId, setOpenId] = useState(null);
   const toggleVisibility = id => setOpenId(prev => (prev === id ? null : id));
 
-  // Пусто? Покажем понятный fallback
+  // локальный стейт для инлайн-редактирования записи
+  const [editVal, setEditVal] = useState({});
+  const [saving, setSaving] = useState({}); // { [lessonId]: true }
+
+  const startEdit = lesson => {
+    setEditVal(prev => ({
+      ...prev,
+      [lesson.id]: prev[lesson.id] ?? (lesson.record || ''),
+    }));
+  };
+
+  const saveEdit = async lessonId => {
+    const value = editVal[lessonId] ?? '';
+    try {
+      setSaving(prev => ({ ...prev, [lessonId]: true }));
+      await dispatch(
+        updateLessonRecording({ lessonId, lesson_recording: value })
+      ).unwrap();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setSaving(prev => ({ ...prev, [lessonId]: false }));
+    }
+  };
+
   if (!items.length) {
     return (
       <div className='reportTablePlan'>
@@ -82,6 +108,8 @@ export const ReportTableHomeWork = ({ homeworks }) => {
     <div className='reportTablePlan'>
       {items.map(lesson => {
         const isOpen = openId === lesson.id;
+        const currentVal = editVal[lesson.id] ?? lesson.record ?? '';
+
         return (
           <div
             key={lesson.id}
@@ -109,6 +137,7 @@ export const ReportTableHomeWork = ({ homeworks }) => {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.4 }}
+                  onClick={e => e.stopPropagation()} // чтобы клики по инпутам не закрывали блок
                 >
                   {lesson.description && (
                     <p className='reportTablePlan__item-description'>
@@ -146,24 +175,7 @@ export const ReportTableHomeWork = ({ homeworks }) => {
                       </div>
                     </div>
 
-                    <div className='col-6'>
-                      <div className='reportTablePlan__item-task'>
-                        <span>Ссылки урока: </span>
-                        <p>
-                          {lesson.link ? (
-                            <a
-                              href={lesson.link}
-                              target='_blank'
-                              rel='noreferrer'
-                            >
-                              {lesson.link}
-                            </a>
-                          ) : (
-                            '—'
-                          )}
-                        </p>
-                      </div>
-                    </div>
+                    {/* ⛔ ССЫЛКИ УРОКА УБРАНЫ */}
 
                     <div className='col-6'>
                       <div className='reportTablePlan__item-task'>
@@ -184,22 +196,65 @@ export const ReportTableHomeWork = ({ homeworks }) => {
                       </div>
                     </div>
 
+                    {/* Редактируемая запись урока */}
                     <div className='col-6'>
-                      <div className='reportTablePlan__item-task'>
-                        <span>Запись урока: </span>
-                        <p>
-                          {lesson.record ? (
-                            <a
-                              href={lesson.record}
-                              target='_blank'
-                              rel='noreferrer'
-                            >
-                              {lesson.record}
-                            </a>
-                          ) : (
-                            '—'
-                          )}
-                        </p>
+                      <div className='reportTablePlan__item-task recordEdit'>
+                        <span className='recordEdit__label'>Запись урока:</span>
+
+                        {canEdit ? (
+                          <>
+                            <input
+                              className='recordEdit__input'
+                              type='url'
+                              placeholder='https://...'
+                              value={currentVal}
+                              onFocus={() => startEdit(lesson)}
+                              onChange={e =>
+                                setEditVal(prev => ({
+                                  ...prev,
+                                  [lesson.id]: e.target.value,
+                                }))
+                              }
+                            />
+                            <div className='recordEdit__actions'>
+                              <button
+                                className='recordEdit__btn recordEdit__btn--primary'
+                                disabled={!!saving[lesson.id]}
+                                onClick={() => saveEdit(lesson.id)}
+                                type='button'
+                              >
+                                {saving[lesson.id] ? 'Сохраняю…' : 'Сохранить'}
+                              </button>
+                              <a
+                                href={currentVal || '#'}
+                                target='_blank'
+                                rel='noreferrer'
+                                className={`recordEdit__btn recordEdit__btn--ghost ${
+                                  !currentVal ? 'is-disabled' : ''
+                                }`}
+                                onClick={e => {
+                                  if (!currentVal) e.preventDefault();
+                                }}
+                              >
+                                Открыть
+                              </a>
+                            </div>
+                          </>
+                        ) : (
+                          <p>
+                            {lesson.record ? (
+                              <a
+                                href={lesson.record}
+                                target='_blank'
+                                rel='noreferrer'
+                              >
+                                {lesson.record}
+                              </a>
+                            ) : (
+                              '—'
+                            )}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -209,7 +264,7 @@ export const ReportTableHomeWork = ({ homeworks }) => {
                         <p>
                           {lesson.file_hw ? (
                             <a
-                              href={lesson.file_hw}
+                              href={`${lesson.file_hw}`}
                               target='_blank'
                               rel='noreferrer'
                             >

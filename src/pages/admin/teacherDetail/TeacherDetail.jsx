@@ -8,6 +8,8 @@ import {
 } from '../../../entities';
 import { data } from '../studentsTable/StudentsTable';
 import { useParams } from 'react-router-dom';
+
+  
 export const TeacherDetail = () => {
   const { id } = useParams();
   const detail = data.find(item => item.id == id);

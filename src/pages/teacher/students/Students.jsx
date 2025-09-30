@@ -17,12 +17,10 @@ export const Students = () => {
 
   const { studentList, listLoading, error } = useStudentList();
 
-  // распаковываем данные из бэка
   const students = studentList?.students ?? [];
   const filters = studentList?.filters ?? {};
   const selected = studentList?.selected_filters ?? {};
 
-  // локальные контролы (поиск и направление)
   const [search, setSearch] = useState('');
   const [direction, setDirection] = useState('');
 
@@ -30,14 +28,13 @@ export const Students = () => {
     dispatch(studentListGet());
   }, [dispatch]);
 
-  // инициализируем контролы значениями бэка при загрузке
   useEffect(() => {
     setSearch(selected?.search ?? '');
     setDirection(selected?.direction ?? '');
   }, [selected?.search, selected?.direction]);
 
   const columns = [
-    { title: '№', dataIndex: 'id', key: 'id' },
+    { title: '№', dataIndex: 'num', key: 'num' }, 
     { title: 'ФИО', dataIndex: 'name', key: 'name' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
@@ -53,14 +50,22 @@ export const Students = () => {
       .filter(s => (direction ? s.direction === direction : true))
       .filter(s => {
         if (!q) return true;
-        const hay = [s.full_name, s.group, s.direction, s.teacher, String(s.id)]
+        const hay = [
+          s.full_name,
+          s.group,
+          s.direction,
+          s.teacher,
+          String(s.user_id ?? s.id),
+        ]
           .filter(Boolean)
           .join(' ')
           .toLowerCase();
         return hay.includes(q);
       })
-      .map(s => ({
-        id: s.id,
+      .map((s, i) => ({
+        num: i + 1,
+        id: s.user_id ?? s.id,
+        user_id: s.user_id ?? s.id,
         name: s.full_name,
         group: s.group,
         direction: s.direction,
@@ -143,7 +148,7 @@ export const Students = () => {
           columns={columns}
           data={tableData}
           loading={listLoading}
-          onRowClick={item => navigate(`/student/${item.id}`)}
+          onRowClick={item => navigate(`/student/${item.user_id}`)}
           emptyText='Ничего не найдено'
         />
       </div>

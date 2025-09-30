@@ -23,7 +23,23 @@ export const PostHistoryPayments = createAsyncThunk(
       );
       return data;
     } catch (e) {
-      return rejectWithValue(e);
+      return rejectWithValue(e.response.data);
+    }
+  }
+);
+
+
+export const PostPayments = createAsyncThunk(
+  'post/payments',
+  async (newPayments, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosApi.post(
+        '/administration/payments/',
+        newPayments
+      );
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.response.data);
     }
   }
 );

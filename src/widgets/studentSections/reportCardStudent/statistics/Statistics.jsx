@@ -6,8 +6,6 @@ import { useProgress } from '../../../../app/store/student/progress/progressSlic
 import { useEffect, useMemo } from 'react';
 
 function parseISO(dateStr) {
-  // на входе строки вида "2025-09-28T14:44:13+06:00"
-  // new Date корректно парсит ISO со смещением
   const d = new Date(dateStr);
   return isNaN(d) ? null : d;
 }

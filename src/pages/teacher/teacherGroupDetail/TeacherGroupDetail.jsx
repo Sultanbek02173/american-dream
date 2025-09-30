@@ -8,10 +8,16 @@ import {
   ReportTableStatistic,
   ReportTableStudents,
 } from '../../../entities/reportTableTabs';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { groupDetailGet } from '../../../app/store/teacher/group/groupThunks';
 import { useParams } from 'react-router-dom';
 import { useGroup } from '../../../app/store/teacher/group/groupSlice';
+
+import {
+  collectMonths,
+  calcAttendance,
+  calcPerformance,
+} from '../../../shared/hooks/reportStats';
 
 export const TeacherGroupDetail = () => {
   const dispatch = useDispatch();
@@ -21,7 +27,37 @@ export const TeacherGroupDetail = () => {
   const { id } = useParams();
   const { groupDetail } = useGroup();
 
-  console.log(groupDetail);
+  useEffect(() => {
+    if (id) dispatch(groupDetailGet(id));
+  }, [dispatch, id]);
+
+  const { monthPerf, monthAttend, monthCount, allPerf, allAttend, allCount } =
+    useMemo(() => {
+      const students = groupDetail?.students || [];
+
+      const months = collectMonths(students);
+      const latestMonth = months.length ? months[months.length - 1] : null;
+
+      const { pct: monthAttendPct, lessonCount: monthLessonCount } =
+        calcAttendance(students, latestMonth);
+      const { pct: monthPerfPct } = calcPerformance(students, latestMonth);
+
+      // За весь период
+      const { pct: allAttendPct, lessonCount: allLessonCount } = calcAttendance(
+        students,
+        null
+      );
+      const { pct: allPerfPct } = calcPerformance(students, null);
+
+      return {
+        monthPerf: monthPerfPct, // 0–100
+        monthAttend: monthAttendPct, // 0–100
+        monthCount: monthLessonCount, // кол-во уроков в последнем месяце
+        allPerf: allPerfPct, // 0–100
+        allAttend: allAttendPct, // 0–100
+        allCount: allLessonCount, // общее кол-во уникальных уроков
+      };
+    }, [groupDetail]);
 
   const tabs = [
     { label: 'Данные', content: <ReportTableData data={groupDetail?.group} /> },
@@ -46,12 +82,21 @@ export const TeacherGroupDetail = () => {
         />
       ),
     },
-    { label: 'Статистика', content: <ReportTableStatistic /> },
+    {
+      label: 'Статистика',
+      content: (
+        <ReportTableStatistic
+          monthPerf={monthPerf}
+          monthAttend={monthAttend}
+          monthCount={monthCount}
+          allPerf={allPerf}
+          allAttend={allAttend}
+          allCount={allCount}
+        />
+      ),
+    },
   ];
 
-  useEffect(() => {
-    dispatch(groupDetailGet(id));
-  }, [dispatch]);
   return (
     <section className='reportTableDetail'>
       <div className='container'>

@@ -5,9 +5,9 @@ import Cookies from 'js-cookie';
 export const axiosApi = axios.create({
   baseURL: `${BASE_URL}/api/v1/`,
   responseType: 'json',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // headers: {
+  //   'Content-Type': 'application/json',
+  // },
 });
 
 axiosApi.interceptors.request.use(

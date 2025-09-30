@@ -23,7 +23,6 @@ export const ReportTableStatistic = ({
       </div>
 
       <div className='row table_static'>
-        {/* За месяц */}
         <div className='row month'>
           <div className='list'>
             {ticks.map((t, i) => (
@@ -31,7 +30,6 @@ export const ReportTableStatistic = ({
             ))}
           </div>
           <div className='row month_indicator'>
-            {/* Успеваемость */}
             <VerticalProgress
               progress={monthPerf}
               text={formatPct(monthPerf)}
@@ -40,7 +38,6 @@ export const ReportTableStatistic = ({
               border='0px'
               color='#32CD32'
             />
-            {/* Посещаемость */}
             <VerticalProgress
               progress={monthAttend}
               text={formatPct(monthAttend)}
@@ -52,7 +49,6 @@ export const ReportTableStatistic = ({
           </div>
         </div>
 
-        {/* Общая */}
         <div className='row all'>
           <div className='list'>
             {ticks.map((t, i) => (
@@ -60,7 +56,6 @@ export const ReportTableStatistic = ({
             ))}
           </div>
           <div className='row all_indicator'>
-            {/* Успеваемость */}
             <VerticalProgress
               progress={allPerf}
               text={formatPct(allPerf)}
@@ -69,7 +64,6 @@ export const ReportTableStatistic = ({
               border='0px'
               color='#32CD32'
             />
-            {/* Посещаемость */}
             <VerticalProgress
               progress={allAttend}
               text={formatPct(allAttend)}

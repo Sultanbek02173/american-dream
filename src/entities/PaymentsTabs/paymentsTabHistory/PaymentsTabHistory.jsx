@@ -32,17 +32,65 @@ export const PaymentsTabHistory = () => {
     return `${new Intl.NumberFormat('ru-RU').format(num)} с`;
   };
 
+  // Перевод статусов из бэка
+  const statusRu = code => {
+    switch (code) {
+      case 'pending':
+        return 'Ожидает оплаты';
+      case 'partial':
+        return 'Частично оплачено';
+      case 'paid':
+        return 'Оплачено';
+      default:
+        return '-';
+    }
+  };
+
+  // Определяем наибольшую сумму и её тип оплаты
+  const pickMaxMethod = p => {
+    const methods = [
+      {
+        key: 'cash_amount',
+        label: 'Наличные',
+        value: Number(p?.cash_amount ?? 0),
+      },
+      {
+        key: 'transfer_amount',
+        label: 'Перевод',
+        value: Number(p?.transfer_amount ?? 0),
+      },
+      {
+        key: 'online_amount',
+        label: 'Онлайн',
+        value: Number(p?.online_amount ?? 0),
+      },
+    ];
+
+    // Если равные значения — берём первый по порядку (нал/перевод/онлайн)
+    const max = methods.reduce((acc, m) => (m.value > acc.value ? m : acc), {
+      key: '',
+      label: '-',
+      value: 0,
+    });
+
+    return { amount: max.value, typeLabel: max.label };
+  };
+
   const data = useMemo(
     () =>
-      (payments || [])?.map(p => ({
-        key: p.id ?? `${p.student_name}-${p.date}`, 
-        date: formatDate(p.date),
-        student: p.student_name ?? '-',
-        course: p.course_name ?? '-', 
-        amount: formatAmount(p.amount),
-        type: p.payment_type_display ?? p.payment_type ?? '-',
-        status: p.status_display ?? p.status ?? '-', 
-      })),
+      (payments || []).map(p => {
+        const { amount, typeLabel } = pickMaxMethod(p);
+
+        return {
+          key: p.id ?? `${p.student_name}-${p.date}`,
+          date: formatDate(p.date),
+          student: p.student_name ?? '-',
+          course: p.month_name ?? '-',
+          amount: formatAmount(amount),
+          type: typeLabel, 
+          status: statusRu(p.invoice_status),
+        };
+      }),
     [payments]
   );
 

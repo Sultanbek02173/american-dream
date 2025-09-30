@@ -17,7 +17,10 @@ export const PostHistoryPayments = createAsyncThunk(
   'post/paymentsHistory',
   async (newPayments, { rejectWithValue }) => {
     try {
-      const { data } = await axiosApi.post('/administration/payments/');
+      const { data } = await axiosApi.post(
+        '/administration/invoices/',
+        newPayments
+      );
       return data;
     } catch (e) {
       return rejectWithValue(e);

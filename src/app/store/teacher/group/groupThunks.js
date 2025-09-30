@@ -18,7 +18,9 @@ export const groupDetailGet = createAsyncThunk(
   'groupDetail/get',
   async (id, { rejectWithValue }) => {
     try {
-      const { data } = await axiosApi.get(`/teacher/groups/${id}/dashboard/`);
+      const { data } = await axiosApi.get(
+        `/administration/groups/${id}/dashboard/`
+      );
       return data;
     } catch (e) {
       console.log(e);

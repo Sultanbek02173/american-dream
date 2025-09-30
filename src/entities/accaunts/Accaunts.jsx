@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import './accaunts.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import user from '../../shared/imgs/login/user.jpg';
+import user from '../../shared/imgs/login/logo_user.svg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../app/store/reducers/auth/AuthThunk';

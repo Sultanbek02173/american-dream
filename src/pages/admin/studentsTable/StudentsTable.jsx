@@ -11,7 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../../entities';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
-import bilol from '../studentsDetail/image.jpg';
+import bilol from '../studentsDetail/logo_user.svg';
 import plusIcon from '../teacherTable/plus.svg';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';

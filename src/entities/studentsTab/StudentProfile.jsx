@@ -7,9 +7,9 @@ import {
   Button,
   Box,
 } from '@mui/material';
-import { useEffect, useState, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import bilol from '../../pages/admin/studentsDetail/image.jpg';
+import bilol from '../../pages/admin/studentsDetail/logo_user.svg';
 import { eventHandler } from '../../shared/utils/eventHandlers';
 import { inputStyle, menuItemStyle } from '../../shared/utils/MuiStyles';
 import { useDispatch } from 'react-redux';
@@ -74,13 +74,13 @@ export const StudentProfile = () => {
     setValue(e.target.value);
   };
 
-  // выбор нового аватара
+  // превратить File в превью и пометить как изменённый
   const onAvatarChange = e => {
     if (!canEdit) return;
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) return;
-    // if (file.size > 5 * 1024 * 1024) return; // пример лимита 5MB
+    // if (file.size > 5 * 1024 * 1024) return; // пример лимита
 
     setAvatarFile(file);
     setTouched(true);
@@ -90,23 +90,52 @@ export const StudentProfile = () => {
     reader.readAsDataURL(file);
   };
 
+  // поверхностный diff по строкам/числам/булевым
+  const makeDiff = (original = {}, current = {}) => {
+    const diff = {};
+    const keys = new Set([
+      ...Object.keys(original || {}),
+      ...Object.keys(current || {}),
+    ]);
+
+    for (const k of keys) {
+      if (k === 'avatarka' || k === 'avatarka_url') continue; // файл/ссылка отдельно
+      const a = original?.[k];
+      const b = current?.[k];
+      if (a !== b) diff[k] = b;
+    }
+    return diff;
+  };
+
   const handleEdit = async () => {
     if (!canEdit) return;
     try {
-      const payload = { ...(state || {}) };
+      const base = { ...(state || {}) };
 
-      // не отправляем креды если нельзя
+      // не отправляем креды, если нельзя
       if (!canSeeCredentials) {
-        delete payload.username;
-        delete payload.password;
+        delete base.username;
+        delete base.password;
       }
 
-      payload.direction = value;
+      // direction берём из Select гарантированно актуальный
+      base.direction = value;
 
-      // имя поля под файл — подстройте под ваш бэкенд (avatarka/avatar и т.п.)
-      console.log(avatarFile);
-      
-      if (avatarFile) payload.avatarka = avatarFile;
+      // отправляем только изменённые поля
+      const payload = makeDiff(profile, base);
+
+      // если пользователь не выбирал новый файл — НЕ добавляем поле файла
+      // если выбрал — добавляем
+      if (avatarFile) {
+        // имя поля подгоните под бек (например 'avatar'); здесь используется 'avatarka'
+        payload.avatarka = avatarFile;
+      }
+
+      // если нет ни одного изменённого поля — можно выйти
+      if (!avatarFile && Object.keys(payload).length === 0) {
+        setTouched(false);
+        return;
+      }
 
       await dispatch(updateStudentProfile({ id, data: payload })).unwrap();
       setTouched(false);
@@ -123,6 +152,7 @@ export const StudentProfile = () => {
   const avatarSrc =
     avatarPreview || profile?.avatarka_url || profile?.avatarka || bilol;
 
+  // замок для Select без disabled — сохраняем стили
   const lockSelectProps = !canEdit
     ? {
         onOpen: e => e.preventDefault(),
@@ -137,6 +167,7 @@ export const StudentProfile = () => {
 
   return (
     <form className='studentsDetail__form'>
+      {/* Кликабельный аватар (без кнопки) */}
       <div
         role='button'
         tabIndex={0}

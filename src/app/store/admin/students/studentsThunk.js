@@ -46,10 +46,26 @@ export const updateStudentProfile = createAsyncThunk(
   'update/studentProfile',
   async ({ id, data }, { rejectWithValue }) => {
     try {
+      const form = new FormData();
+
+      Object.entries(data || {}).forEach(([key, value]) => {
+        if (value === undefined || value === null) return;
+        if (value instanceof File || value instanceof Blob) {
+          form.append(key, value);
+        } else if (Array.isArray(value)) {
+          value.forEach(v => form.append(`${key}[]`, v));
+        } else if (typeof value === 'object') {
+          form.append(key, JSON.stringify(value));
+        } else {
+          form.append(key, value);
+        }
+      });
+
       const { data: response } = await axiosApi.patch(
         `/administration/students/${id}/profile/`,
-        data
+        form
       );
+
       return response;
     } catch (e) {
       return rejectWithValue(e);

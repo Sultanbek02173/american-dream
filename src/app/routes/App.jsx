@@ -50,7 +50,9 @@ import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
 import teacher from '../../shared/imgs/sidebar/teacher.svg';
 import { getYourSelf } from '../store/reducers/auth/AuthThunk';
-export const URL = 'https://app.nurcrm.kg/api/main/categories/';
+import Cookies from 'js-cookie';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const roleFromStore = useSelector(s => s.auth.role);
@@ -121,6 +123,7 @@ const App = () => {
 
   return (
     <div className='app'>
+      <ToastContainer position='top-right' autoClose={4000} theme='dark' />
       {!isLoggedIn ? (
         <Routes>
           <Route path='/login' element={<Login />} />

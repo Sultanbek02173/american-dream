@@ -172,7 +172,7 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                           groups.map(group => (
                             <MenuItem
                               key={group.id}
-                              value={group.group_name}
+                              value={group.id}
                               sx={menuItemStyle}
                             >
                               {group.group_name}
@@ -226,7 +226,7 @@ export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
                           teacherList.map(teacher => (
                             <MenuItem
                               key={teacher.id}
-                              value={teacher.full_name}
+                              value={teacher.id}
                               sx={menuItemStyle}
                             >
                               {teacher.full_name}

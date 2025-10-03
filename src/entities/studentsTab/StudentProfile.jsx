@@ -7,41 +7,52 @@ import {
   Button,
   Box,
 } from '@mui/material';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import bilol from '../../pages/admin/studentsDetail/image.jpg';
+import bilol from '../../pages/admin/studentsDetail/logo_user.svg';
 import { eventHandler } from '../../shared/utils/eventHandlers';
-import { data } from '../../pages/admin/studentsTable/StudentsTable';
 import { inputStyle, menuItemStyle } from '../../shared/utils/MuiStyles';
 import { useDispatch } from 'react-redux';
 import {
   getStudentList,
-  getStudentProfile /* updateStudentProfile */,
+  getStudentProfile,
   updateStudentProfile,
 } from '../../app/store/admin/students/studentsThunk';
 import { useStudents } from '../../app/store/admin/students/studentsSlice';
+import Cookies from 'js-cookie';
 
 export const StudentProfile = () => {
   const dispatch = useDispatch();
+  const fileInputRef = useRef(null);
+
   const { studentProfile: profile, directions } = useStudents();
   const { id } = useParams();
 
+  const role = Cookies.get('role');
+  const canSeeCredentials = useMemo(
+    () => ['Administrator', 'Manager'].includes(role),
+    [role]
+  );
+  const canEdit = canSeeCredentials;
+
   const [state, setState] = useState(profile);
   const [value, setValue] = useState(profile?.direction ?? 'mentalArithmetic');
-  console.log(state);
-
   const [touched, setTouched] = useState(false);
 
-  const detail = data.find(item => String(item.id) === String(id));
+  // локально храним выбранный файл и превью
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
 
   useEffect(() => {
-    dispatch(getStudentProfile(id));
+    if (id) dispatch(getStudentProfile(id));
   }, [dispatch, id]);
 
   useEffect(() => {
     setState(profile);
     if (profile?.direction) setValue(profile.direction);
     setTouched(false);
+    setAvatarFile(null);
+    setAvatarPreview('');
   }, [profile]);
 
   useEffect(() => {
@@ -52,19 +63,83 @@ export const StudentProfile = () => {
 
   const baseOnChange = eventHandler(setState);
   const onChange = e => {
+    if (!canEdit) return;
     if (!touched) setTouched(true);
     baseOnChange(e);
   };
 
-  const handleChange = event => {
+  const handleChange = e => {
+    if (!canEdit) return;
     if (!touched) setTouched(true);
-    setValue(event.target.value);
+    setValue(e.target.value);
+  };
+
+  // превратить File в превью и пометить как изменённый
+  const onAvatarChange = e => {
+    if (!canEdit) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) return;
+    // if (file.size > 5 * 1024 * 1024) return; // пример лимита
+
+    setAvatarFile(file);
+    setTouched(true);
+
+    const reader = new FileReader();
+    reader.onload = ev => setAvatarPreview(String(ev.target?.result || ''));
+    reader.readAsDataURL(file);
+  };
+
+  // поверхностный diff по строкам/числам/булевым
+  const makeDiff = (original = {}, current = {}) => {
+    const diff = {};
+    const keys = new Set([
+      ...Object.keys(original || {}),
+      ...Object.keys(current || {}),
+    ]);
+
+    for (const k of keys) {
+      if (k === 'avatarka' || k === 'avatarka_url') continue; // файл/ссылка отдельно
+      const a = original?.[k];
+      const b = current?.[k];
+      if (a !== b) diff[k] = b;
+    }
+    return diff;
   };
 
   const handleEdit = async () => {
+    if (!canEdit) return;
     try {
-      await dispatch(updateStudentProfile({ id, data: state })).unwrap();
+      const base = { ...(state || {}) };
+
+      // не отправляем креды, если нельзя
+      if (!canSeeCredentials) {
+        delete base.username;
+        delete base.password;
+      }
+
+      // direction берём из Select гарантированно актуальный
+      base.direction = value;
+
+      // отправляем только изменённые поля
+      const payload = makeDiff(profile, base);
+
+      // если пользователь не выбирал новый файл — НЕ добавляем поле файла
+      // если выбрал — добавляем
+      if (avatarFile) {
+        // имя поля подгоните под бек (например 'avatar'); здесь используется 'avatarka'
+        payload.avatarka = avatarFile;
+      }
+
+      // если нет ни одного изменённого поля — можно выйти
+      if (!avatarFile && Object.keys(payload).length === 0) {
+        setTouched(false);
+        return;
+      }
+
+      await dispatch(updateStudentProfile({ id, data: payload })).unwrap();
       setTouched(false);
+      setAvatarFile(null);
     } catch (e) {
       console.log(e);
     }
@@ -72,11 +147,71 @@ export const StudentProfile = () => {
 
   useEffect(() => {
     dispatch(getStudentList());
-  }, []);
+  }, [dispatch]);
+
+  const avatarSrc =
+    avatarPreview || profile?.avatarka_url || profile?.avatarka || bilol;
+
+  // замок для Select без disabled — сохраняем стили
+  const lockSelectProps = !canEdit
+    ? {
+        onOpen: e => e.preventDefault(),
+        onMouseDown: e => e.preventDefault(),
+        onKeyDown: e => e.preventDefault(),
+        sx: { cursor: 'default' },
+        IconComponent: props => (
+          <span {...props} style={{ pointerEvents: 'none' }} />
+        ),
+      }
+    : {};
 
   return (
     <form className='studentsDetail__form'>
-      <img className='studentsDetail__form-avatar' src={bilol} alt='' />
+      {/* Кликабельный аватар (без кнопки) */}
+      <div
+        role='button'
+        tabIndex={0}
+        aria-label='Изменить аватар'
+        title={canEdit ? 'Нажмите, чтобы выбрать изображение' : ''}
+        onClick={() => canEdit && fileInputRef.current?.click()}
+        onKeyDown={e => {
+          if (!canEdit) return;
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            fileInputRef.current?.click();
+          }
+        }}
+        
+      >
+        <img className='studentsDetail__form-avatar' src={avatarSrc} alt='' />
+        {canEdit && (
+          <div
+            className='avatar__overlay'
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'grid',
+              placeItems: 'center',
+              background: 'rgba(0,0,0,0.35)',
+              color: '#fff',
+              fontSize: 14,
+              opacity: 0,
+              transition: 'opacity .2s ease',
+              borderRadius: '50%', // уберите, если аватар не круглый
+              pointerEvents: 'none',
+            }}
+          >
+            Нажмите, чтобы изменить
+          </div>
+        )}
+        <input
+          ref={fileInputRef}
+          type='file'
+          accept='image/*'
+          style={{ display: 'none' }}
+          onChange={onAvatarChange}
+        />
+      </div>
 
       <div className='studentsDetail__form-inputs'>
         <TextField
@@ -85,6 +220,7 @@ export const StudentProfile = () => {
           onChange={onChange}
           value={state?.first_name ?? ''}
           variant='outlined'
+          inputProps={{ readOnly: !canEdit }}
           sx={{ ...inputStyle, width: '45%' }}
         />
         <TextField
@@ -93,6 +229,7 @@ export const StudentProfile = () => {
           onChange={onChange}
           value={state?.last_name ?? ''}
           variant='outlined'
+          inputProps={{ readOnly: !canEdit }}
           sx={{ ...inputStyle, width: '55%' }}
         />
       </div>
@@ -104,6 +241,7 @@ export const StudentProfile = () => {
           onChange={onChange}
           value={state?.telegram ?? ''}
           variant='outlined'
+          inputProps={{ readOnly: !canEdit }}
           sx={{ ...inputStyle, width: '55%' }}
         />
         <TextField
@@ -112,28 +250,34 @@ export const StudentProfile = () => {
           onChange={onChange}
           value={state?.phone ?? ''}
           variant='outlined'
+          inputProps={{ readOnly: !canEdit }}
           sx={{ ...inputStyle, width: '45%' }}
         />
       </div>
 
-      <div className='studentsDetail__form-inputs'>
-        <TextField
-          label='Логин'
-          name='username'
-          onChange={onChange}
-          value={state?.username ?? ''}
-          variant='outlined'
-          sx={{ ...inputStyle, width: '45%' }}
-        />
-        <TextField
-          label='Пароль'
-          name='password'
-          onChange={onChange}
-          value={state?.password ?? ''}
-          variant='outlined'
-          sx={{ ...inputStyle, width: '55%' }}
-        />
-      </div>
+      {canSeeCredentials && (
+        <div className='studentsDetail__form-inputs'>
+          <TextField
+            label='Логин'
+            name='username'
+            onChange={onChange}
+            value={state?.username ?? ''}
+            variant='outlined'
+            inputProps={{ readOnly: !canEdit }}
+            sx={{ ...inputStyle, width: '45%' }}
+          />
+          <TextField
+            label='Пароль'
+            name='password'
+            type='password'
+            onChange={onChange}
+            value={state?.password ?? ''}
+            variant='outlined'
+            inputProps={{ readOnly: !canEdit }}
+            sx={{ ...inputStyle, width: '55%' }}
+          />
+        </div>
+      )}
 
       <div className='studentsDetail__form-inputs'>
         <TextField
@@ -142,6 +286,7 @@ export const StudentProfile = () => {
           onChange={onChange}
           value={state?.teacher ?? ''}
           variant='outlined'
+          inputProps={{ readOnly: !canEdit }}
           sx={{ ...inputStyle, width: '55%' }}
         />
         <FormControl
@@ -167,25 +312,23 @@ export const StudentProfile = () => {
             label='Направление'
             name='direction'
             onChange={handleChange}
+            {...lockSelectProps}
           >
-            {directions?.map(direction => {
-              return (
-                <MenuItem value={direction} sx={menuItemStyle}>
-                  {direction}
-                </MenuItem>
-              );
-            })}
+            {(directions ?? []).map(direction => (
+              <MenuItem key={direction} value={direction} sx={menuItemStyle}>
+                {direction}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>
 
-      {touched && (
+      {touched && canEdit && (
         <Box mt={2} textAlign='right'>
           <Button
             className='dataTeacher__row-button add'
             variant='contained'
             onClick={handleEdit}
-            
           >
             Редактировать
           </Button>

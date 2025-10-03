@@ -12,6 +12,7 @@ export const PaymentsTable = () => {
   const tabId = 'createNewGroup';
   const tabsState = useTabs();
   const activeTab = tabsState[tabId] ?? 0;
+  
   const tabs = [
     { label: 'Выставление счёта', content: <PaymentsTabInvoicing /> },
     { label: 'История оплат', content: <PaymentsTabHistory /> },

@@ -1,4 +1,3 @@
-// import { Select } from "antd";
 import {
   Select,
   MenuItem,
@@ -8,11 +7,11 @@ import {
 } from '@mui/material';
 import searchIcon from './images/search.svg';
 import './studentsTable.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../../entities';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
-import bilol from '../studentsDetail/image.jpg';
+import bilol from '../studentsDetail/logo_user.svg';
 import plusIcon from '../teacherTable/plus.svg';
 import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
@@ -190,38 +189,68 @@ export const mergeNames = data => {
 };
 
 export const StudentsTable = () => {
-  const [value, setValue] = useState('');
-  const role = Cookies.get('role');
   const dispatch = useDispatch();
-  const { students, directions } = useStudents();
-  console.log(students);
+  const navigate = useNavigate();
+  const role = Cookies.get('role');
 
-  const mergedData = mergeNames(students);
+  const { students = [], directions = [] } = useStudents();
+
+  const [direction, setDirection] = useState('');
+  const [query, setQuery] = useState(''); 
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-  const totalPages = Math.ceil(students?.length / itemsPerPage);
-  const paginatedData = students?.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
-  const navigate = useNavigate();
-  const handleChange = event => {
-    setValue(event.target.value);
-  };
+  const controlWidth = role === 'Administrator' ? '35%' : '40%';
+
+  useEffect(() => {
+    dispatch(getStudentList());
+  }, [dispatch]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+
+    return (students || []).filter(s => {
+      const okDir = direction
+        ? String(s.direction) === String(direction)
+        : true;
+
+      if (!q) return okDir;
+
+      const fio = [s.full_name, s.last_name, s.first_name, s.username]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      const groupName = String(s.group ?? '').toLowerCase();
+
+      const okText = fio.includes(q) || groupName.includes(q);
+
+      return okDir && okText;
+    });
+  }, [students, direction, query]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [direction, query]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+
+  const paginatedWithSeq = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filtered.slice(start, start + itemsPerPage).map((row, i) => ({
+      ...row,
+      seq: start + i + 1, 
+    }));
+  }, [filtered, currentPage]);
 
   const columns = [
-    { title: '№', dataIndex: 'id', key: 'id' },
+    { title: '№', dataIndex: 'seq', key: 'seq' }, 
     { title: 'ФИО', dataIndex: 'full_name', key: 'full_name' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
     { title: 'Преподаватель', dataIndex: 'teacher', key: 'teacher' },
   ];
-  const menuItemStyle = role === 'admin' ? '35%' : '40%';
-
-  useEffect(() => {
-    dispatch(getStudentList());
-  }, []);
 
   return (
     <section className='studentsTable'>
@@ -234,52 +263,47 @@ export const StudentsTable = () => {
                 : 'studentsTable__head-search-manager'
             }
           >
-            <input placeholder='Поиск' type='text' />
+            <input
+              placeholder='Поиск (ФИО или группа)'
+              type='text'
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
             <img src={searchIcon} alt='' />
           </div>
+
           <FormControl
             sx={{
-              width: `${menuItemStyle}`,
+              width: controlWidth,
               height: '100%',
               opacity: '60%',
               '& .MuiOutlinedInput-root': {
                 color: '#fff',
-                '& fieldset': {
-                  borderColor: '#fff',
-                },
-                '&:hover fieldset': {
-                  borderColor: '#fff',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#2de920', // при нажатии/фокусе (например, оранжевый)
-                },
+                '& fieldset': { borderColor: '#fff' },
+                '&:hover fieldset': { borderColor: '#fff' },
+                '&.Mui-focused fieldset': { borderColor: '#2de920' },
               },
-              '& .MuiInputLabel-root': {
-                color: '#fff', // цвет label по умолчанию
-              },
-              '& .Mui-focused .MuiInputLabel-root': {
-                color: '#fff', // цвет label при фокусе
-              },
-              '& label.Mui-focused': {
-                color: '#2de920',
-              },
+              '& .MuiInputLabel-root': { color: '#fff' },
+              '& .Mui-focused .MuiInputLabel-root': { color: '#fff' },
+              '& label.Mui-focused': { color: '#2de920' },
             }}
           >
-            <InputLabel id='demo-simple-select-label'>Направление</InputLabel>
+            <InputLabel id='direction-label'>Направление</InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              value={value}
+              labelId='direction-label'
+              id='direction'
+              value={direction}
               label='Направление'
-              onChange={handleChange}
+              onChange={e => setDirection(e.target.value)}
             >
-              {directions?.map(direction => {
-                return (
-                  <MenuItem value={direction} sx={menuItemStyle}>
-                    {direction}
-                  </MenuItem>
-                );
-              })}
+              <MenuItem value='' sx={menuItemStyle}>
+                Все направления
+              </MenuItem>
+              {directions.map(dir => (
+                <MenuItem key={dir} value={dir} sx={menuItemStyle}>
+                  {dir}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -293,18 +317,20 @@ export const StudentsTable = () => {
             </button>
           )}
         </div>
+
         <UniversalTable
           columns={columns}
-          data={paginatedData}
-          onRowClick={item => navigate(`/students-table/${item.id}`)}
+          data={paginatedWithSeq}
+          onRowClick={item => navigate(`/students-table/${item.user_id}`)}
+          emptyText='Ничего не найдено'
         />
 
-        {students.length > itemsPerPage && (
+        {filtered.length > itemsPerPage && (
           <div className='studentsTable__pagination'>
             <Pagination
               count={totalPages}
               page={currentPage}
-              onChange={(_, value) => setCurrentPage(value)}
+              onChange={(_, page) => setCurrentPage(page)}
               sx={{
                 '& .MuiPaginationItem-root': {
                   fontWeight: 'bold',
@@ -313,9 +339,6 @@ export const StudentsTable = () => {
                 '& .Mui-selected': {
                   color: '#fff',
                   borderRadius: '8px',
-                  '&:hover': {
-                    backgroundColor: '#0077ff',
-                  },
                 },
                 '& .MuiPaginationItem-previousNext': {
                   color: '#2DE920',

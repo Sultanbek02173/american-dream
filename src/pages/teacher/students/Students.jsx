@@ -1,99 +1,155 @@
-import React, { useState } from 'react';
-import { useTabs } from '../../../app/store/reducers/tabSlice';
+import { useEffect, useMemo, useState } from 'react';
 import searchIcon from '../../admin/studentsTable/images/search.svg';
 import plusIcon from '../../admin/teacherTable/plus.svg';
-import {
-  StudentPaymentHistory,
-  StudentProfile,
-  StudentSessionHistory,
-  UniversalTable,
-} from '../../../entities';
+import { UniversalTable } from '../../../entities';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-
-// import { Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { menuItemStyle } from '../../../shared/utils/MuiStyles';
-import { data, mergeNames } from '../../admin/studentsTable/StudentsTable';
+import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { studentListGet } from '../../../app/store/teacher/studentList/studentListThunks';
+import { useStudentList } from '../../../app/store/teacher/studentList/studentListSlice';
 
 export const Students = () => {
-  const [value, setValue] = useState('');
   const navigate = useNavigate();
-  const handleChange = event => {
-    setValue(event.target.value);
-  };
+  const role = Cookies.get('role');
+  const dispatch = useDispatch();
+
+  const { studentList, listLoading, error } = useStudentList();
+
+  const students = studentList?.students ?? [];
+  const filters = studentList?.filters ?? {};
+  const selected = studentList?.selected_filters ?? {};
+
+  const [search, setSearch] = useState('');
+  const [direction, setDirection] = useState('');
+
+  useEffect(() => {
+    dispatch(studentListGet());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setSearch(selected?.search ?? '');
+    setDirection(selected?.direction ?? '');
+  }, [selected?.search, selected?.direction]);
 
   const columns = [
-    { title: '№', dataIndex: 'id', key: 'id' },
+    { title: '№', dataIndex: 'num', key: 'num' }, 
     { title: 'ФИО', dataIndex: 'name', key: 'name' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
     { title: 'Преподаватель', dataIndex: 'teacher', key: 'teacher' },
   ];
 
+  const controlWidth = role === 'Administrator' ? '35%' : '50%';
+
+  const tableData = useMemo(() => {
+    const q = (search ?? '').trim().toLowerCase();
+
+    return students
+      .filter(s => (direction ? s.direction === direction : true))
+      .filter(s => {
+        if (!q) return true;
+        const hay = [
+          s.full_name,
+          s.group,
+          s.direction,
+          s.teacher,
+          String(s.user_id ?? s.id),
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        return hay.includes(q);
+      })
+      .map((s, i) => ({
+        num: i + 1,
+        id: s.user_id ?? s.id,
+        user_id: s.user_id ?? s.id,
+        name: s.full_name,
+        group: s.group,
+        direction: s.direction,
+        teacher: s.teacher,
+      }));
+  }, [students, direction, search]);
+
   return (
-    <section className=''>
+    <section>
       <div className='container'>
         <div className='studentsTable__head'>
-          <div className='studentsTable__head-search'>
-            <input placeholder='Поиск' type='text' />
+          <div
+            className='studentsTable__head-search'
+            style={{ width: controlWidth }}
+          >
+            <input
+              placeholder='Поиск'
+              type='text'
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
             <img src={searchIcon} alt='' />
           </div>
+
           <FormControl
             sx={{
-              width: '35%',
+              width: controlWidth,
               height: '100%',
-              opacity: '60%',
+              opacity: 0.6,
               '& .MuiOutlinedInput-root': {
-                color: '#fff', // цвет текста
-                '& fieldset': {
-                  borderColor: '#fff', // обычная граница
-                },
-                '&:hover fieldset': {
-                  borderColor: '#fff', // при наведении
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#2de920', // при нажатии/фокусе (например, оранжевый)
-                },
+                color: '#fff',
+                '& fieldset': { borderColor: '#fff' },
+                '&:hover fieldset': { borderColor: '#fff' },
+                '&.Mui-focused fieldset': { borderColor: '#2de920' },
               },
               '& .MuiInputLabel-root': {
-                color: '#fff', // цвет label по умолчанию
-              },
-              '& .Mui-focused .MuiInputLabel-root': {
-                color: '#fff', // цвет label при фокусе
+                color: '#fff',
+                '&.Mui-focused': { color: '#fff' },
               },
             }}
           >
-            <InputLabel id='demo-simple-select-label'>Направление</InputLabel>
+            <InputLabel id='direction-label'>Направление</InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
-              value={value}
+              labelId='direction-label'
+              id='direction'
+              value={direction}
               label='Направление'
-              onChange={handleChange}
+              onChange={e => setDirection(e.target.value)}
             >
-              <MenuItem value='english' sx={menuItemStyle}>
-                Английский
+              <MenuItem value='' sx={menuItemStyle}>
+                Все направления
               </MenuItem>
-              <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-                Ментальная арифметика
-              </MenuItem>
-              <MenuItem value='robotics' sx={menuItemStyle}>
-                Робототехника
-              </MenuItem>
+
+              {(filters?.directions ?? []).map(dir => (
+                <MenuItem key={dir} value={dir} sx={menuItemStyle}>
+                  {dir}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          <button
-            onClick={() => navigate('/add-student')}
-            className='studentsTable__head-add'
-          >
-            <img src={plusIcon} alt='' />
-            Добавить ученика
-          </button>
+
+          {role === 'Administrator' && (
+            <button
+              onClick={() => navigate('/add-student')}
+              className='studentsTable__head-add'
+            >
+              <img src={plusIcon} alt='' />
+              Добавить ученика
+            </button>
+          )}
         </div>
+
+        {error && (
+          <div style={{ marginTop: 12, color: '#ff6961' }}>
+            Ошибка: {String(error)}
+          </div>
+        )}
+
         <UniversalTable
           columns={columns}
-          data={mergeNames(data)}
-          onRowClick={item => navigate(`/student/${item.id}`)}
+          data={tableData}
+          loading={listLoading}
+          onRowClick={item => navigate(`/student/${item.user_id}`)}
+          emptyText='Ничего не найдено'
         />
       </div>
     </section>

@@ -1,5 +1,5 @@
 // src/app/App.jsx
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { getRole } from '../../shared';
@@ -48,7 +48,8 @@ import reportAnalytics from '../../shared/imgs/sidebar/ReportAnalytics.svg';
 import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
 import teacher from '../../shared/imgs/sidebar/teacher.svg';
-
+import { getYourSelf } from '../store/reducers/auth/AuthThunk';
+import Cookies from 'js-cookie';
 export const URL = 'https://app.nurcrm.kg/api/main/categories/';
 
 const App = () => {
@@ -105,27 +106,21 @@ const App = () => {
     }
   }, [role]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       await dispatch(getYourSelf()).unwrap();
-  //     } catch (e) {
-  //       console.log(e);
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       Cookies.remove('access');
-  //       navigate('/login', { replace: true });
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(getYourSelf()).unwrap();
+      } catch (e) {
+        console.log(e);
+        Cookies.remove('access');
+        Cookies.remove('role');
+        Cookies.remove('login');
+        navigate('/login', { replace: true });
+      }
+    };
 
-  //   fetchData();
-  // }, [dispatch, navigate]);
+    fetchData();
+  }, [dispatch, navigate]);
 
   return (
     <div className='app'>
@@ -219,7 +214,7 @@ const App = () => {
                   <>
                     <Route path='/' element={<MainTeacher />} />
                     <Route
-                      path='/table/:group'
+                      path='/table/:id'
                       element={<TeacherGroupDetail />}
                     />
                     <Route path='/accounting' element={<ScheduleTeacher />} />
@@ -232,7 +227,6 @@ const App = () => {
                   </>
                 )}
 
-                {/* Фолбэк на неизвестные маршруты */}
                 <Route path='*' element={<Navigate to='/' replace />} />
               </Routes>
             </div>

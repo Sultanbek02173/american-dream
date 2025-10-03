@@ -24,6 +24,8 @@ const routeNameMap = {
   students: 'Ученики',
   'add-teacher': 'Добавить преподавателя',
   'report-card': 'Табель',
+  'table': 'Табель',
+  "student": 'Ученик'
 };
 
 export const Breadcrumbs = () => {

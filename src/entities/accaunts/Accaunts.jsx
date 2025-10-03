@@ -2,17 +2,19 @@ import { AnimatePresence, motion } from 'framer-motion';
 import './accaunts.scss';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import user from '../../shared/imgs/login/user.jpg';
+import user from '../../shared/imgs/login/logo_user.svg';
 import { IoIosArrowBack, IoIosArrowDown } from 'react-icons/io';
-import { removeRole } from '../../shared';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../app/store/reducers/auth/AuthThunk';
+import { accauntGet } from '../../app/store/reducers/accaunt/accauntThunks';
+import { useAccaunt } from '../../app/store/reducers/accaunt/accauntSlice';
 
 export const Accaunts = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const { accaunt } = useAccaunt();
 
   const handlerLogaut = async () => {
     setOpen(false);
@@ -21,7 +23,6 @@ export const Accaunts = () => {
     } finally {
       navigate('/login', { replace: true });
     }
-    // window.location.reload();
   };
 
   useEffect(() => {
@@ -34,6 +35,10 @@ export const Accaunts = () => {
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
+
+  useEffect(() => {
+    dispatch(accauntGet());
+  }, [dispatch]);
   return (
     <>
       {location.pathname === '/' && (
@@ -41,11 +46,13 @@ export const Accaunts = () => {
           <div className='accaunts'>
             <div className='accaunts_main'>
               <div className='accaunts_main_img'>
-                <img src={user} alt='' />
+                <img src={accaunt?.avatarka ? accaunt.avatarka : user} alt='' />
               </div>
               <div className='accaunts_main_name'>
-                <h2>Дмитрий</h2>
-                <p>000000000000@gmai.com</p>
+                <h2>
+                  {accaunt?.first_name ? accaunt?.first_name : 'Неизвестно'}
+                </h2>
+                <p>{accaunt?.email}</p>
               </div>
               <div
                 className='accaunts_main_more'

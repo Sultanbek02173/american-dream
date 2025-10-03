@@ -6,12 +6,26 @@ import {
 
 import tabReducer from './reducers/tabSlice';
 import adminHomeReducer from './admin/homeAdmin/homeAdminSlice';
+import applicationAdminReducer from './admin/application/applicationSlice';
 import studentsReducer from './admin/students/studentsSlice';
 import teachersReducer from './admin/teacher/teachersSlice';
 import reportReducer from './admin/report/reportSlice';
 import entitiesReducer from './admin/entities/entitiesSlice';
+import accauntReducer from './reducers/accaunt/accauntSlice';
+import homeworkReducer from './student/homeWork/homeworkSlice';
+import historyPaymentsReducer from './admin/historyPayments/historyPaymentsSlice';
+import syllabusReducer from './student/syllabus/syllabusSlice';
+import progressReducer from './student/progress/progressSlice';
+import scheduleStudentReducer from './student/sheduleStudent/sheduleStudentSlice';
+import groupReducer from './teacher/group/groupSlice';
+import studentListReducer from './teacher/studentList/studentListSlice';
+import homeworkStudentReducer from './teacher/studentHomework/studentHomeworkSlice';
 
 import authReducer from './reducers/auth/AuthSlice';
+import scheduleReducer from './admin/schedule/scheduleSlice';
+import reportAnalyticReducer from './admin/reportAnalytic/reportAnalyticSlice';
+import paymentsReducer from './admin/payments/paymentsSlice';
+import paymentTeacherReducer from './admin/paymentsTeacher/paymentsTeacherSlice';
 import { logoutUser, userLogin } from './reducers/auth/AuthThunk';
 
 import Cookies from 'js-cookie';
@@ -57,10 +71,24 @@ export const store = configureStore({
     tabs: tabReducer,
     adminHome: adminHomeReducer,
     auth: authReducer,
+    applicationAdmin: applicationAdminReducer,
+    schedule: scheduleReducer,
     students: studentsReducer,
     teachers: teachersReducer,
     report: reportReducer,
     entities: entitiesReducer,
+    reportAnalytic: reportAnalyticReducer,
+    payments: paymentsReducer,
+    paymentTeacher: paymentTeacherReducer,
+    accaunt: accauntReducer,
+    homework: homeworkReducer,
+    historyPayments: historyPaymentsReducer,
+    syllabus: syllabusReducer,
+    progress: progressReducer,
+    scheduleStudent: scheduleStudentReducer,
+    group: groupReducer,
+    studentList: studentListReducer,
+    homeworkStudent: homeworkStudentReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().prepend(cookieMiddleware.middleware),

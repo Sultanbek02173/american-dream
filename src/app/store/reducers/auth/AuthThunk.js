@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosAuth } from '../../../services/axiosApi';
+import { axiosApi, axiosAuth } from '../../../services/axiosApi';
 import Cookies from 'js-cookie';
 
 export const userLogin = createAsyncThunk(
@@ -18,7 +18,7 @@ export const getYourSelf = createAsyncThunk(
   '/me',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axiosAuth.get('/users/profile/');
+      const { data } = await axiosApi.get('/administration/profile/');
       return data;
     } catch (e) {
       return rejectWithValue(e.response?.data || e.message);

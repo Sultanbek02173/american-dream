@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { VerticalProgress } from '../../../featurs';
 import '../../../widgets/mainAdminSections/payment/payment.scss';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// import Swiper from 'swiper';
 import {
   Navigation,
   Pagination,
@@ -15,47 +14,53 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { UniversalTable } from '../../universalTable/UniversalTable';
 import PaymentsFirstTable from './PaymentsFirstTable';
 import PaymentsSecondTable from './PaymentsSecondTable';
+import { useDispatch } from 'react-redux';
+import { getPayments } from '../../../app/store/admin/payments/paymentsThunks';
+import { usePayments } from '../../../app/store/admin/payments/paymentsSlice';
+import { axiosApi } from '../../../app/services/axiosApi';
+
 export const PaymentsTabFinancial = () => {
-  const [categories] = useState([
-    {
-      id: 0,
-      amount: '82 000 c',
-      start_date: '26.05.2025',
-      end_date: '26.05.2025',
-      salaries: 'Заработные платы преподавателей',
-    },
-    {
-      id: 1,
-      amount: '82 000 c',
-      start_date: '26.05.2025',
-      end_date: '26.05.2025',
-      salaries: 'Заработные платы преподавателей',
-    },
-    {
-      id: 2,
-      amount: '82 000 c',
-      start_date: '26.05.2025',
-      end_date: '26.05.2025',
-      salaries: 'Заработные платы преподавателей',
-    },
-    {
-      id: 3,
-      amount: '82 000 c',
-      start_date: '26.05.2025',
-      end_date: '26.05.2025',
-      salaries: 'Заработные платы преподавателей',
-    },
-    {
-      id: 4,
-      amount: '82 000 c',
-      start_date: '26.05.2025',
-      end_date: '26.05.2025',
-      salaries: 'Заработные платы преподавателей',
-    },
-  ]);
+  const dispatch = useDispatch();
+  const { payments = [] } = usePayments();
+  const [activeReportType, setActiveReportType] = useState('daily');
+
+  useEffect(() => {
+    dispatch(getPayments());
+  }, [dispatch]);
+
+  const activeReport = payments?.find(r => r.report_type === activeReportType);
+  console.log(activeReport);
+  
+  const { bestCourse, bestIncome, percent } = useMemo(() => {
+    if (!activeReport?.top_courses || !activeReport?.total_income) {
+      return { bestCourse: null, bestIncome: 0, percent: 0 };
+    }
+    const entries = Object.entries(activeReport.top_courses);
+    if (entries.length === 0)
+      return { bestCourse: null, bestIncome: 0, percent: 0 };
+    const [course, income] = entries.reduce((max, current) =>
+      current[1] > max[1] ? current : max
+    );
+    const percentCalc = ((income / activeReport.total_income) * 100).toFixed(0);
+    return { bestCourse: course, bestIncome: income, percent: percentCalc };
+  }, [activeReport]);
+
+  const categories = useMemo(() => {
+    if (!activeReport?.expenses_by_category) return [];
+    return Object.entries(activeReport.expenses_by_category).map(
+      ([key, value], idx) => ({
+        id: idx,
+        salaries: key.charAt(0).toUpperCase() + key.slice(1),
+        amount: `${value} c`,
+      })
+    );
+  }, [activeReport]);
+
+  const sendReport = () => {
+    axiosApi.post('/administration/send-reports/')
+  }
 
   return (
     <div className='paymentsFinancial'>
@@ -66,10 +71,10 @@ export const PaymentsTabFinancial = () => {
           </div>
           <div className='static_section_statistics_period flex_item'>
             <div className='static_section_statistics_period_date flex_item'>
-              <p>24 часа</p>
-              <p>Неделя</p>
-              <p>Месяц</p>
-              <p>Год</p>
+              <p onClick={() => setActiveReportType('daily')}>24 часа</p>
+              <p onClick={() => setActiveReportType('weekly')}>Неделя</p>
+              <p onClick={() => setActiveReportType('monthly')}>Месяц</p>
+              <p onClick={() => setActiveReportType('yearly')}>Год</p>
             </div>
             <div className='flex_item'>
               <IoIosArrowForward />
@@ -82,93 +87,65 @@ export const PaymentsTabFinancial = () => {
           </div>
         </div>
       </div>
+
       <div className='payment_statistics'>
         <p className='sum'>Сумма:</p>
-
         <div className='row'>
           <div className='payment_statistics_sum'>
-            <h2>295 000 c</h2>
+            <h2>{activeReport?.total_income || 0} c</h2>
             <p>
               Общая сумма всех поступлений за день, включая наличные, переводы и
               онлайн-оплаты.
             </p>
           </div>
           <div className='payment_statistics_progress'>
-            <div className='stastic'>
-              <VerticalProgress
-                progress={85}
-                text={'Наличными'}
-                height={'380px'}
-                width={'102px'}
-                border={'100px'}
-                color={'#2DE920'}
-              />
-            </div>
-            <div className='stastic'>
-              <VerticalProgress
-                progress={70}
-                text={'Перевод'}
-                height={'380px'}
-                width={'102px'}
-                border={'100px'}
-                color={'#23a919ff'}
-              />
-            </div>
-            <div className='stastic'>
-              <VerticalProgress
-                progress={50}
-                text={'Онлайн'}
-                height={'380px'}
-                width={'102px'}
-                border={'100px'}
-                color={'#1d8e15ff'}
-              />
-            </div>
+            {['cash', 'transfer', 'online'].map(type => (
+              <div className='stastic' key={type}>
+                <VerticalProgress
+                  progress={
+                    ((activeReport?.income_by_type?.[type] || 0) /
+                      (activeReport?.total_income || 1)) *
+                    100
+                  }
+                  text={
+                    type === 'cash'
+                      ? 'Наличными'
+                      : type === 'transfer'
+                      ? 'Перевод'
+                      : 'Онлайн'
+                  }
+                  height='380px'
+                  width='102px'
+                  border='100px'
+                  color={
+                    type === 'cash'
+                      ? '#2DE920'
+                      : type === 'transfer'
+                      ? '#23a919ff'
+                      : '#1d8e15ff'
+                  }
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className='row pay_user'>
-        <div className='pay_user_left'>
-          <div className='row pay_user_left_header'>
-            <p>Сумма:</p>
-            <p className='type_pay'>Перевод</p>
+      {bestCourse && (
+        <div className='paymentsFinancial__main'>
+          <div className='row pay_online_header'>
+            <p>Основной вклад:</p>
+            <h2>{percent}%</h2>
           </div>
-          <div>
-            <h2>75 000 c</h2>
-          </div>
-        </div>
-        <div className='pay_user_right'>
-          <div className='row pay_user_right_header'>
-            <p>Сумма:</p>
-            <p className='type_pay'>Наличные</p>
-          </div>
-          <div>
-            <h2>195 000 c</h2>
+          <div className='paymentsFinancial__main-row'>
+            <p className='paymentsFinancial__main-course'>
+              Курс «<span>{bestCourse}</span>»
+            </p>
+            <p className='paymentsFinancial__main-mainAmount'>от общей суммы</p>
           </div>
         </div>
-      </div>
-      <div className='pay_online'>
-        <div className='row pay_online_header'>
-          <p>Сумма:</p>
-          <h2>25 000 c</h2>
-        </div>
-        <div>
-          <p className='type_pay'>Онлайн</p>
-        </div>
-      </div>
-      <div className='paymentsFinancial__main'>
-        <div className='row pay_online_header'>
-          <p>Основной вклад:</p>
-          <h2>45%</h2>
-        </div>
-        <div className='paymentsFinancial__main-row'>
-          <p className='paymentsFinancial__main-course'>
-            Курс «<span>Подготовка к ОРТ</span>»
-          </p>
-          <p className='paymentsFinancial__main-mainAmount'>от общей суммы</p>
-        </div>
-      </div>
+      )}
+
       <section className='paymentsFinancial__categories'>
         <h3 className='paymentsFinancial__categories-title'>
           Расходы по категориям
@@ -178,7 +155,6 @@ export const PaymentsTabFinancial = () => {
           spaceBetween={20}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          // scrollbar={{ draggable: true }}
           autoplay={{ delay: 3000 }}
         >
           {categories.map(category => (
@@ -192,7 +168,7 @@ export const PaymentsTabFinancial = () => {
                   <p className='paymentsFinancial__main-course'>
                     За период -{' '}
                     <span>
-                      {category.start_date} - {category.end_date}
+                      {activeReport?.start_date} - {activeReport?.end_date}
                     </span>
                   </p>
                 </div>
@@ -201,16 +177,17 @@ export const PaymentsTabFinancial = () => {
           ))}
         </Swiper>
       </section>
-      <PaymentsFirstTable />
+
+      <PaymentsFirstTable net_profit={activeReport?.net_profit || 0} />
       <PaymentsSecondTable />
+
       <section className='popularityCourses_reload'>
         <p>
           Все отчёты генерируются автоматически на основе внесённых данных:
           оплаты учеников, проведённых занятий, ставок и расходов.
         </p>
-
         <div className='row popularityCourses_reload_btns'>
-          <button>Отправить на почту Бухгалтеру</button>
+          <button onClick={sendReport}>Отправить на почту Бухгалтеру</button>
           <button>Скачать отчёт PDF</button>
         </div>
       </section>

@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { useTabs } from '../../../app/store/reducers/tabSlice';
 import {
   StudentPaymentHistory,
@@ -6,7 +5,6 @@ import {
   StudentSessionHistory,
 } from '../../../entities';
 import './studentsDetail.scss';
-import { useSelector } from 'react-redux';
 
 export const StudentsDetail = () => {
   const tabId = 'applicationTabs';

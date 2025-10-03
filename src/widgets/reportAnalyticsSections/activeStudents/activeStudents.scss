@@ -72,6 +72,9 @@
 
     &_lessons{
         padding: 64px 32px;
+        flex-wrap: wrap;
+        justify-content: space-around !important;
+        row-gap: 40px;
 
         .item{
             gap: 24px;

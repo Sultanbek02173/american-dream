@@ -3,7 +3,7 @@ import './sheduleModal.scss';
 import { AnimatePresence, motion } from 'framer-motion';
 import TextField from '@mui/material/TextField';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   firstTextFieldSx,
   menuItemStyle,
@@ -13,14 +13,25 @@ import {
 import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useDispatch } from 'react-redux';
+import {
+  getDirections,
+  getGroups,
+} from '../../app/store/admin/entities/entitiesThunk';
+import { useEntities } from '../../app/store/admin/entities/entitiesSlice';
+import { getTeacherList } from '../../app/store/admin/teacher/teacherThunk';
+import { useTeachers } from '../../app/store/admin/teacher/teachersSlice';
+import Cookies from 'js-cookie';
 
 const schema = yup.object({
   lessonName: yup.string().required('Выберите занятие'),
   group: yup.string().required('Введите группу'),
   teacher: yup.string().required('Введите имя преподавателя'),
   note: yup.string(),
+  duration: yup.number().required('Укажите длительность').min(1).max(5),
 });
-export const SheduleModal = ({ open, setOpen, lesson }) => {
+
+export const SheduleModal = ({ open, setOpen, createSchedule, cellInfo }) => {
   const initial = {
     hidden: {
       x: -800,
@@ -43,6 +54,10 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
   const handleChange = event => {
     setValue(event.target.value);
   };
+  const dispatch = useDispatch();
+  const { directions, groups } = useEntities();
+  const { teacherList } = useTeachers();
+  const role = Cookies.get('role')
 
   const {
     control,
@@ -52,6 +67,34 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const onSubmit = data => {
+    if (!cellInfo) return;
+
+    const payload = {
+      classroom_id: cellInfo.roomIndex + 1,
+      date: cellInfo.date,
+      direction: data.lessonName,
+      duration: data.duration,
+      group: data.group,
+      note: data.note,
+      roomIndex: cellInfo.roomIndex,
+      teacher: data.teacher,
+      time: cellInfo.time,
+    };
+
+    createSchedule(payload);
+    setOpen(false);
+    reset();
+  };
+
+  useEffect(() => {
+    if(role === 'Administrator' || role === 'Manager'){
+      dispatch(getDirections());
+      dispatch(getTeacherList());
+      dispatch(getGroups());
+    }
+  }, [dispatch]);
 
   return ReactDOM.createPortal(
     <AnimatePresence>
@@ -72,13 +115,7 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
             onClick={e => e.stopPropagation()}
           >
             <h2>Добавить занятие</h2>
-            <form
-              onSubmit={handleSubmit(data => {
-                console.log(data);
-                setOpen(false);
-              })}
-              className='forms'
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className='forms'>
               <div className='forms_left'>
                 <Controller
                   name='lessonName'
@@ -100,15 +137,12 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                           },
                         }}
                       >
-                        <MenuItem value='english' sx={menuItemStyle}>
-                          Английский
-                        </MenuItem>
-                        <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-                          Ментальная арифметика
-                        </MenuItem>
-                        <MenuItem value='robotics' sx={menuItemStyle}>
-                          Робототехника
-                        </MenuItem>
+                        {directions &&
+                          directions.map(direction => (
+                            <MenuItem value={direction.name} sx={menuItemStyle}>
+                              {direction.name}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                   )}
@@ -119,12 +153,49 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                   control={control}
                   defaultValue=''
                   render={({ field }) => (
+                    <FormControl sx={selectSx} error={!!errors.teacher}>
+                      <InputLabel>Группа</InputLabel>
+                      <Select
+                        {...field}
+                        sx={{ color: '#fff' }}
+                        label='Группа'
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: '#313131',
+                              color: '#fff',
+                            },
+                          },
+                        }}
+                      >
+                        {groups &&
+                          groups.map(group => (
+                            <MenuItem
+                              key={group.id}
+                              value={group.group_name}
+                              sx={menuItemStyle}
+                            >
+                              {group.group_name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+
+                <Controller
+                  name='duration'
+                  control={control}
+                  defaultValue={1}
+                  render={({ field }) => (
                     <TextField
                       {...field}
-                      label='Группа'
+                      type='number'
+                      label='Длительность (часов)'
                       variant='outlined'
                       sx={secondTextFieldSx}
-                      error={!!errors.group}
+                      error={!!errors.duration}
+                      inputProps={{ min: 1, max: 5 }}
                     />
                   )}
                 />
@@ -136,13 +207,33 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                   control={control}
                   defaultValue=''
                   render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label='Преподаватель'
-                      variant='outlined'
-                      sx={firstTextFieldSx}
-                      error={!!errors.teacher}
-                    />
+                    <FormControl sx={selectSx} error={!!errors.teacher}>
+                      <InputLabel>Преподаватель</InputLabel>
+                      <Select
+                        {...field}
+                        sx={{ color: '#fff' }}
+                        label='Преподаватель'
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: '#313131',
+                              color: '#fff',
+                            },
+                          },
+                        }}
+                      >
+                        {teacherList &&
+                          teacherList.map(teacher => (
+                            <MenuItem
+                              key={teacher.id}
+                              value={teacher.full_name}
+                              sx={menuItemStyle}
+                            >
+                              {teacher.full_name}
+                            </MenuItem>
+                          ))}
+                      </Select>
+                    </FormControl>
                   )}
                 />
 
@@ -155,7 +246,7 @@ export const SheduleModal = ({ open, setOpen, lesson }) => {
                       {...field}
                       label='Примечание'
                       variant='outlined'
-                      sx={secondTextFieldSx}
+                      sx={selectSx}
                     />
                   )}
                 />

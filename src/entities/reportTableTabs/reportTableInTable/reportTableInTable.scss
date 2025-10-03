@@ -1,0 +1,50 @@
+.reportTableInTable__first .universalTable__body tr,
+.reportTableInTable__second .universalTable__body tr {
+  pointer-events: auto !important; /* или просто удалить свойство */
+}
+
+/* чтобы было понятно, что по ячейке можно кликать */
+.universalTable__body-visiting {
+  cursor: pointer;
+}
+
+/* клики доходят до td, даже если попали по тексту */
+.universalTable__body-visiting p {
+  padding: 10px 0 !important;
+  pointer-events: none;
+}
+
+.reportTableInTable__first .universalTable__body tr td {
+  text-align: center;
+}
+
+.universalTable {
+  thead .universalTable__body-head {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  td.universalTable__body-student:first-child,
+  th.universalTable__body-student:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 4;
+  }
+
+  td.universalTable__body-student:nth-child(2),
+  th.universalTable__body-student:nth-child(2) {
+    position: sticky;
+    left: 98px;
+    z-index: 4;
+  }
+
+  td.universalTable__body-visiting p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.universalTable__body tr {
+  pointer-events: auto;
+}

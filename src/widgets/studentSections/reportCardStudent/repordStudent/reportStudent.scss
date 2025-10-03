@@ -27,6 +27,9 @@
       tr {
         pointer-events: none;
       }
+      td{
+        text-align: center;
+      }
 
       &__body td:first-child {
         color: $green;

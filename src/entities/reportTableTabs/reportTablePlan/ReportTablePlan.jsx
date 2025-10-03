@@ -1,30 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import openIcon from './open.svg';
 import closeIcon from './close.svg';
 
-export const ReportTablePlan = () => {
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      title:
-        'Месяц 1: Введение в Web design, инструменты и основы, работа над первым сайтом.',
-      description: 'Урок 1: Вводная лекция Урок 2: Все тренды дизайна...',
-    },
-    {
-      id: 2,
-      title:
-        'Месяц 1: Введение в Web design, инструменты и основы, работа над первым сайтом.',
-      description: 'Урок 1: Вводная лекция Урок 2: Все тренды дизайна...',
-    },
-    {
-      id: 3,
-      title:
-        'Месяц 1: Введение в Web design, инструменты и основы, работа над первым сайтом.',
-      description: 'Урок 1: Вводная лекция Урок 2: Все тренды дизайна...',
-    },
-  ]);
-
+export const ReportTablePlan = ({ syllabus }) => {
   const [isVisible, setVisible] = useState(null);
 
   const toggleVisibility = id => {
@@ -33,14 +12,17 @@ export const ReportTablePlan = () => {
 
   return (
     <div className='reportTablePlan'>
-      {students.map(student => {
+      {syllabus?.map(student => {
         const isOpen = isVisible === student.id;
 
         return (
-          <div key={student.id} className='reportTablePlan__item'>
+          <div
+            key={student.id}
+            className='reportTablePlan__item'
+            onClick={() => toggleVisibility(student.id)}
+          >
             <div
               className='reportTablePlan__item-head'
-              onClick={() => toggleVisibility(student.id)}
               style={{
                 cursor: 'pointer',
                 display: 'flex',
@@ -48,7 +30,7 @@ export const ReportTablePlan = () => {
                 justifyContent: 'space-between',
               }}
             >
-              <h3>{student.title}</h3>
+              <h3>{`Месяц ${student.month_number} ${student.title}`}</h3>
               <img
                 src={isOpen ? closeIcon : openIcon}
                 alt='toggle'
@@ -64,7 +46,9 @@ export const ReportTablePlan = () => {
                   exit={{ height: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <p className='reportTablePlan__item_content'>{student.description}</p>
+                  <p className='reportTablePlan__item_content'>
+                    {student.description}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>

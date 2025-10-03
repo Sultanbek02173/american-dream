@@ -10,7 +10,7 @@ export const AccountingIncome = () => {
   console.log(data);
 
   const columns = [
-    { title: '№', dataIndex: 'idx', key: 'idx' },
+    { title: '№', dataIndex: 'id', key: 'id' },
     { title: 'Источник дохода', dataIndex: 'source', key: 'source' },
     { title: 'Сумма', dataIndex: 'amount', key: 'amount' },
     { title: 'Дата', dataIndex: 'date', key: 'date' },

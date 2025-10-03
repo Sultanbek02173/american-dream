@@ -10,6 +10,7 @@ import {
   AddTeacherTabs,
   ApplicationsAdmin,
   ApplicationsManager,
+  CreateNewGroupsTabs,
   HomeWork,
   HomeWorkDetail,
   Login,
@@ -32,12 +33,12 @@ import {
   TeacherGroupDetail,
   TeacherStudentDetail,
   TeacherTable,
-  CreateNewGroupsTabs,
 } from '../../pages';
 
 import { Accaunts, Breadcrumbs, SideBar } from '../../entities';
 import '../styles/app.scss';
 
+import Cookies from 'js-cookie';
 import accounting from '../../shared/imgs/sidebar/accounting.svg';
 import curces from '../../shared/imgs/sidebar/curces.svg';
 import lessons from '../../shared/imgs/sidebar/lessons.svg';
@@ -49,7 +50,6 @@ import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
 import teacher from '../../shared/imgs/sidebar/teacher.svg';
 import { getYourSelf } from '../store/reducers/auth/AuthThunk';
-import Cookies from 'js-cookie';
 export const URL = 'https://app.nurcrm.kg/api/main/categories/';
 
 const App = () => {
@@ -112,15 +112,12 @@ const App = () => {
         await dispatch(getYourSelf()).unwrap();
       } catch (e) {
         console.log(e);
-        Cookies.remove('access');
-        Cookies.remove('role');
-        Cookies.remove('login');
-        navigate('/login', { replace: true });
+        // navigate('/login', { replace: true });
       }
     };
 
     fetchData();
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
   return (
     <div className='app'>
@@ -213,10 +210,7 @@ const App = () => {
                 {role === 'Teacher' && (
                   <>
                     <Route path='/' element={<MainTeacher />} />
-                    <Route
-                      path='/table/:id'
-                      element={<TeacherGroupDetail />}
-                    />
+                    <Route path='/table/:id' element={<TeacherGroupDetail />} />
                     <Route path='/accounting' element={<ScheduleTeacher />} />
                     <Route path='/schedule' element={<ScheduleTeacher />} />
                     <Route path='/students' element={<Students />} />

@@ -38,6 +38,7 @@ import {
   getGroups,
 } from '../../../app/store/admin/entities/entitiesThunk';
 import { useEntities } from '../../../app/store/admin/entities/entitiesSlice';
+import AddExpense from '../../../widgets/accounting/addExpense/AddExpense';
 
 export const Accounting = () => {
   const dispatch = useDispatch();
@@ -335,6 +336,8 @@ export const Accounting = () => {
           </form>
         </div>
       </section>
+
+      <AddExpense />
 
       {/* Отчёты */}
       <AccountingSettlements />

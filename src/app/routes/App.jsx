@@ -112,6 +112,14 @@ const App = () => {
   //     } catch (e) {
   //       console.log(e);
   //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
+  //       Cookies.remove('access');
   //       navigate('/login', { replace: true });
   //     }
   //   };

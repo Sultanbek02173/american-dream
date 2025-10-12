@@ -50,7 +50,7 @@ import reportCard from '../../shared/imgs/sidebar/reportCard.svg';
 import student from '../../shared/imgs/sidebar/students.svg';
 import teacher from '../../shared/imgs/sidebar/teacher.svg';
 import { getYourSelf } from '../store/reducers/auth/AuthThunk';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

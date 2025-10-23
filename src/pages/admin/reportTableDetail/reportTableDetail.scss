@@ -1,4 +1,9 @@
 .reportTableDetail {
+  &__tabs {
+    display: flex;
+    width: 100%;
+  }
+
   .addTeacher__tabs-button {
     width: 16.6%;
     margin-bottom: 50px;
@@ -94,7 +99,7 @@
       }
     }
 
-    &_content{
+    &_content {
       padding-top: 32px;
       color: #ffffff62;
     }

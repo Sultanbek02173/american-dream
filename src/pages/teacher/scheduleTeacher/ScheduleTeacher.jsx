@@ -8,7 +8,7 @@ export const ScheduleTeacher = () => {
   const dispatch = useDispatch();
   const { schedule } = useScheduleAdmin();
   console.log(schedule);
-  
+
   useEffect(() => {
     dispatch(scheduleGet());
   }, [dispatch]);

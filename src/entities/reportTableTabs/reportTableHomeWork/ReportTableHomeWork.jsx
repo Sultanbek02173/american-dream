@@ -29,8 +29,30 @@ export const ReportTableHomeWork = ({ homeworks }) => {
   const role = Cookies.get('role');
   const canEdit = ['Teacher', 'Administrator', 'Manager'].includes(role);
 
-  // flat list занятий
+  // flat list занятий для выбранного месяца
   const items = useMemo(() => {
+    // Если homeworks содержит данные выбранного месяца
+    if (homeworks?.month && homeworks?.students) {
+      const month = homeworks.month;
+      const lessons = Array.isArray(month.lessons) ? month.lessons : [];
+
+      return lessons.map(l => ({
+        id: l.id,
+        order: l.order,
+        month_number: month.month_number ?? l.month ?? null,
+        title: l.title,
+        description: l.description,
+        teacher: l.teacher ?? '',
+        record: l.lesson_recording,
+        data_delivery: fmtDateTime(l.homework_deadline),
+        link_hw: l.homework_links,
+        file_hw: l.homework_files,
+        hw_description: l.homework_description,
+        hw_requirements: l.homework_requirements,
+      }));
+    }
+
+    // Fallback для старого формата данных
     const months = Array.isArray(homeworks?.months)
       ? homeworks.months
       : Array.isArray(homeworks)
@@ -48,8 +70,7 @@ export const ReportTableHomeWork = ({ homeworks }) => {
         title: l.title,
         description: l.description,
         teacher: l.teacher ?? '',
-        // link: l.lesson_links,        // ⬅️ убрали вывод ссылок урока
-        record: l.lesson_recording, // ссылка на запись урока (редактируемая)
+        record: l.lesson_recording,
         data_delivery: fmtDateTime(l.homework_deadline),
         link_hw: l.homework_links,
         file_hw: l.homework_files,

@@ -10,6 +10,7 @@ import { groupGet } from '../../../app/store/teacher/group/groupThunks';
 import { homeworkStudentGet } from '../../../app/store/teacher/studentHomework/studentHomeworkThunks';
 import { useHomeworkStudent } from '../../../app/store/teacher/studentHomework/studentHomeworkSlice';
 import { axiosApi } from '../../../app/services/axiosApi'; // ✅ добавляем axios
+import { AnimatePresence, motion } from 'framer-motion';
 
 const fmtDateTime = iso => {
   if (!iso) return '';
@@ -46,6 +47,7 @@ const mapStatusToClass = status => {
 export const MainTeacher = () => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [openRowId, setOpenRowId] = useState(null);
 
   // ✅ новые стейты для оценки и комментария
   const [score, setScore] = useState('');
@@ -136,12 +138,64 @@ export const MainTeacher = () => {
             Hi, {accaunt?.first_name ?? 'User'}!
           </p>
           <h3 className='groups__title'>Мои группы</h3>
+          <div className='groups__wrapper'>
+            <UniversalTable
+              columns={columns}
+              data={tableData}
+              onRowClick={item => navigate(`/table/${item.id}`)}
+            />
+          </div>
+          {/* Анимированная таблица-аккордеон */}
+          <div className='accordion'>
+            {tableData.map(row => {
+              const isOpen = openRowId === row.id;
+              return (
+                <div
+                  key={row.id}
+                  className={`accordion__item${isOpen ? ' open' : ''}`}
+                >
+                  <button
+                    type='button'
+                    className='accordion__header'
+                    onClick={() =>
+                      setOpenRowId(prev => (prev === row.id ? null : row.id))
+                    }
+                  >
+                    <span className='accordion__title'>{row.group}</span>
+                    <IoIosArrowDown
+                      className={`accordion__chevron${isOpen ? ' rotate' : ''}`}
+                      size={22}
+                    />
+                  </button>
 
-          <UniversalTable
-            columns={columns}
-            data={tableData}
-            onRowClick={item => navigate(`/table/${item.id}`)}
-          />
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        className='accordion__panel'
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      >
+                        <div className='accordion__row'>
+                          <span className='label'>Направление:</span>
+                          <span className='value'>{row.direction || '—'}</span>
+                        </div>
+                        <div className='accordion__row'>
+                          <span className='label'>Курс:</span>
+                          <span className='value'>{row.course || '—'}</span>
+                        </div>
+                        <div className='accordion__row'>
+                          <span className='label'>Урок:</span>
+                          <span className='value'>{row.lesson || '—'}</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

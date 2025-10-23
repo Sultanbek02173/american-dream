@@ -5,7 +5,13 @@ import { useParams } from 'react-router-dom';
 import './reportTableInTable.scss';
 import { patchStudentAttendances } from '../../../app/store/teacher/group/groupThunks';
 
-export const ReportTableInTable = ({ students = [], groupId }) => {
+export const ReportTableInTable = ({
+  students = [],
+  groupId,
+  selectedMonth,
+}) => {
+  console.log(students);
+
   const dispatch = useDispatch();
 
   // если groupId не передали пропсом — возьмём из URL: /administration/groups/:groupId/...
@@ -19,17 +25,30 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
 
   const allLessons = useMemo(() => {
     const set = new Set();
-    for (const s of students) {
-      (s.attendances ?? []).forEach(a => {
-        if (a && (a.lesson ?? a.lesson_id) != null)
-          set.add(Number(a.lesson ?? a.lesson_id));
+
+    // Если есть выбранный месяц, используем его уроки
+    if (selectedMonth?.lessons) {
+      selectedMonth.lessons.forEach(lesson => {
+        set.add(Number(lesson.id));
       });
-      (s.homework_scores ?? []).forEach(h => {
-        if (h && h.lesson_id != null) set.add(Number(h.lesson_id));
-      });
+    } else {
+      // Fallback: собираем уроки из данных студентов
+      for (const s of students) {
+        (s.attendances ?? []).forEach(a => {
+          if (a && (a.lesson ?? a.lesson_id) != null)
+            set.add(Number(a.lesson ?? a.lesson_id));
+        });
+        (s.homework_scores ?? []).forEach(h => {
+          if (h && h.lesson_id != null) set.add(Number(h.lesson_id));
+        });
+      }
     }
+
     return Array.from(set).sort((a, b) => a - b);
-  }, [students]);
+  }, [students, selectedMonth]);
+  console.log('all', allLessons);
+
+  // console.log(allLessons);
 
   // 🔧 тут ВАЖНО: кладём и id, и status
   const rows = useMemo(() => {
@@ -43,6 +62,15 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
       (s.attendances ?? []).forEach(a => {
         if (!a) return;
         const lessonNum = Number(a.lesson ?? a.lesson_id);
+
+        // Если есть выбранный месяц, фильтруем только уроки этого месяца
+        if (selectedMonth?.lessons) {
+          const isLessonInSelectedMonth = selectedMonth.lessons.some(
+            lesson => lesson.id === lessonNum
+          );
+          if (!isLessonInSelectedMonth) return;
+        }
+
         attendanceMap.set(lessonNum, { id: a.id, status: a.status ?? '' });
       });
 
@@ -50,6 +78,15 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
       (s.homework_scores ?? []).forEach(h => {
         if (!h) return;
         const lessonNum = Number(h.lesson_id);
+
+        // Если есть выбранный месяц, фильтруем только уроки этого месяца
+        if (selectedMonth?.lessons) {
+          const isLessonInSelectedMonth = selectedMonth.lessons.some(
+            lesson => lesson.id === lessonNum
+          );
+          if (!isLessonInSelectedMonth) return;
+        }
+
         scoreMap.set(lessonNum, h.score == null ? '—' : h.score);
       });
 
@@ -61,7 +98,7 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
         scoreMap,
       };
     });
-  }, [students]);
+  }, [students, selectedMonth]);
 
   // закрытие меню по клику вне
   useEffect(() => {
@@ -86,13 +123,13 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
   const chooseValue = async ({ studentId, lesson, attendanceId, value }) => {
     const key = `${studentId}:${lesson}`;
     const prevLocal = local[key];
+    console.log(attendanceId);
 
     setLocal(prev => ({ ...prev, [key]: value }));
     setOpenKey(null);
     setAnchorRect(null);
 
-    console.log(safeGroupId);
-    
+    console.log(attendanceId);
 
     if (!safeGroupId) {
       console.warn(
@@ -121,6 +158,7 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
       alert('Не удалось сохранить посещаемость');
     }
   };
+  console.log(anchorRect);
 
   // Портал: меню поверх всего
   const MenuPortal = ({ children, anchor }) => {
@@ -188,6 +226,8 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
                 id: null,
                 status: '',
               };
+              // console.log(typeof r.attendanceMap);
+
               const base = att.status ?? '';
               const key = `${r.studentId}:${lesson}`;
               const shown = local[key] ?? base;
@@ -230,7 +270,7 @@ export const ReportTableInTable = ({ students = [], groupId }) => {
                               chooseValue({
                                 studentId: r.studentId,
                                 lesson,
-                                attendanceId: att.id, 
+                                attendanceId: att.id,
                                 value: opt.value,
                               })
                             }

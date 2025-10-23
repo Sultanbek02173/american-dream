@@ -67,7 +67,7 @@ export const RepordTable = () => {
     { title: '№', dataIndex: 'id', key: 'id' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
-    { title: 'Курс', dataIndex: 'course', key: 'course' },
+    { title: 'Месяц', dataIndex: 'month', key: 'month' },
     { title: 'Урок', dataIndex: 'lesson', key: 'lesson' },
   ];
 

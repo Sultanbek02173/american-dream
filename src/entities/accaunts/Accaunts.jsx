@@ -9,12 +9,25 @@ import { logoutUser } from '../../app/store/reducers/auth/AuthThunk';
 import { accauntGet } from '../../app/store/reducers/accaunt/accauntThunks';
 import { useAccaunt } from '../../app/store/reducers/accaunt/accauntSlice';
 
-export const Accaunts = () => {
+export const Accaunts = ({ onToggleSidebar, isSidebarOpen }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { accaunt } = useAccaunt();
+
+  // Определяем размер экрана
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const handlerLogaut = async () => {
     setOpen(false);
@@ -41,6 +54,20 @@ export const Accaunts = () => {
   }, [dispatch]);
   return (
     <>
+      {/* Кнопка гамбургер-меню на всех страницах для мобильных устройств */}
+      {isMobile && !isSidebarOpen && (
+        <button
+          className='hamburger'
+          onClick={onToggleSidebar}
+          aria-label='Открыть меню'
+        >
+          <span className='hamburger__line'></span>
+          <span className='hamburger__line'></span>
+          <span className='hamburger__line'></span>
+        </button>
+      )}
+
+      {/* Профиль пользователя только на главной странице */}
       {location.pathname === '/' && (
         <div className='accaunts_cont'>
           <div className='accaunts'>

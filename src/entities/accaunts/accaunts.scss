@@ -6,6 +6,48 @@
   margin: 0 auto;
   position: relative;
 
+  // Кнопка гамбургер-меню только для мобильных устройств
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba($black, 0.8);
+    backdrop-filter: blur(10px);
+
+    @include md {
+      display: block;
+    }
+
+    &__line {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: $white;
+      margin: 5px 0;
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    &.active {
+      .hamburger__line:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      .hamburger__line:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger__line:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+    }
+  }
+
   .accaunts {
     padding: 3px;
     flex-shrink: 0;

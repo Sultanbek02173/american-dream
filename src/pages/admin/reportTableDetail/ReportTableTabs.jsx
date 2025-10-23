@@ -1,5 +1,9 @@
 import { useDispatch } from 'react-redux';
-import { setActiveTab, useTabs } from '../../../app/store/reducers/tabSlice';
+import {
+  setActiveTab,
+  useTabs,
+  useSelectedMonth,
+} from '../../../app/store/reducers/tabSlice';
 import {
   ReportTableData,
   ReportTableHomeWork,
@@ -25,7 +29,18 @@ export const ReportTableTabs = () => {
   const tabsState = useTabs();
   const activeTab = tabsState[tabId] ?? 0;
   const { id } = useParams();
+
   const { groupDetail } = useGroup();
+  const selectedMonth = useSelectedMonth();
+
+  // Получаем данные для выбранного месяца
+  const selectedMonthData = useMemo(() => {
+    if (!selectedMonth) return null;
+    return {
+      month: selectedMonth,
+      students: groupDetail?.students || [],
+    };
+  }, [selectedMonth, groupDetail]);
 
   const { monthPerf, monthAttend, monthCount, allPerf, allAttend, allCount } =
     useMemo(() => {
@@ -67,14 +82,15 @@ export const ReportTableTabs = () => {
     },
     {
       label: 'Дз',
-      content: <ReportTableHomeWork homeworks={groupDetail?.months} />,
+      content: <ReportTableHomeWork homeworks={selectedMonthData} />,
     },
     {
       label: 'Табель',
       content: (
         <ReportTableInTable
-          students={groupDetail?.students}
+          students={selectedMonthData?.students}
           groupId={groupDetail?.group?.id}
+          selectedMonth={selectedMonth}
         />
       ),
     },
@@ -100,17 +116,20 @@ export const ReportTableTabs = () => {
   return (
     <section className='reportTableDetail'>
       <div className='container'>
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            onClick={() => dispatch(setActiveTab({ tabId, index }))}
-            className={`addTeacher__tabs-button ${
-              index === activeTab && 'active'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+        <div className='reportTableDetail__tabs'>
+          {tabs.map((tab, index) => (
+            <button
+              key={index}
+              onClick={() => dispatch(setActiveTab({ tabId, index }))}
+              className={`addTeacher__tabs-button ${
+                index === activeTab && 'active'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         {tabs[activeTab]?.content}
       </div>
     </section>

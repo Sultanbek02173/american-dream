@@ -126,12 +126,12 @@ export const CreateNewGroupStudents = ({
             transition={{ duration: 0.4 }}
           >
             {filtered.map(student => (
-              <div className='paymentType__tabs-item' key={student.id}>
+              <div className='paymentType__tabs-item' key={student.user_id}>
                 <Checkbox
                   icon={<CheckBoxOutlineBlankIcon sx={{ fontSize: 32 }} />}
                   checkedIcon={<CheckBoxIcon sx={{ fontSize: 32 }} />}
-                  checked={selectedStudents.includes(student.id)}
-                  onChange={() => toggleStudent(student.id)}
+                  checked={selectedStudents.includes(student.user_id)}
+                  onChange={() => toggleStudent(student.user_id)}
                   sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
                 />
                 <p>{student.full_name || student.name}</p>
@@ -143,13 +143,13 @@ export const CreateNewGroupStudents = ({
 
       <div className='createGroupStudents__selected'>
         {selectedStudents.map(id => {
-          const student = students.find(s => s.id === id);
+          const student = students.find(s => s.user_id === id);
           return (
             <div className='createGroupStudents__selected-item' key={id}>
               <div className='paymentType__tabs-item'>
                 <Checkbox
                   checked
-                  onChange={() => toggleStudent(id)}
+                  onChange={() => toggleStudent(user_id)}
                   sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
                 />
                 <p>{student?.full_name || student?.name || `ID ${id}`}</p>

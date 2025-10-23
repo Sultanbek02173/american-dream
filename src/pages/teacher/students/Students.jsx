@@ -9,6 +9,9 @@ import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { studentListGet } from '../../../app/store/teacher/studentList/studentListThunks';
 import { useStudentList } from '../../../app/store/teacher/studentList/studentListSlice';
+import { AnimatePresence, motion } from 'framer-motion';
+import { IoIosArrowDown } from 'react-icons/io';
+import './students.scss';
 
 export const Students = () => {
   const navigate = useNavigate();
@@ -23,6 +26,8 @@ export const Students = () => {
 
   const [search, setSearch] = useState('');
   const [direction, setDirection] = useState('');
+  const [openRowId, setOpenRowId] = useState(null);
+  const [openPaymentsId, setOpenPaymentsId] = useState(null);
 
   useEffect(() => {
     dispatch(studentListGet());
@@ -34,7 +39,7 @@ export const Students = () => {
   }, [selected?.search, selected?.direction]);
 
   const columns = [
-    { title: '№', dataIndex: 'num', key: 'num' }, 
+    { title: '№', dataIndex: 'num', key: 'num' },
     { title: 'ФИО', dataIndex: 'name', key: 'name' },
     { title: 'Группа', dataIndex: 'group', key: 'group' },
     { title: 'Направление', dataIndex: 'direction', key: 'direction' },
@@ -144,13 +149,69 @@ export const Students = () => {
           </div>
         )}
 
-        <UniversalTable
-          columns={columns}
-          data={tableData}
-          loading={listLoading}
-          onRowClick={item => navigate(`/student/${item.user_id}`)}
-          emptyText='Ничего не найдено'
-        />
+        <div className='students__wrapper'>
+          <UniversalTable
+            columns={columns}
+            data={tableData}
+            loading={listLoading}
+            onRowClick={item => navigate(`/student/${item.user_id}`)}
+            emptyText='Ничего не найдено'
+          />
+        </div>
+
+        {/* Анимированная таблица-аккордеон для студентов */}
+        <div className='accordion'>
+          {tableData.map(row => {
+            const isOpen = openRowId === row.id;
+            return (
+              <div
+                key={row.id}
+                className={`accordion__item${isOpen ? ' open' : ''}`}
+              >
+                <button
+                  type='button'
+                  className='accordion__header'
+                  onClick={() =>
+                    setOpenRowId(prev => (prev === row.id ? null : row.id))
+                  }
+                >
+                  <span className='accordion__title'>{row.name}</span>
+                  <IoIosArrowDown
+                    className={`accordion__chevron${isOpen ? ' rotate' : ''}`}
+                    size={22}
+                  />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      className='accordion__panel'
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                    >
+                      <div className='accordion__row'>
+                        <span className='label'>Группа:</span>
+                        <span className='value'>{row.group || '—'}</span>
+                      </div>
+                      <div className='accordion__row'>
+                        <span className='label'>Направление:</span>
+                        <span className='value'>{row.direction || '—'}</span>
+                      </div>
+                      <div className='accordion__row'>
+                        <span className='label'>Преподаватель:</span>
+                        <span className='value'>{row.teacher || '—'}</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Вторая анимированная таблица-аккордеон с другими классами (как на скрине) */}
       </div>
     </section>
   );

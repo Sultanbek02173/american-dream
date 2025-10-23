@@ -1,13 +1,19 @@
 import { FormControl, MenuItem, Select, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { setActiveTab, useTabs } from '../../app/store/reducers/tabSlice';
+import {
+  setActiveTab,
+  useTabs,
+  setSelectedMonth,
+  useSelectedMonth,
+} from '../../app/store/reducers/tabSlice';
 import { StudentPaymentHistory } from '../studentsTab/StudentPaymentHistory';
 import { StudentProfile } from '../studentsTab/StudentProfile';
 import { StudentSessionHistory } from '../studentsTab/StudentSessionHistory';
+import { useGroup } from '../../app/store/teacher/group/groupSlice';
 import './breadcrumbs.scss';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 const routeNameMap = {
   '': 'Главная',
@@ -24,8 +30,8 @@ const routeNameMap = {
   students: 'Ученики',
   'add-teacher': 'Добавить преподавателя',
   'report-card': 'Табель',
-  'table': 'Табель',
-  "student": 'Ученик'
+  table: 'Табель',
+  student: 'Ученик',
 };
 
 export const Breadcrumbs = () => {
@@ -34,8 +40,22 @@ export const Breadcrumbs = () => {
   const tabsState = useTabs();
   const activeTab = tabsState[tabId] ?? 0;
   const location = useLocation();
+  const selectedMonth = useSelectedMonth();
+  const { groupDetail } = useGroup();
 
   const [value, setValue] = useState('mouth1');
+
+  // Получаем доступные месяцы из данных группы
+  const availableMonths = useMemo(() => {
+    return groupDetail?.months || [];
+  }, [groupDetail]);
+
+  // Устанавливаем первый месяц по умолчанию
+  useEffect(() => {
+    if (availableMonths.length > 0 && !selectedMonth) {
+      dispatch(setSelectedMonth(availableMonths[0]));
+    }
+  }, [availableMonths, selectedMonth, dispatch]);
 
   const itemStyle = {
     color: '#fff',
@@ -55,6 +75,12 @@ export const Breadcrumbs = () => {
 
   const handleChange = event => {
     setValue(event.target.value);
+  };
+
+  const handleMonthChange = event => {
+    const monthId = event.target.value;
+    const month = availableMonths.find(m => m.id === monthId);
+    dispatch(setSelectedMonth(month));
   };
   const pathnames = location.pathname.split('/').filter(Boolean);
 
@@ -110,64 +136,52 @@ export const Breadcrumbs = () => {
                 </button>
               ))}
           </div>
-          {isTableDetail && (
+          {isTableDetail && availableMonths.length > 0 && (
             <FormControl
               sx={{
                 width: '20%',
                 height: '100%',
                 background: '#424242',
-                // opacity: '60%',
                 '& .MuiOutlinedInput-root': {
-                  color: '#fff', // цвет текста
+                  color: '#fff',
                   '& fieldset': {
-                    borderColor: '#424242', // обычная граница
+                    borderColor: '#424242',
                   },
                   '&:hover fieldset': {
-                    borderColor: '#424242', // при наведении
+                    borderColor: '#424242',
                   },
                   '&.Mui-focused fieldset': {
-                    borderColor: '#424242', // при нажатии/фокусе (например, оранжевый)
+                    borderColor: '#424242',
                   },
                 },
               }}
             >
               <Select
-                value={value}
-                onChange={handleChange}
+                value={selectedMonth?.id || ''}
+                onChange={handleMonthChange}
                 displayEmpty
-                // renderValue={selected => {
-                //   if (!selected) {
-                //     return (
-                //       <Typography sx={{ color: '#aaa' }}>Месяц №1</Typography>
-                //     );
-                //   }
-                //   return {
-                //     mouth2: 'Месяц №2',
-                //     mouth3: 'Месяц №3',
-                //     mouth4: 'Месяц №4',
-                //     mouth5: 'Месяц №5',
-                //   }[selected];
-                // }}
                 inputProps={{ 'aria-label': 'Выбор месяца' }}
               >
-                <MenuItem
-                  value='mouth1'
-                  sx={{ ...itemStyle, fontStyle: 'normal' }}
-                >
-                  Месяц №1
-                </MenuItem>
-                <MenuItem value='mouth2' sx={itemStyle}>
-                  Месяц №2
-                </MenuItem>
-                <MenuItem value='mouth3' sx={itemStyle}>
-                  Месяц №3
-                </MenuItem>
-                <MenuItem value='mouth4' sx={itemStyle}>
-                  Месяц №4
-                </MenuItem>
-                <MenuItem value='mouth5' sx={itemStyle}>
-                  Месяц №5
-                </MenuItem>
+                {availableMonths.map(month => (
+                  <MenuItem
+                    key={month.id}
+                    value={month.id}
+                    sx={{
+                      color: '#fff',
+                      backgroundColor: '#000',
+                      '&:hover': {
+                        backgroundColor: '#333',
+                        color: '#fff',
+                      },
+                      '&.Mui-selected': {
+                        backgroundColor: '#2de920',
+                        color: '#000',
+                      },
+                    }}
+                  >
+                    {month.title}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             // <FormControl

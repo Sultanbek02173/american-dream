@@ -47,7 +47,6 @@ export const updateLessonRecording = createAsyncThunk(
   }
 );
 
-
 export const patchStudentAttendances = createAsyncThunk(
   'group/patchStudentAttendances',
   async ({ groupId, studentId, attendances }, { rejectWithValue }) => {

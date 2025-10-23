@@ -1,5 +1,5 @@
 // src/app/App.jsx
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { getRole } from '../../shared';
@@ -53,13 +53,23 @@ import { getYourSelf } from '../store/reducers/auth/AuthThunk';
 // import Cookies from 'js-cookie';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../styles/media.scss';
 
 const App = () => {
   const roleFromStore = useSelector(s => s.auth.role);
   const role = roleFromStore ?? getRole() ?? null;
   const dispatch = useDispatch();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const isLoggedIn = Boolean(role);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
   const navigate = useNavigate();
 
   const sidebar = useMemo(() => {
@@ -132,11 +142,18 @@ const App = () => {
       ) : (
         <div className='layout'>
           <div className='sidebar'>
-            <SideBar routes={sidebar} />
+            <SideBar
+              routes={sidebar}
+              isOpen={isSidebarOpen}
+              onClose={closeSidebar}
+            />
           </div>
           <div className='main'>
             <div className='container'>
-              <Accaunts />
+              <Accaunts
+                onToggleSidebar={toggleSidebar}
+                isSidebarOpen={isSidebarOpen}
+              />
               <Breadcrumbs />
             </div>
 

@@ -5,6 +5,7 @@ import { useAdminHome } from '../../../app/store/admin/homeAdmin/homeAdminSlice'
 
 export const Payment = () => {
   const { dashBoard } = useAdminHome();
+  console.log(dashBoard);
 
   return (
     <section className='payment'>
@@ -36,7 +37,7 @@ export const Payment = () => {
             <div className='stastic'>
               <VerticalProgress
                 progress={
-                  (dashBoard?.payments_by_method?.cash /
+                  (dashBoard?.payments_by_method?.cash_total /
                     dashBoard?.payments_today?.amount) *
                   100
                 }
@@ -50,7 +51,7 @@ export const Payment = () => {
             <div className='stastic'>
               <VerticalProgress
                 progress={
-                  (dashBoard?.payments_by_method?.transfer /
+                  (dashBoard?.payments_by_method?.transfer_total /
                     dashBoard?.payments_today?.amount) *
                   100
                 }
@@ -64,7 +65,7 @@ export const Payment = () => {
             <div className='stastic'>
               <VerticalProgress
                 progress={
-                  (dashBoard?.payments_by_method?.online /
+                  (dashBoard?.payments_by_method?.online_total /
                     dashBoard?.payments_today?.amount) *
                   100
                 }
@@ -87,8 +88,8 @@ export const Payment = () => {
           </div>
           <div>
             <h2>
-              {dashBoard?.payments_by_method?.transfer
-                ? dashBoard?.payments_by_method?.transfer
+              {dashBoard?.payments_by_method?.transfer_total
+                ? dashBoard?.payments_by_method?.transfer_total
                 : 0}
               c
             </h2>
@@ -101,8 +102,8 @@ export const Payment = () => {
           </div>
           <div>
             <h2>
-              {dashBoard?.payments_by_method?.cash
-                ? dashBoard?.payments_by_method?.cash
+              {dashBoard?.payments_by_method?.cash_total
+                ? dashBoard?.payments_by_method?.cash_total
                 : 0}
               c
             </h2>
@@ -113,8 +114,8 @@ export const Payment = () => {
         <div className='row pay_online_header'>
           <p>Сумма:</p>
           <h2>
-            {dashBoard?.payments_by_method?.online
-              ? dashBoard?.payments_by_method?.online
+            {dashBoard?.payments_by_method?.online_total
+              ? dashBoard?.payments_by_method?.online_total
               : 0}
             c
           </h2>

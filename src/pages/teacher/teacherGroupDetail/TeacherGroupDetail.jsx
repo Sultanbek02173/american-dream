@@ -100,17 +100,21 @@ export const TeacherGroupDetail = () => {
   return (
     <section className='reportTableDetail'>
       <div className='container'>
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            onClick={() => dispatch(setActiveTab({ tabId, index }))}
-            className={`addTeacher__tabs-button ${
-              index === activeTab && 'active'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
+        <div className='reportTableDetail__hidden'>
+          <div className='reportTableDetail__scroll'>
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => dispatch(setActiveTab({ tabId, index }))}
+                className={`addTeacher__tabs-button ${
+                  index === activeTab && 'active'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
         {tabs[activeTab]?.content}
       </div>
     </section>

@@ -41,6 +41,10 @@ body {
 }
 
 .sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
   overflow-y: auto;
 }
 
@@ -50,6 +54,12 @@ body {
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+  width: 100%;
+
+  // На десктопе добавляем отступ для сайдбара
+  // @media screen and (min-width: 1400px) {
+  //   margin-left: 134px;
+  // }
 }
 
 .page-content {
@@ -83,7 +93,7 @@ a {
   align-items: center;
 }
 
-li{
+li {
   list-style: none;
 }
 
@@ -96,3 +106,5 @@ li{
     transition: background-color 5000s ease-in-out 0s;
   }
 }
+
+// @import './media.scss';

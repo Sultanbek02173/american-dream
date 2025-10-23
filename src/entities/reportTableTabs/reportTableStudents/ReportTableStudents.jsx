@@ -1,6 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UniversalTable } from '../../universalTable/UniversalTable';
+import { IoIosArrowDown } from 'react-icons/io';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const getPaymentsSummary = (payments = []) => {
   const toNum = v => (v == null ? 0 : Number(v)) || 0;
@@ -16,6 +18,7 @@ const getPaymentsSummary = (payments = []) => {
 
 export const ReportTableStudents = ({ students = [] }) => {
   const navigate = useNavigate();
+  const [openPaymentsId, setOpenPaymentsId] = useState(null);
 
   const columns = [
     { title: '№', dataIndex: 'id', key: 'id' },
@@ -52,11 +55,66 @@ export const ReportTableStudents = ({ students = [] }) => {
 
   return (
     <div className='reportTableStudents'>
-      <UniversalTable
-        columns={columns}
-        data={data}
-        onRowClick={item => navigate(`/report-table/${item.id}`)}
-      />
+      <div className='reportTableStudents__wrapper'>
+        <UniversalTable
+          columns={columns}
+          data={data}
+          onRowClick={item => navigate(`/report-table/${item.id}`)}
+        />
+      </div>
+      <div className='payments-accordion'>
+        {data.map((row, index) => {
+          const isOpen = openPaymentsId === row.id;
+          return (
+            <div
+              key={`pay-${row.id}`}
+              className={`payments-card${isOpen ? ' open' : ''}`}
+            >
+              <button
+                type='button'
+                className='payments-card__head'
+                onClick={() =>
+                  setOpenPaymentsId(prev => (prev === row.id ? null : row.id))
+                }
+              >
+                <span className='payments-card__title'>
+                  {index + 1}. {row.student}
+                </span>
+                <IoIosArrowDown
+                  className={`payments-card__icon${isOpen ? ' rotate' : ''}`}
+                  size={20}
+                />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    className='payments-card__body'
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: 'easeInOut' }}
+                  >
+                    <div className='payments-card__row'>
+                      <span className='payments-card__label'>Статус:</span>
+                      <span className='payments-card__status payments-card__status--active'>
+                        {row.status}
+                      </span>
+                    </div>
+                    <div className='payments-card__divider' />
+                    <div className='payments-card__row payments-card__row--column'>
+                      <span className='payments-card__label'>Комментарий:</span>
+                      <div className='payments-card__comment'>
+                        {row.comment}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

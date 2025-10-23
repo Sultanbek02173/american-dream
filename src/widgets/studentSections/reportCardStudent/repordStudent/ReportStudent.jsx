@@ -124,7 +124,7 @@ export const ReportStudent = () => {
     {
       discount: discount[0]?.discount_amount ?? 0,
       score: discount[0]?.homework_points ?? '-',
-      visit: discount[0]?.discount_amount ?? '0',
+      visit: discount[0]?.min_attendance ?? '0',
     },
   ];
 

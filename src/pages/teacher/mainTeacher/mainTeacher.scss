@@ -38,3 +38,55 @@
     }
   }
 }
+
+/* Аккордеон таблицы */
+.accordion {
+  margin-top: 24px;
+  display: grid;
+  gap: 12px;
+}
+.accordion__item {
+  background: #2e2e2e;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+}
+.accordion__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.accordion__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.accordion__chevron {
+  transition: transform 0.25s ease;
+}
+.accordion__chevron.rotate {
+  transform: rotate(180deg);
+}
+.accordion__panel {
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.accordion__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 14px 18px;
+}
+.accordion__row + .accordion__row {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+.label {
+  opacity: 0.8;
+}
+.value {
+  font-weight: 600;
+}

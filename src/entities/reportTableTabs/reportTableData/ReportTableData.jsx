@@ -32,7 +32,7 @@ export const ReportTableData = ({ data }) => {
   const readOnly = { readOnly: true };
 
   return (
-    <div>
+    <div className='studentsDetail__form'>
       <div className='studentsDetail__form-inputs'>
         <TextField
           label='Преподаватель'

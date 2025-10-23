@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://185.211.170.64';
+export const BASE_URL = 'https://american-dream-online.kg';

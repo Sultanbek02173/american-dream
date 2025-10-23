@@ -1,0 +1,175 @@
+@use './constatnts.scss' as *;
+
+.container {
+  @include xl {
+    max-width: 960px;
+  }
+  @include md {
+    max-width: 540px;
+    width: 100%;
+  }
+}
+
+// Адаптивные стили для сайдбара
+.sideBar {
+  position: static;
+  @include md {
+    position: fixed;
+  }
+  // Сайдбар скрыт по умолчанию на всех экранах
+  // Открывается только по кнопке
+}
+.sidebar {
+  position: static;
+  @include md {
+    position: fixed;
+  }
+}
+.groups__wrapper,
+.students__wrapper {
+  display: block;
+  @include md {
+    display: none;
+  }
+}
+
+.accordion {
+  display: none;
+  @include md {
+    display: grid;
+  }
+}
+.studentsTable__head {
+  @include sm {
+    flex-wrap: wrap;
+    row-gap: 15px;
+  }
+  &-search {
+    @include sm {
+      width: 100% !important;
+    }
+  }
+}
+.studentsTable__head {
+  .css-8bbrh6-MuiFormControl-root {
+    @include sm {
+      width: 100% !important;
+    }
+  }
+}
+
+.students {
+  @include md {
+    padding: 0 50px;
+  }
+  .applicationsAdmin_cont_cards {
+    @include xl {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include md {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+.studentsDetail__form-inputs {
+  @include md {
+    flex-wrap: wrap;
+    margin-bottom: 0;
+    // row-gap: 15px;
+  }
+}
+.css-182wl5d-MuiFormControl-root-MuiTextField-root,
+.css-1fp4val-MuiFormControl-root-MuiTextField-root,
+.css-1jj91y-MuiFormControl-root-MuiTextField-root {
+  @include md {
+    width: 100% !important;
+    margin-bottom: 15px !important;
+  }
+}
+.reportTableDetail__hidden {
+  @include xl2 {
+    overflow-y: hidden;
+    margin-bottom: 50px;
+    padding-bottom: 5px;
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #121212;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
+
+  .addTeacher__tabs-button {
+    @include xl2 {
+      margin-bottom: 0;
+    }
+  }
+}
+.reportTableStudents__wrapper {
+  @include md {
+    display: none;
+  }
+}
+
+.payments-accordion {
+  display: none;
+  @include md {
+    display: block;
+  }
+}
+
+.reportTableDetail__scroll {
+  @include xl2 {
+    overflow-x: scroll;
+    min-width: 1200px;
+  }
+}
+
+.shedule_table {
+  @include xl {
+    padding: 15px;
+    overflow-y: hidden;
+    &::-webkit-scrollbar {
+      width: 6px; /* для вертикального */
+      height: 6px; /* для горизонтального */
+    }
+
+    /* Фон скроллбара */
+    &::-webkit-scrollbar-track {
+      background: #121212;
+      border-radius: 6px;
+    }
+
+    /* Сам ползунок */
+    &::-webkit-scrollbar-thumb {
+      background: #2de920;
+      border-radius: 6px;
+    }
+
+    /* При наведении */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #2de920;
+    }
+  }
+  .grid {
+    @include xl {
+      min-width: 1340px;
+      overflow-x: scroll;
+    }
+  }
+}

@@ -1,0 +1,144 @@
+/* Аккордеон таблицы */
+.accordion {
+  margin-top: 24px;
+  display: none;
+  gap: 12px;
+}
+
+.accordion__item {
+  background: #2e2e2e;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.accordion__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+}
+
+.accordion__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.accordion__chevron {
+  transition: transform 0.25s ease;
+}
+
+.accordion__chevron.rotate {
+  transform: rotate(180deg);
+}
+
+.accordion__panel {
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.accordion__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 14px 18px;
+}
+
+.accordion__row + .accordion__row {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.label {
+  opacity: 0.8;
+}
+
+.value {
+  font-weight: 600;
+}
+
+/* Вторая анимированная таблица с другими классами */
+.payments-accordion {
+  margin-top: 24px;
+  display: grid;
+  gap: 12px;
+}
+
+.payments-card {
+  background: #2e2e2e;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.payments-card__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.payments-card__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.payments-card__icon {
+  transition: transform 0.25s ease;
+}
+.payments-card__icon.rotate {
+  transform: rotate(180deg);
+}
+
+.payments-card__body {
+  overflow: hidden;
+}
+
+.payments-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+}
+.payments-card__row--column {
+  align-items: flex-start;
+  // flex-direction: column;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.payments-card__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 18px;
+}
+
+.payments-card__label {
+  opacity: 0.85;
+}
+
+.payments-card__status {
+  font-weight: 700;
+}
+.payments-card__status--active {
+  color: #2de920;
+}
+
+.payments-card__comment {
+  padding-left: 0;
+}
+.payments-card__comment p {
+  margin: 0;
+  margin-bottom: 4px;
+}
+.payments-card__comment p:last-child {
+  margin-bottom: 0;
+}

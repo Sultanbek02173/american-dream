@@ -15,18 +15,22 @@ export const ReportCardStudent = () => {
   ];
   return (
     <div className='container reportCardStudent'>
-      {tabs.map((tab, index) => (
-        <button
-          key={index}
-          onClick={() => dispatch(setActiveTab({ tabId, index }))}
-          className={`addTeacher__tabs-button ${
-            index === activeTab && 'active'
-          }`}
-        >
-          {tab.label}
-        </button>
-      ))}
-      {tabs[activeTab]?.content}
+      <div className='reportCardStudent__tabs'>
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            onClick={() => dispatch(setActiveTab({ tabId, index }))}
+            className={`addTeacher__tabs-button ${
+              index === activeTab ? 'active' : ''
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div className='reportCardStudent__content'>
+        {tabs[activeTab]?.content}
+      </div>
     </div>
   );
 };

@@ -1,11 +1,65 @@
 @use '../../../app/styles/constatnts.scss' as *;
 
 .reportCardStudent {
-  .addTeacher__tabs-button{
-    width: 33%;
+  padding: 0 20px;
+
+  @include md {
+    padding: 0 15px;
   }
 
-  .addTeacher__tabs-button:nth-child(2){
+  @include sm {
+    padding: 0 10px;
+  }
+
+  .addTeacher__tabs-button {
+    width: 33%;
+    font-size: 20px;
+    padding: 13px 0;
+
+    @include xl {
+      font-size: 18px;
+      padding: 12px 0;
+    }
+
+    @include md {
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
+    @include sm {
+      font-size: 14px;
+      padding: 8px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .addTeacher__tabs-button:nth-child(2) {
     border-right: 2px solid $white;
+
+    @include sm {
+      border-right: 1px solid $white;
+    }
+  }
+
+  // Контейнер для табов
+  &__tabs {
+    display: flex;
+    margin-bottom: 30px;
+
+    @include md {
+      margin-bottom: 20px;
+    }
+
+    @include sm {
+      margin-bottom: 15px;
+    }
+  }
+
+  // Контейнер для контента
+  &__content {
+    width: 100%;
+    overflow-x: hidden;
   }
 }

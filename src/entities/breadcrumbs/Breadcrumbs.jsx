@@ -6,6 +6,7 @@ import {
   useTabs,
   setSelectedMonth,
   useSelectedMonth,
+  useStudentAvailableMonths,
 } from '../../app/store/reducers/tabSlice';
 import { StudentPaymentHistory } from '../studentsTab/StudentPaymentHistory';
 import { StudentProfile } from '../studentsTab/StudentProfile';
@@ -42,13 +43,20 @@ export const Breadcrumbs = () => {
   const location = useLocation();
   const selectedMonth = useSelectedMonth();
   const { groupDetail } = useGroup();
+  const studentAvailableMonths = useStudentAvailableMonths();
 
   const [value, setValue] = useState('mouth1');
 
-  // Получаем доступные месяцы из данных группы
+  // Получаем доступные месяцы из данных группы или студента
   const availableMonths = useMemo(() => {
+    // Для страницы студента используем месяцы из progress
+    const isReportCard = location.pathname === '/report-card';
+    if (isReportCard && studentAvailableMonths.length > 0) {
+      return studentAvailableMonths;
+    }
+    // Для других страниц используем месяцы из группы
     return groupDetail?.months || [];
-  }, [groupDetail]);
+  }, [groupDetail, studentAvailableMonths, location.pathname]);
 
   // Устанавливаем первый месяц по умолчанию
   useEffect(() => {
@@ -101,7 +109,9 @@ export const Breadcrumbs = () => {
 
   const isStudentDetail = /^\/students-table\/\d+$/.test(location.pathname);
   const isTableDetail = /^\/report-table\/\d+$/.test(location.pathname);
+  const isDetail = /^\/table\/\d+$/.test(location.pathname);
   const isStudent = /^\/student\/\d+$/.test(location.pathname);
+  const isReportCard = location.pathname === '/report-card';
   const tabs = [
     { label: 'Профиль студента', content: <StudentProfile /> },
     { label: 'История занятий', content: <StudentSessionHistory /> },
@@ -136,100 +146,110 @@ export const Breadcrumbs = () => {
                 </button>
               ))}
           </div>
-          {isTableDetail && availableMonths.length > 0 && (
-            <FormControl
-              sx={{
-                width: '20%',
-                height: '100%',
-                background: '#424242',
-                '& .MuiOutlinedInput-root': {
-                  color: '#fff',
-                  '& fieldset': {
-                    borderColor: '#424242',
+          {(isTableDetail || isDetail || isReportCard) &&
+            availableMonths.length > 0 && (
+              <FormControl
+                className='breadcrumbs__month-select'
+                sx={{
+                  width: '20%',
+                  height: '100%',
+                  background: '#424242',
+                  '@media (max-width: 992px)': {
+                    width: '30%',
                   },
-                  '&:hover fieldset': {
-                    borderColor: '#424242',
+                  '@media (max-width: 768px)': {
+                    width: '40%',
                   },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#424242',
+                  '@media (max-width: 576px)': {
+                    width: '50%',
                   },
-                },
-              }}
-            >
-              <Select
-                value={selectedMonth?.id || ''}
-                onChange={handleMonthChange}
-                displayEmpty
-                inputProps={{ 'aria-label': 'Выбор месяца' }}
+                  '& .MuiOutlinedInput-root': {
+                    color: '#fff',
+                    '& fieldset': {
+                      borderColor: '#424242',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#424242',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#424242',
+                    },
+                  },
+                }}
               >
-                {availableMonths.map(month => (
-                  <MenuItem
-                    key={month.id}
-                    value={month.id}
-                    sx={{
-                      color: '#fff',
-                      backgroundColor: '#000',
-                      '&:hover': {
-                        backgroundColor: '#333',
+                <Select
+                  value={selectedMonth?.id || ''}
+                  onChange={handleMonthChange}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Выбор месяца' }}
+                >
+                  {availableMonths.map(month => (
+                    <MenuItem
+                      key={month.id}
+                      value={month.id}
+                      sx={{
                         color: '#fff',
-                      },
-                      '&.Mui-selected': {
-                        backgroundColor: '#2de920',
-                        color: '#000',
-                      },
-                    }}
-                  >
-                    {month.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            // <FormControl
-            //   sx={{
-            //     width: '20%',
-            //     height: '100%',
-            //     opacity: '60%',
-            //     '& .MuiOutlinedInput-root': {
-            //       color: '#fff', // цвет текста
-            //       '& fieldset': {
-            //         borderColor: '#fff', // обычная граница
-            //       },
-            //       '&:hover fieldset': {
-            //         borderColor: '#fff', // при наведении
-            //       },
-            //       '&.Mui-focused fieldset': {
-            //         borderColor: '#2de920', // при нажатии/фокусе (например, оранжевый)
-            //       },
-            //     },
-            //     '& .MuiInputLabel-root': {
-            //       color: '#fff', // цвет label по умолчанию
-            //     },
-            //     '& .Mui-focused .MuiInputLabel-root': {
-            //       color: '#fff', // цвет label при фокусе
-            //     },
-            //   }}
-            // >
-            //   {/* <InputLabel id='demo-simple-select-label'>Направление</InputLabel> */}
-            //   <Select
-            //     labelId='demo-simple-select-label'
-            //     id='demo-simple-select'
-            //     value={value}
-            //     label='Направление'
-            //     onChange={handleChange}
-            //   >
-            //     <MenuItem value='english' sx={menuItemStyle}>
-            //       Английский
-            //     </MenuItem>
-            //     <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
-            //       Ментальная арифметика
-            //     </MenuItem>
-            //     <MenuItem value='robotics' sx={menuItemStyle}>
-            //       Робототехника
-            //     </MenuItem>
-            //   </Select>
-            // </FormControl>
-          )}
-          {isStudent && 'w'}
+                        backgroundColor: '#000',
+                        '&:hover': {
+                          backgroundColor: '#333',
+                          color: '#fff',
+                        },
+                        '&.Mui-selected': {
+                          backgroundColor: '#2de920',
+                          color: '#000',
+                        },
+                      }}
+                    >
+                      {month.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              // <FormControl
+              //   sx={{
+              //     width: '20%',
+              //     height: '100%',
+              //     opacity: '60%',
+              //     '& .MuiOutlinedInput-root': {
+              //       color: '#fff', // цвет текста
+              //       '& fieldset': {
+              //         borderColor: '#fff', // обычная граница
+              //       },
+              //       '&:hover fieldset': {
+              //         borderColor: '#fff', // при наведении
+              //       },
+              //       '&.Mui-focused fieldset': {
+              //         borderColor: '#2de920', // при нажатии/фокусе (например, оранжевый)
+              //       },
+              //     },
+              //     '& .MuiInputLabel-root': {
+              //       color: '#fff', // цвет label по умолчанию
+              //     },
+              //     '& .Mui-focused .MuiInputLabel-root': {
+              //       color: '#fff', // цвет label при фокусе
+              //     },
+              //   }}
+              // >
+              //   {/* <InputLabel id='demo-simple-select-label'>Направление</InputLabel> */}
+              //   <Select
+              //     labelId='demo-simple-select-label'
+              //     id='demo-simple-select'
+              //     value={value}
+              //     label='Направление'
+              //     onChange={handleChange}
+              //   >
+              //     <MenuItem value='english' sx={menuItemStyle}>
+              //       Английский
+              //     </MenuItem>
+              //     <MenuItem value='mentalArithmetic' sx={menuItemStyle}>
+              //       Ментальная арифметика
+              //     </MenuItem>
+              //     <MenuItem value='robotics' sx={menuItemStyle}>
+              //       Робототехника
+              //     </MenuItem>
+              //   </Select>
+              // </FormControl>
+            )}
         </nav>
       )}
     </>

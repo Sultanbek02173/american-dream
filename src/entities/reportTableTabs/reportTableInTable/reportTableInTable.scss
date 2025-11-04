@@ -44,7 +44,26 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  // Адаптивность для мобильных
+  // Значения left теперь управляются через inline стили в JSX
+  // Оставляем только базовые стили для резерва
 }
 .universalTable__body tr {
   pointer-events: auto;
+}
+
+.reportTableInTable__month {
+  margin-bottom: 40px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.reportTableInTable__month-title {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
 }

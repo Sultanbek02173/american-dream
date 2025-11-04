@@ -4,11 +4,36 @@
   margin-top: 56px;
   color: $white;
 
+  @include md {
+    margin-top: 30px;
+  }
+
+  @include sm {
+    margin-top: 20px;
+  }
+
   &_title {
     margin-bottom: 24px;
     font-size: 36px;
     font-weight: 400;
     margin-top: 100px;
+
+    @include xl {
+      font-size: 32px;
+      margin-top: 80px;
+    }
+
+    @include md {
+      font-size: 28px;
+      margin-top: 50px;
+      margin-bottom: 20px;
+    }
+
+    @include sm {
+      font-size: 24px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
   }
 
   &_title:first-child {
@@ -16,19 +41,88 @@
   }
 
   &_table {
+    overflow-x: auto;
+    margin-bottom: 30px;
+
+    @include xl2 {
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #121212;
+        border-radius: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #2de920;
+        border-radius: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #2de920;
+      }
+    }
+
+    @include md {
+      margin-bottom: 20px;
+    }
+
+    @include sm {
+      margin-bottom: 15px;
+    }
+
     .universalTable {
+      min-width: 600px;
+
+      @include xl2 {
+        min-width: 800px;
+      }
+
+      @include md {
+        min-width: 700px;
+      }
+
+      @include sm {
+        min-width: 600px;
+      }
+
       th {
         font-size: 16px;
         color: $green;
         font-weight: 300;
         padding: 15px 10px;
         text-align: center;
+
+        @include md {
+          font-size: 14px;
+          padding: 12px 8px;
+        }
+
+        @include sm {
+          font-size: 12px;
+          padding: 10px 6px;
+        }
       }
+
       tr {
         pointer-events: none;
       }
-      td{
+
+      td {
         text-align: center;
+        font-size: 16px;
+
+        @include md {
+          font-size: 14px;
+          padding: 12px 8px;
+        }
+
+        @include sm {
+          font-size: 12px;
+          padding: 10px 6px;
+        }
       }
 
       &__body td:first-child {
@@ -39,13 +133,61 @@
 
   &_discount_table {
     margin-bottom: 150px;
+    overflow-x: auto;
+
+    @include xl2 {
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #121212;
+        border-radius: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #2de920;
+        border-radius: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #2de920;
+      }
+    }
+
+    @include md {
+      margin-bottom: 80px;
+    }
+
+    @include sm {
+      margin-bottom: 50px;
+    }
+
     .universalTable {
+      min-width: 400px;
+
+      @include sm {
+        min-width: 300px;
+      }
+
       th {
         font-size: 16px;
         font-weight: 300;
         padding: 15px 10px;
         text-align: center;
+
+        @include md {
+          font-size: 14px;
+          padding: 12px 8px;
+        }
+
+        @include sm {
+          font-size: 12px;
+          padding: 10px 6px;
+        }
       }
+
       tr {
         pointer-events: none;
       }
@@ -53,6 +195,17 @@
       &__body td {
         color: $green;
         text-align: center;
+        font-size: 16px;
+
+        @include md {
+          font-size: 14px;
+          padding: 12px 8px;
+        }
+
+        @include sm {
+          font-size: 12px;
+          padding: 10px 6px;
+        }
       }
     }
   }

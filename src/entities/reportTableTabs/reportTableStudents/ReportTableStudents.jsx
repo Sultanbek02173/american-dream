@@ -68,7 +68,7 @@ export const ReportTableStudents = ({ students = [] }) => {
           return (
             <div
               key={`pay-${row.id}`}
-              className={`payments-card${isOpen ? ' open' : ''}`}
+              className={`payments-card ${isOpen ? ' open' : ''}`}
             >
               <button
                 type='button'

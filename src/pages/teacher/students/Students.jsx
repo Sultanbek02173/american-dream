@@ -203,6 +203,15 @@ export const Students = () => {
                         <span className='label'>Преподаватель:</span>
                         <span className='value'>{row.teacher || '—'}</span>
                       </div>
+                      <div className='accordion__row'>
+                        <span className='label'></span>
+                        <span
+                          className='value'
+                          onClick={() => navigate(`/student/${row.user_id}`)}
+                        >
+                          Подробнее
+                        </span>
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>

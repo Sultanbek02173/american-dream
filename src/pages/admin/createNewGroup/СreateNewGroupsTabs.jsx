@@ -25,6 +25,7 @@ export const CreateNewGroupsTabs = () => {
     direction: '', // id направления
     teacher: null, // id преподавателя
     students: [], // [id, id, ...]
+    creation_type: 'auto',
   });
 
   const handleChange = useCallback((name, value) => {
@@ -65,6 +66,7 @@ export const CreateNewGroupsTabs = () => {
       direction: '',
       teacher: null,
       students: [],
+      сreation_type: 'auto',
     });
   };
   const navigate = useNavigate();

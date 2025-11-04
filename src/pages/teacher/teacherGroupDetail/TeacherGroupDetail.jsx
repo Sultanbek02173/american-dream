@@ -12,6 +12,7 @@ import { useEffect, useMemo } from 'react';
 import { groupDetailGet } from '../../../app/store/teacher/group/groupThunks';
 import { useParams } from 'react-router-dom';
 import { useGroup } from '../../../app/store/teacher/group/groupSlice';
+import { useSelectedMonth } from '../../../app/store/reducers/tabSlice';
 
 import {
   collectMonths,
@@ -26,6 +27,7 @@ export const TeacherGroupDetail = () => {
   const activeTab = tabsState[tabId] ?? 0;
   const { id } = useParams();
   const { groupDetail } = useGroup();
+  const selectedMonth = useSelectedMonth();
 
   useEffect(() => {
     if (id) dispatch(groupDetailGet(id));
@@ -71,7 +73,15 @@ export const TeacherGroupDetail = () => {
     },
     {
       label: 'Дз',
-      content: <ReportTableHomeWork homeworks={groupDetail?.months} />,
+      content: (
+        <ReportTableHomeWork
+          homeworks={
+            selectedMonth
+              ? { month: selectedMonth, students: groupDetail?.students }
+              : groupDetail?.months
+          }
+        />
+      ),
     },
     {
       label: 'Табель',
@@ -79,6 +89,8 @@ export const TeacherGroupDetail = () => {
         <ReportTableInTable
           students={groupDetail?.students}
           groupId={groupDetail?.group?.id}
+          months={groupDetail?.months}
+          selectedMonth={selectedMonth}
         />
       ),
     },

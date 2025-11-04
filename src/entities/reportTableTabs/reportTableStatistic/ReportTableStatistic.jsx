@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './reportTableStatistic.scss';
 import { VerticalProgress } from '../../../featurs';
 
@@ -14,6 +14,29 @@ export const ReportTableStatistic = ({
   allCount = 0,
 }) => {
   const ticks = ['100', '80', '60', '40', '20', '0'];
+  const [dimensions, setDimensions] = useState({
+    width: '56px',
+    height: '395px',
+  });
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      if (width <= 576) {
+        setDimensions({ width: '40px', height: '250px' });
+      } else if (width <= 768) {
+        setDimensions({ width: '48px', height: '320px' });
+      } else if (width <= 992) {
+        setDimensions({ width: '52px', height: '350px' });
+      } else {
+        setDimensions({ width: '56px', height: '395px' });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
   return (
     <div className='reportTable'>
@@ -33,16 +56,16 @@ export const ReportTableStatistic = ({
             <VerticalProgress
               progress={monthPerf}
               text={formatPct(monthPerf)}
-              width='56px'
-              height='395px'
+              width={dimensions.width}
+              height={dimensions.height}
               border='0px'
               color='#32CD32'
             />
             <VerticalProgress
               progress={monthAttend}
               text={formatPct(monthAttend)}
-              width='56px'
-              height='395px'
+              width={dimensions.width}
+              height={dimensions.height}
               border='0px'
               color='#7CFC00'
             />
@@ -59,16 +82,16 @@ export const ReportTableStatistic = ({
             <VerticalProgress
               progress={allPerf}
               text={formatPct(allPerf)}
-              width='56px'
-              height='395px'
+              width={dimensions.width}
+              height={dimensions.height}
               border='0px'
               color='#32CD32'
             />
             <VerticalProgress
               progress={allAttend}
               text={formatPct(allAttend)}
-              width='56px'
-              height='395px'
+              width={dimensions.width}
+              height={dimensions.height}
               border='0px'
               color='#7CFC00'
             />
@@ -76,21 +99,19 @@ export const ReportTableStatistic = ({
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 30,
-          color: '#FFFFFF',
-          marginBottom: 50,
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 20, height: 20, background: '#32CD32' }} />
+      <div className='reportTable__legend'>
+        <div className='reportTable__legend-item'>
+          <div
+            className='reportTable__legend-item-color'
+            style={{ background: '#32CD32' }}
+          />
           <span>Успеваемость</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 20, height: 20, background: '#7CFC00' }} />
+        <div className='reportTable__legend-item'>
+          <div
+            className='reportTable__legend-item-color'
+            style={{ background: '#7CFC00' }}
+          />
           <span>Посещаемость</span>
         </div>
       </div>

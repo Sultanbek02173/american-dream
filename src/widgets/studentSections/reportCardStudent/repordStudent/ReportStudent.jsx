@@ -7,6 +7,11 @@ import {
   progressGet,
 } from '../../../../app/store/student/progress/progressThunks';
 import { useProgress } from '../../../../app/store/student/progress/progressSlice';
+import {
+  setSelectedMonth,
+  setStudentAvailableMonths,
+  useSelectedMonth,
+} from '../../../../app/store/reducers/tabSlice';
 
 const statusToDisplay = v => {
   if (v === '-' || v === '0' || v === 0 || v == null) return String(v ?? '-');
@@ -45,17 +50,65 @@ const buildLessonColumns = count => {
 export const ReportStudent = () => {
   const dispatch = useDispatch();
   const { progress = [], discount } = useProgress();
-
+  const selectedMonth = useSelectedMonth();
+  // console.log(progress.filter(item => item.month_title === 'Месяц 2'));
   useEffect(() => {
     dispatch(progressGet());
     dispatch(discountGet());
   }, [dispatch]);
 
-  // 1) Подготавливаем СТРОГО СУЩЕСТВУЮЩИЕ уроки, отсортированные по дате (резерв — по id)
-  const lessons = useMemo(() => {
-    // дедуп по lesson_id: берём последнюю по дате запись, если вдруг дубль
-    const byId = new Map();
+  // Извлекаем уникальные месяцы из progress
+  const availableMonths = useMemo(() => {
+    const monthMap = new Map();
     for (const item of progress) {
+      const monthNumber = Number(item?.month_number);
+      const monthTitle = item?.month_title;
+      if (Number.isFinite(monthNumber) && monthNumber > 0) {
+        // Группируем только по month_number, чтобы избежать дубликатов
+        if (!monthMap.has(monthNumber)) {
+          monthMap.set(monthNumber, {
+            id: monthNumber,
+            month_number: monthNumber,
+            title: monthTitle || `Месяц ${monthNumber}`,
+          });
+        }
+      }
+    }
+    const months = Array.from(monthMap.values());
+    months.sort((a, b) => a.month_number - b.month_number);
+    return months;
+  }, [progress]);
+
+  // Сохраняем доступные месяцы в Redux для использования в Breadcrumbs
+  useEffect(() => {
+    if (availableMonths.length > 0) {
+      dispatch(setStudentAvailableMonths(availableMonths));
+      // Устанавливаем первый месяц по умолчанию, если ничего не выбрано
+      if (!selectedMonth && availableMonths.length > 0) {
+        dispatch(setSelectedMonth(availableMonths[0]));
+      }
+    }
+  }, [availableMonths, dispatch, selectedMonth]);
+
+  // Фильтруем уроки по выбранному месяцу
+  const lessons = useMemo(() => {
+    // Сначала фильтруем по месяцу, если выбран
+    let filtered = progress;
+    if (selectedMonth) {
+      const monthNumber = Number(
+        selectedMonth.month_number || selectedMonth.id
+      );
+      filtered = progress.filter(item => {
+        const itemMonthNumber = Number(item?.month_number);
+        return (
+          Number.isFinite(itemMonthNumber) && itemMonthNumber === monthNumber
+        );
+      });
+    }
+
+    // Дедуп по lesson_id: берём последнюю по дате запись, если вдруг дубль
+    const byId = new Map();
+    for (const item of filtered) {
       const id = Number(item?.lesson_id);
       if (!Number.isFinite(id) || id <= 0) continue;
       const prev = byId.get(id);
@@ -74,8 +127,8 @@ export const ReportStudent = () => {
       const ib = Number(b?.lesson_id) || 0;
       return ia - ib;
     });
-    return arr; // например, [{lesson_id:2,...},{lesson_id:4,...}]
-  }, [progress]);
+    return arr;
+  }, [progress, selectedMonth]);
 
   const columns = useMemo(
     () => buildLessonColumns(lessons.length),

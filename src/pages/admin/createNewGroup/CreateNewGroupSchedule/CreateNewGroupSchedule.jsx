@@ -1,17 +1,33 @@
 // CreateNewGroupSchedule.jsx
 import { Radio, TextField } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { inputStyle } from '../../../../shared/utils/MuiStyles';
 
 export const CreateNewGroupSchedule = ({ value, onChange }) => {
-  const [selectedValue, setSelectedValue] = useState(1);
+  // Берём начальное из пропсов (fallback: 'auto')
+  const [selectedValue, setSelectedValue] = useState(
+    value.creation_type || 'auto'
+  );
+
+  // Держим локалку в синхроне, если родитель обновился извне
+  useEffect(() => {
+    if (value.creation_type && value.creation_type !== selectedValue) {
+      setSelectedValue(value.creation_type);
+    }
+  }, [value.creation_type]);
+
   const handle = e => onChange(e.target.name, e.target.value);
+
+  const handleModeChange = newVal => {
+    setSelectedValue(newVal);
+    onChange('creation_type', newVal); // важное: прокидываем наверх
+  };
 
   const controlProps = item => ({
     checked: selectedValue === item,
-    onChange: e => setSelectedValue(Number(e.target.value)),
+    onChange: e => handleModeChange(e.target.value),
     value: item,
-    name: 'distribute-mode',
+    name: 'creation_type',
     inputProps: { 'aria-label': item },
   });
 
@@ -71,25 +87,40 @@ export const CreateNewGroupSchedule = ({ value, onChange }) => {
 
       <h2 className='createGroupSchedule__title'>Распределить занятия</h2>
       <div className='paymentType__tabs'>
-        <div className='paymentType__tabs-item'>
+        <div
+          className='paymentType__tabs-item'
+          onClick={() => handleModeChange('auto')}
+          role='button'
+          tabIndex={0}
+        >
           <Radio
-            {...controlProps(1)}
+            {...controlProps('auto')}
             sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
           />
           <p>Автоматический</p>
         </div>
-        <div className='paymentType__tabs-item'>
+
+        <div
+          className='paymentType__tabs-item'
+          onClick={() => handleModeChange('manual')}
+          role='button'
+          tabIndex={0}
+        >
           <Radio
-            {...controlProps(2)}
+            {...controlProps('manual')}
             sx={{ color: '#fff', '&.Mui-checked': { color: '#2DE920' } }}
           />
           <p>Вручную</p>
         </div>
       </div>
 
-      {selectedValue === 2 && (
+      {selectedValue === 'manual' && (
         <div className='dataTeacher__row'>
-          <button className='dataTeacher__row-button' type='button'>
+          <button
+            className='dataTeacher__row-button'
+            type='button'
+            onClick={() => handleModeChange('auto')}
+          >
             Сбросить
           </button>
           <button className='dataTeacher__row-button add' type='button'>

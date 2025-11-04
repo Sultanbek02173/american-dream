@@ -189,6 +189,16 @@ export const MainTeacher = () => {
                           <span className='label'>Урок:</span>
                           <span className='value'>{row.lesson || '—'}</span>
                         </div>
+                        <div className='accordion__row'>
+                          <span className='label'></span>
+                          <span
+                            className='value'
+                            onClick={() => navigate(`/table/${row.id}`)}
+                            style={{ cursor: 'pointer' }}
+                          >
+                            Подробнее
+                          </span>
+                        </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
